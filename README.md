@@ -3,7 +3,7 @@
 ## Informações Institucionais
 
 **Instituição:** Pontifícia Universidade Católica do Paraná (PUCPR)
-**Disciplina:** Linguagens Formais e Autômatos
+**Disciplina:** Linguagens Formais e Compiladores
 **Professor:** Frank Alcantara
 **Ano:** 2025
 
@@ -14,7 +14,9 @@
 - Rafael Olivare Piveta - RafaPiveta
 - Stefan Benjamim Seixas Lourenco Rodrigues - waifuisalie
 
-**Nome do grupo no Canvas:** 
+**Nome do grupo no Canvas:** RA3_1 
+
+
 
 ---
 
@@ -199,12 +201,7 @@ A linguagem utiliza RPN, onde operadores aparecem após operandos:
 
 ### Exemplos
 
-```
-(3 4 +)                              → 7
-((A B +) (C D *) /)                  → (A+B) / (C*D)
-((5 3 >) (2 1 >) &&)                 → (5>3) AND (2>1)
-(42 X)                               → armazena 42 em X
-```
+
 
 
 
@@ -214,11 +211,6 @@ A linguagem utiliza RPN, onde operadores aparecem após operandos:
 ---
 
 ## Gramática LL(1)
-
-
-
-### Documentação Técnica Completa
-
 
 
 ---
