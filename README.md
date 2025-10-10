@@ -20,18 +20,13 @@
 
 ## Descrição do Projeto
 
-Analisador sintático descendente recursivo LL(1) para linguagem baseada em **notação polonesa reversa (RPN)**. O sistema integra o analisador léxico da Fase 1 com um parser sintático que constrói árvores de derivação e valida estruturas gramaticais.
+
+
 
 ### Características Principais
 
-- Parser LL(1) com análise preditiva
-- Suporte a expressões aritméticas, lógicas e relacionais em RPN
-- Operadores: `+`, `-`, `*`, `/`, `|`, `%`, `^`, `>`, `<`, `>=`, `<=`, `==`, `!=`, `&&`, `||`, `!`
-- Estruturas de controle: `FOR`, `WHILE`, `IFELSE`
-- Comandos especiais: `RES` (histórico) e variáveis
-- Geração de árvores sintáticas em formato ASCII
-- Cálculo automático de conjuntos FIRST e FOLLOW
-- Tabela de análise LL(1) construída dinamicamente
+
+
 
 ---
 
@@ -45,41 +40,22 @@ Analisador sintático descendente recursivo LL(1) para linguagem baseada em **no
 ### Execução
 
 ```bash
-python AnalisadorSintatico.py teste1.txt
-python AnalisadorSintatico.py teste2.txt
-python AnalisadorSintatico.py teste3.txt
+
 ```
 
 ### Arquivos de Saída
 
-O programa gera a árvore sintática em dois locais:
-- **`arvore_output.txt`** - Na raiz do diretório
-- **`outputs/RA2/arvore_output.txt`** - No diretório de saídas
 
-Ambos contêm a árvore sintática em formato ASCII:
 
-```
-LINHA 1:
-==================================================
-PROGRAM
-├── LINHA
-│   ├── (
-│   ├── CONTENT
-│   │   ├── NUMERO_REAL
-│   │   └── AFTER_NUM
-│   │       ├── NUMERO_REAL
-│   │       └── OPERATOR
-│   │           └── +
-│   └── )
-└── PROGRAM_PRIME
-    └── ε
-```
+
 
 ---
 
-## Estrutura do Projeto
+## Estrutura do Projeto ATUALIZAR ESTRUTURA 
 
 ```
+
+
 RA2_1/
 ├── AnalisadorSintatico.py              # Programa principal - integra RA1 + RA2
 ├── teste1.txt                          # Arquivo de teste básico (na raiz)
@@ -230,57 +206,20 @@ A linguagem utiliza RPN, onde operadores aparecem após operandos:
 (42 X)                               → armazena 42 em X
 ```
 
-### Estruturas de Controle
 
-**FOR - Laço de Repetição:**
-```
-(FOR (início)(fim)(incremento)(corpo))
-```
-
-**WHILE - Laço Condicional:**
-```
-(WHILE (condição)(corpo))
-```
-
-**IFELSE - Estrutura Condicional:**
-```
-(IFELSE (condição)(bloco_então)(bloco_senão))
-```
-
----
 
 ## Funções Principais
 
-### 1. `lerTokens(arquivo)`
-Lê arquivo de tokens da Fase 1 e processa estruturas de controle.
-
-### 2. `construirGramatica()`
-Define gramática LL(1) completa e constrói tabelas de análise (FIRST, FOLLOW, tabela LL(1)).
-
-### 3. `parsear(tokens, tabela_ll1)`
-Parser descendente recursivo com detecção de erros sintáticos.
-
-### 4. `gerarArvore(derivacao)`
-Converte derivação em árvore sintática e salva em arquivo.
 
 ---
 
 ## Gramática LL(1)
 
-### Status de Validação
 
-✅ Sem conflitos FIRST/FIRST
-✅ Sem conflitos FIRST/FOLLOW
-✅ Sem recursão à esquerda
-✅ Determinística com lookahead = 1
-✅ Tabela LL(1) completa e sem ambiguidades
 
 ### Documentação Técnica Completa
 
-Para visualizar a gramática completa, conjuntos FIRST/FOLLOW e tabela LL(1), consulte:
 
-- **`docs/RA2/documents/grammar_analysis.md`** - Análise completa da gramática
-- **`docs/RA2/documents/grammar_calculations.md`** - Demonstrações matemáticas detalhadas
 
 ---
 
@@ -288,37 +227,18 @@ Para visualizar a gramática completa, conjuntos FIRST/FOLLOW e tabela LL(1), co
 
 O analisador detecta e reporta:
 
-- **Erros léxicos:** Tokens não reconhecidos, formato inválido
-- **Erros sintáticos:** Token inesperado, estrutura gramatical inválida
-- **Erros de estrutura:** Parênteses desbalanceados, expressões incompletas
+
 
 **Exemplo de mensagem de erro:**
 ```
-ERRO SINTÁTICO na linha 3:
-Token encontrado: '+'
-Token esperado: 'NUMERO_REAL', 'VARIAVEL', ou '('
-Contexto: dentro de CONTENT
+
 ```
 
 ---
 
 ## Arquivos de Teste
 
-### teste1.txt
 
-### teste2.txt
-
-### teste3.txt
-
-### teste4_incorreto.txt
-Casos com funções incorretos.
 
 ---
 
-## Integração com RA1
-
-O projeto reutiliza o analisador léxico da Fase 1:
-- String/vetor de tokens como entrada
-- Formato de tokens já definido
-- Mesma lógica RPN e operadores
-- Novos tokens para estruturas de controle

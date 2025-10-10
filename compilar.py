@@ -6,7 +6,7 @@
 # Nome Completo 3 - Rafael Olivare Piveta
 # Nome Completo 4 - Stefan Benjamim Seixas Lourenço Rodrigues
 #
-# Nome do grupo no Canvas: RA2_1
+# Nome do grupo no Canvas: RA3_1
 
 import sys
 import traceback
@@ -337,4 +337,4 @@ if __name__ == "__main__":
         
     except Exception as e:
         print(f"  Erro na análise sintática: {e}")
-        traceback.print_exc()    
+        traceback.print_exc()
