@@ -11,7 +11,7 @@
 # Símbolo inicial da gramática corrigida
 SIMBOLO_INICIAL = 'PROGRAM'
 
-GRAMATICA_RPN_REVISADA = {
+GRAMATICA_RPN = {
     'PROGRAM': [['LINHA', 'PROGRAM_PRIME']],
     'PROGRAM_PRIME': [['LINHA', 'PROGRAM_PRIME'], ['epsilon']],
     'LINHA': [['abre_parenteses', 'SEQUENCIA', 'fecha_parenteses']],
