@@ -6,114 +6,66 @@
 # Nome Completo 3 - Rafael Olivare Piveta
 # Nome Completo 4 - Stefan Benjamim Seixas Lourenço Rodrigues
 #
-# Nome do grupo no Canvas: RA2_1
+# Nome do grupo no Canvas: RA3_1
 
 # Símbolo inicial da gramática corrigida
 SIMBOLO_INICIAL = 'PROGRAM'
 
 GRAMATICA_RPN = {
-    # Programa principal
     'PROGRAM': [['LINHA', 'PROGRAM_PRIME']],
-    'PROGRAM_PRIME': [['LINHA', 'PROGRAM_PRIME'], ['EPSILON']],
-    
-    # Estrutura de linha
-    'LINHA': [['ABRE_PARENTESES', 'CONTENT', 'FECHA_PARENTESES']],
-    
-    # Conteúdo principal - diferenciado deterministicamente
-    'CONTENT': [
-        ['NUMERO_REAL', 'AFTER_NUM'],
-        ['VARIAVEL', 'AFTER_VAR'],
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],
-        ['FOR', 'FOR_STRUCT'],
-        ['WHILE', 'WHILE_STRUCT'],
-        ['IFELSE', 'IFELSE_STRUCT']
+    'PROGRAM_PRIME': [['LINHA', 'PROGRAM_PRIME'], ['epsilon']],
+    'LINHA': [['abre_parenteses', 'SEQUENCIA', 'fecha_parenteses']],
+    'SEQUENCIA': [['OPERANDO', 'SEQUENCIA_PRIME']],
+    'SEQUENCIA_PRIME': [
+        ['OPERANDO', 'SEQUENCIA_PRIME'],
+        ['OPERADOR_FINAL']
     ],
-    
-    # AFTER_NUM - processar após número inicial
-    'AFTER_NUM': [
-        ['NUMERO_REAL', 'OPERATOR'],
-        ['VARIAVEL', 'AFTER_VAR_OP'],  # INOVAÇÃO: Continuação não-terminal
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'OPERATOR'],
-        ['NOT'],  # Suporte para operador unário NOT
-        ['RES'],
-        ['EPSILON']  # Para permitir fechamento direto como em (5)
+    'OPERANDO': [
+        ['numero_real'],
+        ['variavel', 'OPERANDO_VAR_OPCIONAL'],
+        ['LINHA']
     ],
-    
-    'AFTER_VAR_OP': [['OPERATOR'], ['EPSILON']],
-    
-    # AFTER_VAR - processar após variável inicial  
-    'AFTER_VAR': [
-        ['NUMERO_REAL', 'OPERATOR'],
-        ['VARIAVEL', 'AFTER_VAR_OP'],  # Permite variável sem operador obrigatório
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'OPERATOR'],
-        ['NOT'],  # Suporte para operador unário NOT
-        ['EPSILON']
+    'OPERANDO_VAR_OPCIONAL': [['res'], ['not'], ['epsilon']],
+    'OPERADOR_FINAL': [
+        ['ARITH_OP'], 
+        ['COMP_OP'], 
+        ['LOGIC_OP'],
+        ['CONTROL_OP']
     ],
-    
-    # AFTER_EXPR - processar após expressão em parênteses
-    'AFTER_EXPR': [
-        ['NUMERO_REAL', 'OPERATOR'],
-        ['VARIAVEL', 'AFTER_VAR_OP'],  # Usa mesma estratégia de AFTER_NUM
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],  # Permite expr recursiva
-        ['OPERATOR', 'EXPR_CHAIN'],  # Para operadores seguidos de mais expressões
-        ['EPSILON']    # Para permitir fechamento direto
-    ],
-    
-    # EXPR_CHAIN - para operadores entre expressões
-    'EXPR_CHAIN': [
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],
-        ['EPSILON']
-    ],
-    
-    # EXPR - expressões internas
-    'EXPR': [
-        ['NUMERO_REAL', 'AFTER_NUM'],
-        ['VARIAVEL', 'AFTER_VAR'],
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],
-        ['IFELSE', 'IFELSE_STRUCT']  # Permite IFELSE em expressões
-    ],
-    
-    # Hierarquia de operadores
-    'OPERATOR': [['ARITH_OP'], ['COMP_OP'], ['LOGIC_OP']],
-        'ARITH_OP': [['SOMA'], ['SUBTRACAO'], ['MULTIPLICACAO'], ['DIVISAO_INTEIRA'], ['DIVISAO_REAL'], ['RESTO'], ['POTENCIA']],
-    'COMP_OP': [['MENOR'], ['MAIOR'], ['IGUAL'], ['MENOR_IGUAL'], ['MAIOR_IGUAL'], ['DIFERENTE']],
-    'LOGIC_OP': [['AND'], ['OR'], ['NOT']],
-    
-    # Estruturas de controle
-    'FOR_STRUCT': [['ABRE_PARENTESES', 'NUMERO_REAL', 'FECHA_PARENTESES', 
-                   'ABRE_PARENTESES', 'NUMERO_REAL', 'FECHA_PARENTESES', 
-                   'ABRE_PARENTESES', 'NUMERO_REAL', 'FECHA_PARENTESES', 'LINHA']],
-    'WHILE_STRUCT': [['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'LINHA']],
-    'IFELSE_STRUCT': [['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'LINHA', 'LINHA']]
+    'CONTROL_OP': [['for'], ['while'], ['ifelse']],
+    'ARITH_OP': [['soma'], ['subtracao'], ['multiplicacao'], ['divisao_inteira'], ['divisao_real'], ['resto'], ['potencia']],
+    'COMP_OP': [['menor'], ['maior'], ['igual'], ['menor_igual'], ['maior_igual'], ['diferente']],
+    'LOGIC_OP': [['and'], ['or'], ['not']]
 }
 
-# Mapeamento dos tokens teóricos para tokens reais do projeto
+# Mapeamento dos tokens teóricos para tokens reais do projeto (em minúsculas)
 MAPEAMENTO_TOKENS = {
-    'NUMERO_REAL': 'NUMBER',
-    'VARIAVEL': 'IDENTIFIER', 
-    'ABRE_PARENTESES': '(',
-    'FECHA_PARENTESES': ')',
-    'SOMA': '+',
-    'SUBTRACAO': '-',
-    'MULTIPLICACAO': '*',
-    'DIVISAO_INTEIRA': '/',
-    'DIVISAO_REAL': '|',
-    'RESTO': '%',
-    'POTENCIA': '^',
-    'MENOR': '<',
-    'MAIOR': '>',
-    'IGUAL': '==',
-    'MENOR_IGUAL': '<=',
-    'MAIOR_IGUAL': '>=',
-    'DIFERENTE': '!=',
-    'AND': '&&',
-    'OR': '||',
-    'NOT': '!',
-    'FOR': 'FOR',
-    'WHILE': 'WHILE',
-    'IFELSE': 'IFELSE',
-    'RES': 'RES'
+    'numero_real': 'number',
+    'variavel': 'identifier', 
+    'abre_parenteses': '(',
+    'fecha_parenteses': ')',
+    'soma': '+',
+    'subtracao': '-',
+    'multiplicacao': '*',
+    'divisao_inteira': '/',
+    'divisao_real': '|',
+    'resto': '%',
+    'potencia': '^',
+    'menor': '<',
+    'maior': '>',
+    'igual': '==',
+    'menor_igual': '<=',
+    'maior_igual': '>=',
+    'diferente': '!=',
+    'and': '&&',
+    'or': '||',
+    'not': '!',
+    'for': 'for',
+    'while': 'while',
+    'ifelse': 'ifelse',
+    'res': 'res'
 }
+
 
 # ============================================================================
 # FUNÇÕES DE MAPEAMENTO - Centralizadas para evitar duplicação
