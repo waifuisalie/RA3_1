@@ -55,7 +55,7 @@ Portanto, é **CRÍTICO** provar formalmente que esta gramática é LL(1).
                    | ε
 
 # Uma linha é uma expressão completa entre parênteses
-⟨LINHA⟩ ::= ABRE_PARENTESES ⟨SEQUENCIA⟩ FECHA_PARENTESES
+⟨LINHA⟩ ::= abre_parenteses ⟨SEQUENCIA⟩ fecha_parenteses
 
 # Sequência RPN: operandos seguidos de operador
 ⟨SEQUENCIA⟩ ::= ⟨OPERANDO⟩ ⟨SEQUENCIA_PRIME⟩
@@ -66,8 +66,8 @@ Portanto, é **CRÍTICO** provar formalmente que esta gramática é LL(1).
                      | ε                             # Operando único
 
 # Operandos válidos
-⟨OPERANDO⟩ ::= NUMERO_REAL
-              | VARIAVEL
+⟨OPERANDO⟩ ::= numero_real
+              | variavel
               | ⟨LINHA⟩  # Sub-expressão aninhada
 
 # Operador pós-fixado (sempre aparece APÓS operandos)
@@ -78,22 +78,22 @@ Portanto, é **CRÍTICO** provar formalmente que esta gramática é LL(1).
                     | ⟨COMMAND_OP⟩
 
 # Operadores Aritméticos
-⟨ARITH_OP⟩ ::= SOMA | SUBTRACAO | MULTIPLICACAO
-              | DIVISAO_INTEIRA | DIVISAO_REAL
-              | RESTO | POTENCIA
+⟨ARITH_OP⟩ ::= soma | subtracao | multiplicacao
+              | divisao_inteira | divisao_real
+              | resto | potencia
 
 # Operadores de Comparação (retornam booleano)
-⟨COMP_OP⟩ ::= MENOR | MAIOR | IGUAL
-             | MENOR_IGUAL | MAIOR_IGUAL | DIFERENTE
+⟨COMP_OP⟩ ::= menor | maior | igual
+             | menor_igual | maior_igual | diferente
 
 # Operadores Lógicos (retornam booleano)
-⟨LOGIC_OP⟩ ::= AND | OR | NOT
+⟨LOGIC_OP⟩ ::= and | or | not
 
 # Operadores de Controle de Fluxo (pós-fixados)
-⟨CONTROL_OP⟩ ::= FOR | WHILE | IFELSE
+⟨CONTROL_OP⟩ ::= for | while | ifelse
 
 # Comandos Especiais da Linguagem
-⟨COMMAND_OP⟩ ::= MEM | RES
+⟨COMMAND_OP⟩ ::= mem | res
 ```
 
 ### 2.2 Conjunto de Símbolos
@@ -107,10 +107,10 @@ N = {PROGRAM, PROGRAM_PRIME, LINHA, SEQUENCIA, SEQUENCIA_PRIME,
 
 **Símbolos Terminais (T):**
 ```
-T = {ABRE_PARENTESES, FECHA_PARENTESES, NUMERO_REAL, VARIAVEL,
-     SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO_INTEIRA, DIVISAO_REAL,
-     RESTO, POTENCIA, MENOR, MAIOR, IGUAL, MENOR_IGUAL, MAIOR_IGUAL,
-     DIFERENTE, AND, OR, NOT, FOR, WHILE, IFELSE, MEM, RES, $}
+T = {abre_parenteses, fecha_parenteses, numero_real, variavel,
+     soma, subtracao, multiplicacao, divisao_inteira, divisao_real,
+     resto, potencia, menor, maior, igual, menor_igual, maior_igual,
+     diferente, and, or, not, for, while, ifelse, mem, res, $}
 ```
 
 ---
@@ -147,16 +147,16 @@ Uma gramática G é **LL(1)** se e somente se, para toda produção `A → α₁
 #### 3.3.1 FIRST para Terminais e Não-Terminais Simples
 
 ```
-FIRST(ARITH_OP) = {SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO_INTEIRA,
-                   DIVISAO_REAL, RESTO, POTENCIA}
+FIRST(ARITH_OP) = {soma, subtracao, multiplicacao, divisao_inteira,
+                   divisao_real, resto, potencia}
 
-FIRST(COMP_OP) = {MENOR, MAIOR, IGUAL, MENOR_IGUAL, MAIOR_IGUAL, DIFERENTE}
+FIRST(COMP_OP) = {menor, maior, igual, menor_igual, maior_igual, diferente}
 
-FIRST(LOGIC_OP) = {AND, OR, NOT}
+FIRST(LOGIC_OP) = {and, or, not}
 
-FIRST(CONTROL_OP) = {FOR, WHILE, IFELSE}
+FIRST(CONTROL_OP) = {for, while, ifelse}
 
-FIRST(COMMAND_OP) = {MEM, RES}
+FIRST(COMMAND_OP) = {mem, res}
 ```
 
 #### 3.3.2 FIRST para Não-Terminais Compostos
@@ -164,28 +164,28 @@ FIRST(COMMAND_OP) = {MEM, RES}
 ```
 FIRST(OPERADOR_FINAL) = FIRST(ARITH_OP) ∪ FIRST(COMP_OP) ∪ FIRST(LOGIC_OP)
                         ∪ FIRST(CONTROL_OP) ∪ FIRST(COMMAND_OP)
-                      = {SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO_INTEIRA,
-                         DIVISAO_REAL, RESTO, POTENCIA, MENOR, MAIOR, IGUAL,
-                         MENOR_IGUAL, MAIOR_IGUAL, DIFERENTE, AND, OR, NOT,
-                         FOR, WHILE, IFELSE, MEM, RES}
+                      = {soma, subtracao, multiplicacao, divisao_inteira,
+                         divisao_real, resto, potencia, menor, maior, igual,
+                         menor_igual, maior_igual, diferente, and, or, not,
+                         for, while, ifelse, mem, res}
 ```
 
 ```
-FIRST(LINHA) = {ABRE_PARENTESES}
+FIRST(LINHA) = {abre_parenteses}
 ```
 
 ```
-FIRST(OPERANDO) = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
+FIRST(OPERANDO) = {numero_real, variavel, abre_parenteses}
 ```
 
 ```
 FIRST(SEQUENCIA) = FIRST(OPERANDO)
-                 = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
+                 = {numero_real, variavel, abre_parenteses}
 ```
 
 ```
 FIRST(PROGRAM) = FIRST(LINHA)
-               = {ABRE_PARENTESES}
+               = {abre_parenteses}
 ```
 
 #### 3.3.3 FIRST para Produções com Alternativas
@@ -193,10 +193,10 @@ FIRST(PROGRAM) = FIRST(LINHA)
 **Para SEQUENCIA_PRIME:**
 ```
 Produção 1: OPERANDO SEQUENCIA_PRIME
-  FIRST₁ = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
+  FIRST₁ = {numero_real, variavel, abre_parenteses}
 
 Produção 2: OPERADOR_FINAL
-  FIRST₂ = {SOMA, SUBTRACAO, ..., MEM, RES}
+  FIRST₂ = {soma, subtracao, ..., mem, res}
 
 Produção 3: ε
   FIRST₃ = {ε}
@@ -205,7 +205,7 @@ Produção 3: ε
 **Para PROGRAM_PRIME:**
 ```
 Produção 1: LINHA PROGRAM_PRIME
-  FIRST₁ = {ABRE_PARENTESES}
+  FIRST₁ = {abre_parenteses}
 
 Produção 2: ε
   FIRST₂ = {ε}
@@ -221,25 +221,25 @@ FOLLOW(PROGRAM) = {$}
 FOLLOW(PROGRAM_PRIME) = FOLLOW(PROGRAM) = {$}
 
 FOLLOW(LINHA) = FIRST(PROGRAM_PRIME) ∪ FOLLOW(PROGRAM_PRIME)
-              = {ABRE_PARENTESES} ∪ {$}
-              = {ABRE_PARENTESES, $}
+              = {abre_parenteses} ∪ {$}
+              = {abre_parenteses, $}
 
-FOLLOW(SEQUENCIA) = {FECHA_PARENTESES}
+FOLLOW(SEQUENCIA) = {fecha_parenteses}
 
 FOLLOW(SEQUENCIA_PRIME) = FOLLOW(SEQUENCIA)
-                        = {FECHA_PARENTESES}
+                        = {fecha_parenteses}
 
 FOLLOW(OPERANDO) = FIRST(SEQUENCIA_PRIME) ∪ FOLLOW(SEQUENCIA_PRIME)
-                 = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
-                   ∪ {SOMA, ..., RES} ∪ {FECHA_PARENTESES}
+                 = {numero_real, variavel, abre_parenteses}
+                   ∪ {soma, ..., res} ∪ {fecha_parenteses}
 
-FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
+FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
 
-FOLLOW(ARITH_OP) = FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
-FOLLOW(COMP_OP) = FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
-FOLLOW(LOGIC_OP) = FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
-FOLLOW(CONTROL_OP) = FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
-FOLLOW(COMMAND_OP) = FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
+FOLLOW(ARITH_OP) = FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
+FOLLOW(COMP_OP) = FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
+FOLLOW(LOGIC_OP) = FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
+FOLLOW(CONTROL_OP) = FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
+FOLLOW(COMMAND_OP) = FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
 ```
 
 ---
@@ -255,20 +255,20 @@ FOLLOW(COMMAND_OP) = FOLLOW(OPERADOR_FINAL) = {FECHA_PARENTESES}
 
 **Cálculo dos FIRST:**
 ```
-FIRST₁ = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
-FIRST₂ = {SOMA, SUBTRACAO, MULTIPLICACAO, ..., MEM, RES}
+FIRST₁ = {numero_real, variavel, abre_parenteses}
+FIRST₂ = {soma, subtracao, multiplicacao, ..., mem, res}
 FIRST₃ = {ε}
 ```
 
 **FOLLOW:**
 ```
-FOLLOW(SEQUENCIA_PRIME) = {FECHA_PARENTESES}
+FOLLOW(SEQUENCIA_PRIME) = {fecha_parenteses}
 ```
 
 **Verificação Condição 1:**
 ```
-FIRST₁ ∩ FIRST₂ = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
-                  ∩ {SOMA, ..., RES}
+FIRST₁ ∩ FIRST₂ = {numero_real, variavel, abre_parenteses}
+                  ∩ {soma, ..., res}
                 = ∅  ✅
 ```
 
@@ -276,12 +276,12 @@ FIRST₁ ∩ FIRST₂ = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
 
 Como `ε ∈ FIRST₃`, precisamos verificar:
 ```
-FIRST₁ ∩ FOLLOW(SEQUENCIA_PRIME) = {NUMERO_REAL, VARIAVEL, ABRE_PARENTESES}
-                                    ∩ {FECHA_PARENTESES}
+FIRST₁ ∩ FOLLOW(SEQUENCIA_PRIME) = {numero_real, variavel, abre_parenteses}
+                                    ∩ {fecha_parenteses}
                                   = ∅  ✅
 
-FIRST₂ ∩ FOLLOW(SEQUENCIA_PRIME) = {SOMA, ..., RES}
-                                    ∩ {FECHA_PARENTESES}
+FIRST₂ ∩ FOLLOW(SEQUENCIA_PRIME) = {soma, ..., res}
+                                    ∩ {fecha_parenteses}
                                   = ∅  ✅
 ```
 
@@ -297,7 +297,7 @@ FIRST₂ ∩ FOLLOW(SEQUENCIA_PRIME) = {SOMA, ..., RES}
 
 **Cálculo dos FIRST:**
 ```
-FIRST₁ = {ABRE_PARENTESES}
+FIRST₁ = {abre_parenteses}
 FIRST₂ = {ε}
 ```
 
@@ -308,14 +308,14 @@ FOLLOW(PROGRAM_PRIME) = {$}
 
 **Verificação Condição 1:**
 ```
-FIRST₁ ∩ FIRST₂ = {ABRE_PARENTESES} ∩ {ε} = ∅  ✅
+FIRST₁ ∩ FIRST₂ = {abre_parenteses} ∩ {ε} = ∅  ✅
 ```
 
 **Verificação Condição 2:**
 
 Como `ε ∈ FIRST₂`:
 ```
-FIRST₁ ∩ FOLLOW(PROGRAM_PRIME) = {ABRE_PARENTESES} ∩ {$}
+FIRST₁ ∩ FOLLOW(PROGRAM_PRIME) = {abre_parenteses} ∩ {$}
                                 = ∅  ✅
 ```
 
@@ -326,22 +326,22 @@ FIRST₁ ∩ FOLLOW(PROGRAM_PRIME) = {ABRE_PARENTESES} ∩ {$}
 #### 3.5.3 Verificação para OPERANDO
 
 **Produções:**
-1. `NUMERO_REAL`
-2. `VARIAVEL`
+1. `numero_real`
+2. `variavel`
 3. `LINHA`
 
 **Cálculo dos FIRST:**
 ```
-FIRST₁ = {NUMERO_REAL}
-FIRST₂ = {VARIAVEL}
-FIRST₃ = {ABRE_PARENTESES}
+FIRST₁ = {numero_real}
+FIRST₂ = {variavel}
+FIRST₃ = {abre_parenteses}
 ```
 
 **Verificação Condição 1:**
 ```
-FIRST₁ ∩ FIRST₂ = {NUMERO_REAL} ∩ {VARIAVEL} = ∅  ✅
-FIRST₁ ∩ FIRST₃ = {NUMERO_REAL} ∩ {ABRE_PARENTESES} = ∅  ✅
-FIRST₂ ∩ FIRST₃ = {VARIAVEL} ∩ {ABRE_PARENTESES} = ∅  ✅
+FIRST₁ ∩ FIRST₂ = {numero_real} ∩ {variavel} = ∅  ✅
+FIRST₁ ∩ FIRST₃ = {numero_real} ∩ {abre_parenteses} = ∅  ✅
+FIRST₂ ∩ FIRST₃ = {variavel} ∩ {abre_parenteses} = ∅  ✅
 ```
 
 **🎯 CONCLUSÃO:** OPERANDO satisfaz todas as condições LL(1)!
@@ -359,11 +359,11 @@ FIRST₂ ∩ FIRST₃ = {VARIAVEL} ∩ {ABRE_PARENTESES} = ∅  ✅
 
 **Cálculo dos FIRST:**
 ```
-FIRST₁ = {SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO_INTEIRA, DIVISAO_REAL, RESTO, POTENCIA}
-FIRST₂ = {MENOR, MAIOR, IGUAL, MENOR_IGUAL, MAIOR_IGUAL, DIFERENTE}
-FIRST₃ = {AND, OR, NOT}
-FIRST₄ = {FOR, WHILE, IFELSE}
-FIRST₅ = {MEM, RES}
+FIRST₁ = {soma, subtracao, multiplicacao, divisao_inteira, divisao_real, resto, potencia}
+FIRST₂ = {menor, maior, igual, menor_igual, maior_igual, diferente}
+FIRST₃ = {and, or, not}
+FIRST₄ = {for, while, ifelse}
+FIRST₅ = {mem, res}
 ```
 
 **Verificação Condição 1:**
@@ -390,8 +390,8 @@ Para `ARITH_OP`, `COMP_OP`, `LOGIC_OP`, `CONTROL_OP`, e `COMMAND_OP`:
 
 Cada produção leva a um **token terminal diferente**:
 ```
-ARITH_OP → SOMA (cada token é único)
-ARITH_OP → SUBTRACAO (cada token é único)
+ARITH_OP → soma (cada token é único)
+ARITH_OP → subtracao (cada token é único)
 ...
 ```
 
@@ -403,7 +403,7 @@ Como cada produção tem um FIRST diferente (tokens únicos), **todas são LL(1)
 
 ### 3.6 Tabela de Análise LL(1) (Parcial)
 
-| Não-Terminal      | NUMERO_REAL | VARIAVEL | ( | SOMA | ... | ) | $ |
+| Não-Terminal      | numero_real | variavel | ( | soma | ... | ) | $ |
 |-------------------|-------------|----------|---|------|-----|---|---|
 | PROGRAM           | —           | —        | 1 | —    | —   | — | — |
 | PROGRAM_PRIME     | —           | —        | 1 | —    | —   | — | 2 |
@@ -487,7 +487,7 @@ Considere `SEQUENCIA → OPERANDO SEQUENCIA_PRIME`
 
 **Exemplo 1: Operador Aritmético**
 ```
-Expressão: (5 3 SOMA)
+Expressão: (5 3 soma)
 Derivação:
   PROGRAM ⇒ LINHA PROGRAM_PRIME
           ⇒ ( SEQUENCIA ) PROGRAM_PRIME
@@ -497,38 +497,38 @@ Derivação:
           ⇒ ( 5 3 SEQUENCIA_PRIME ) ...
           ⇒ ( 5 3 OPERADOR_FINAL ) ...
           ⇒ ( 5 3 ARITH_OP ) ...
-          ⇒ ( 5 3 SOMA ) ...
+          ⇒ ( 5 3 soma ) ...
 
-✅ Operador SOMA aparece APÓS os operandos 5 e 3
+✅ Operador soma aparece APÓS os operandos 5 e 3
 ```
 
 **Exemplo 2: Operador Lógico**
 ```
-Expressão: (x y AND)
+Expressão: (x y and)
 Derivação: Similar ao anterior
-  ⇒ ( VARIAVEL VARIAVEL LOGIC_OP )
-  ⇒ ( x y AND )
+  ⇒ ( variavel variavel LOGIC_OP )
+  ⇒ ( x y and )
 
-✅ Operador AND aparece APÓS os operandos x e y
+✅ Operador and aparece APÓS os operandos x e y
 ```
 
 **Exemplo 3: Operador de Controle**
 ```
-Expressão: (condição blocoTrue blocoFalse IFELSE)
+Expressão: (condição blocoTrue blocoFalse ifelse)
 Derivação:
   ⇒ ( OPERANDO OPERANDO OPERANDO CONTROL_OP )
-  ⇒ ( condição blocoTrue blocoFalse IFELSE )
+  ⇒ ( condição blocoTrue blocoFalse ifelse )
 
-✅ Operador IFELSE aparece APÓS todos os 3 operandos
+✅ Operador ifelse aparece APÓS todos os 3 operandos
 ```
 
 **Exemplo 4: Expressão Aninhada**
 ```
-Expressão: ((2 3 SOMA) 5 MULTIPLICACAO)
+Expressão: ((2 3 soma) 5 multiplicacao)
 Estrutura: (SubExpressão Operando Operador)
-         = ((Op Op SOMA) Op MULTIPLICACAO)
+         = ((Op Op soma) Op multiplicacao)
 
-Sub-expressão (2 3 SOMA): pós-fixada ✅
+Sub-expressão (2 3 soma): pós-fixada ✅
 Expressão externa: pós-fixada ✅
 ```
 
@@ -543,37 +543,37 @@ Expressão externa: pós-fixada ✅
 #### 5.1.1 Definição
 
 ```bnf
-⟨ARITH_OP⟩ ::= SOMA | SUBTRACAO | MULTIPLICACAO
-              | DIVISAO_INTEIRA | DIVISAO_REAL
-              | RESTO | POTENCIA
+⟨ARITH_OP⟩ ::= soma | subtracao | multiplicacao
+              | divisao_inteira | divisao_real
+              | resto | potencia
 ```
 
 #### 5.1.2 Conjuntos FIRST e FOLLOW
 
 ```
-FIRST(ARITH_OP) = {SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO_INTEIRA,
-                   DIVISAO_REAL, RESTO, POTENCIA}
+FIRST(ARITH_OP) = {soma, subtracao, multiplicacao, divisao_inteira,
+                   divisao_real, resto, potencia}
 
-FOLLOW(ARITH_OP) = {FECHA_PARENTESES}
+FOLLOW(ARITH_OP) = {fecha_parenteses}
 ```
 
 #### 5.1.3 Verificação LL(1)
 
 Cada produção leva a um token diferente:
 ```
-ARITH_OP → SOMA               FIRST = {SOMA}
-ARITH_OP → SUBTRACAO          FIRST = {SUBTRACAO}
-ARITH_OP → MULTIPLICACAO      FIRST = {MULTIPLICACAO}
-ARITH_OP → DIVISAO_INTEIRA    FIRST = {DIVISAO_INTEIRA}
-ARITH_OP → DIVISAO_REAL       FIRST = {DIVISAO_REAL}
-ARITH_OP → RESTO              FIRST = {RESTO}
-ARITH_OP → POTENCIA           FIRST = {POTENCIA}
+ARITH_OP → soma               FIRST = {soma}
+ARITH_OP → subtracao          FIRST = {subtracao}
+ARITH_OP → multiplicacao      FIRST = {multiplicacao}
+ARITH_OP → divisao_inteira    FIRST = {divisao_inteira}
+ARITH_OP → divisao_real       FIRST = {divisao_real}
+ARITH_OP → resto              FIRST = {resto}
+ARITH_OP → potencia           FIRST = {potencia}
 ```
 
 **Interseção dos FIRST:**
 ```
-{SOMA} ∩ {SUBTRACAO} = ∅  ✅
-{SOMA} ∩ {MULTIPLICACAO} = ∅  ✅
+{soma} ∩ {subtracao} = ∅  ✅
+{soma} ∩ {multiplicacao} = ∅  ✅
 ... (todas as combinações são disjuntas)
 ```
 
@@ -581,7 +581,7 @@ ARITH_OP → POTENCIA           FIRST = {POTENCIA}
 
 #### 5.1.4 Prova de Pós-Fixação
 
-**Exemplo:** `(a b SOMA)`
+**Exemplo:** `(a b soma)`
 
 **Derivação:**
 ```
@@ -591,10 +591,10 @@ SEQUENCIA → OPERANDO SEQUENCIA_PRIME
           → a b SEQUENCIA_PRIME
           → a b OPERADOR_FINAL
           → a b ARITH_OP
-          → a b SOMA
+          → a b soma
 ```
 
-**Observação:** `SOMA` aparece **APÓS** `a` e `b` ✅
+**Observação:** `soma` aparece **APÓS** `a` e `b` ✅
 
 **Casos de uso (do documento Fase 3):**
 ```
@@ -611,48 +611,48 @@ SEQUENCIA → OPERANDO SEQUENCIA_PRIME
 #### 5.2.1 Definição
 
 ```bnf
-⟨COMP_OP⟩ ::= MENOR | MAIOR | IGUAL
-             | MENOR_IGUAL | MAIOR_IGUAL | DIFERENTE
+⟨COMP_OP⟩ ::= menor | maior | igual
+             | menor_igual | maior_igual | diferente
 
-⟨LOGIC_OP⟩ ::= AND | OR | NOT
+⟨LOGIC_OP⟩ ::= and | or | not
 ```
 
 #### 5.2.2 Conjuntos FIRST e FOLLOW
 
 ```
-FIRST(COMP_OP) = {MENOR, MAIOR, IGUAL, MENOR_IGUAL, MAIOR_IGUAL, DIFERENTE}
-FIRST(LOGIC_OP) = {AND, OR, NOT}
+FIRST(COMP_OP) = {menor, maior, igual, menor_igual, maior_igual, diferente}
+FIRST(LOGIC_OP) = {and, or, not}
 
-FOLLOW(COMP_OP) = {FECHA_PARENTESES}
-FOLLOW(LOGIC_OP) = {FECHA_PARENTESES}
+FOLLOW(COMP_OP) = {fecha_parenteses}
+FOLLOW(LOGIC_OP) = {fecha_parenteses}
 ```
 
 #### 5.2.3 Verificação LL(1)
 
 **Para COMP_OP:**
 ```
-COMP_OP → MENOR             FIRST = {MENOR}
-COMP_OP → MAIOR             FIRST = {MAIOR}
-COMP_OP → IGUAL             FIRST = {IGUAL}
-COMP_OP → MENOR_IGUAL       FIRST = {MENOR_IGUAL}
-COMP_OP → MAIOR_IGUAL       FIRST = {MAIOR_IGUAL}
-COMP_OP → DIFERENTE         FIRST = {DIFERENTE}
+COMP_OP → menor             FIRST = {menor}
+COMP_OP → maior             FIRST = {maior}
+COMP_OP → igual             FIRST = {igual}
+COMP_OP → menor_igual       FIRST = {menor_igual}
+COMP_OP → maior_igual       FIRST = {maior_igual}
+COMP_OP → diferente         FIRST = {diferente}
 ```
 
 Todos os FIRST são disjuntos (tokens únicos) ✅
 
 **Para LOGIC_OP:**
 ```
-LOGIC_OP → AND              FIRST = {AND}
-LOGIC_OP → OR               FIRST = {OR}
-LOGIC_OP → NOT              FIRST = {NOT}
+LOGIC_OP → and              FIRST = {and}
+LOGIC_OP → or               FIRST = {or}
+LOGIC_OP → not              FIRST = {not}
 ```
 
 Todos os FIRST são disjuntos ✅
 
 **Interseção entre categorias:**
 ```
-FIRST(COMP_OP) ∩ FIRST(LOGIC_OP) = {MENOR, MAIOR, ...} ∩ {AND, OR, NOT}
+FIRST(COMP_OP) ∩ FIRST(LOGIC_OP) = {menor, maior, ...} ∩ {and, or, not}
                                   = ∅  ✅
 ```
 
@@ -662,7 +662,7 @@ FIRST(COMP_OP) ∩ FIRST(LOGIC_OP) = {MENOR, MAIOR, ...} ∩ {AND, OR, NOT}
 
 **Exemplo 1: Operador de Comparação**
 ```
-Expressão: (x 5 MENOR)
+Expressão: (x 5 menor)
 Semântica: x < 5 (em notação infixa)
 
 Derivação:
@@ -670,33 +670,33 @@ Derivação:
             → x OPERANDO SEQUENCIA_PRIME
             → x 5 OPERADOR_FINAL
             → x 5 COMP_OP
-            → x 5 MENOR
+            → x 5 menor
 ```
 
-**Observação:** `MENOR` aparece **APÓS** `x` e `5` ✅
+**Observação:** `menor` aparece **APÓS** `x` e `5` ✅
 
 **Exemplo 2: Operador Lógico**
 ```
-Expressão: (a b AND)
+Expressão: (a b and)
 Semântica: a && b (em notação infixa)
 
 Derivação:
   → a b OPERADOR_FINAL
   → a b LOGIC_OP
-  → a b AND
+  → a b and
 ```
 
-**Observação:** `AND` aparece **APÓS** `a` e `b` ✅
+**Observação:** `and` aparece **APÓS** `a` e `b` ✅
 
 **Exemplo 3: Composição (do documento Fase 3)**
 ```
-Expressão: ((x 5 MENOR) (y 10 MAIOR) AND)
+Expressão: ((x 5 menor) (y 10 maior) and)
 Semântica: (x < 5) && (y > 10)
 
-Estrutura: (SubExpr1 SubExpr2 AND)
-  SubExpr1 = (x 5 MENOR)          → pós-fixada ✅
-  SubExpr2 = (y 10 MAIOR)         → pós-fixada ✅
-  Operador AND após ambas         → pós-fixada ✅
+Estrutura: (SubExpr1 SubExpr2 and)
+  SubExpr1 = (x 5 menor)          → pós-fixada ✅
+  SubExpr2 = (y 10 maior)         → pós-fixada ✅
+  Operador and após ambas         → pós-fixada ✅
 ```
 
 **Aplicação em Estruturas de Controle (Fase 3, linha 76-83):**
@@ -706,10 +706,10 @@ O documento requer:
 > - >= : maior ou igual - <= : menor ou igual - == : igual - != : diferente
 > Todos aceitam operandos int ou real e retornam booleano."
 
-**Exemplo de uso em IFELSE:**
+**Exemplo de uso em ifelse:**
 ```
-(condição blocoTrue blocoFalse IFELSE)
-onde condição pode ser: (x 0 MAIOR)  → x > 0 em RPN
+(condição blocoTrue blocoFalse ifelse)
+onde condição pode ser: (x 0 maior)  → x > 0 em RPN
 ```
 
 ---
@@ -719,29 +719,29 @@ onde condição pode ser: (x 0 MAIOR)  → x > 0 em RPN
 #### 5.3.1 Definição
 
 ```bnf
-⟨CONTROL_OP⟩ ::= FOR | WHILE | IFELSE
+⟨CONTROL_OP⟩ ::= for | while | ifelse
 ```
 
 #### 5.3.2 Conjuntos FIRST e FOLLOW
 
 ```
-FIRST(CONTROL_OP) = {FOR, WHILE, IFELSE}
-FOLLOW(CONTROL_OP) = {FECHA_PARENTESES}
+FIRST(CONTROL_OP) = {for, while, ifelse}
+FOLLOW(CONTROL_OP) = {fecha_parenteses}
 ```
 
 #### 5.3.3 Verificação LL(1)
 
 ```
-CONTROL_OP → FOR            FIRST = {FOR}
-CONTROL_OP → WHILE          FIRST = {WHILE}
-CONTROL_OP → IFELSE         FIRST = {IFELSE}
+CONTROL_OP → for            FIRST = {for}
+CONTROL_OP → while          FIRST = {while}
+CONTROL_OP → ifelse         FIRST = {ifelse}
 ```
 
 **Interseção:**
 ```
-{FOR} ∩ {WHILE} = ∅  ✅
-{FOR} ∩ {IFELSE} = ∅  ✅
-{WHILE} ∩ {IFELSE} = ∅  ✅
+{for} ∩ {while} = ∅  ✅
+{for} ∩ {ifelse} = ∅  ✅
+{while} ∩ {ifelse} = ∅  ✅
 ```
 
 **Interseção com outras categorias:**
@@ -758,11 +758,11 @@ FIRST(CONTROL_OP) ∩ FIRST(LOGIC_OP) = ∅  ✅
 **Requisito do Projeto (Fase 2, linha 78):**
 > "Você deverá criar e documentar a sintaxe para estruturas de tomada de decisão e laços de repetição. A única restrição é que estas estruturas mantenham o padrão da linguagem: devem estar contidas entre parênteses e **seguir a lógica de operadores pós-fixados**."
 
-**Exemplo 1: IFELSE (If-Then-Else)**
+**Exemplo 1: ifelse (If-Then-Else)**
 
 **Sintaxe Proposta (100% Pós-Fixada):**
 ```
-(condição blocoTrue blocoFalse IFELSE)
+(condição blocoTrue blocoFalse ifelse)
 ```
 
 **Semântica:**
@@ -784,14 +784,14 @@ SEQUENCIA → OPERANDO SEQUENCIA_PRIME
           → condição blocoTrue blocoFalse SEQUENCIA_PRIME
           → condição blocoTrue blocoFalse OPERADOR_FINAL
           → condição blocoTrue blocoFalse CONTROL_OP
-          → condição blocoTrue blocoFalse IFELSE
+          → condição blocoTrue blocoFalse ifelse
 ```
 
-**Observação:** `IFELSE` aparece **APÓS** todos os 3 operandos ✅
+**Observação:** `ifelse` aparece **APÓS** todos os 3 operandos ✅
 
 **Exemplo Concreto:**
 ```
-((x 0 MAIOR) (x 2 MULTIPLICACAO) (x) IFELSE)
+((x 0 maior) (x 2 multiplicacao) (x) ifelse)
 
 Semântica:
   if (x > 0) {
@@ -801,11 +801,11 @@ Semântica:
   }
 ```
 
-**Exemplo 2: WHILE (Laço com Condição)**
+**Exemplo 2: while (Laço com Condição)**
 
 **Sintaxe Proposta:**
 ```
-(condição corpo WHILE)
+(condição corpo while)
 ```
 
 **Semântica:**
@@ -817,14 +817,14 @@ while (condição) {
 
 **Derivação:**
 ```
-SEQUENCIA → condição corpo WHILE
+SEQUENCIA → condição corpo while
 ```
 
-**Observação:** `WHILE` aparece **APÓS** condição e corpo ✅
+**Observação:** `while` aparece **APÓS** condição e corpo ✅
 
 **Exemplo Concreto:**
 ```
-((i 10 MENOR) ((i 1 SOMA i MEM) WHILE)
+((i 10 menor) ((i 1 soma i mem) while)
 
 Semântica:
   while (i < 10) {
@@ -832,11 +832,11 @@ Semântica:
   }
 ```
 
-**Exemplo 3: FOR (Laço com Contador)**
+**Exemplo 3: for (Laço com Contador)**
 
 **Sintaxe Proposta:**
 ```
-(inicio fim passo corpo FOR)
+(inicio fim passo corpo for)
 ```
 
 **Semântica:**
@@ -848,14 +848,14 @@ for (i = inicio; i < fim; i += passo) {
 
 **Derivação:**
 ```
-SEQUENCIA → inicio fim passo corpo FOR
+SEQUENCIA → inicio fim passo corpo for
 ```
 
-**Observação:** `FOR` aparece **APÓS** todos os 4 operandos ✅
+**Observação:** `for` aparece **APÓS** todos os 4 operandos ✅
 
 **Exemplo Concreto:**
 ```
-(0 10 1 ((i i SOMA RESULT MEM)) FOR)
+(0 10 1 ((i i soma RESULT mem)) for)
 
 Semântica:
   sum = 0;
@@ -866,17 +866,17 @@ Semântica:
 
 #### 5.3.5 Aninhamento de Estruturas de Controle
 
-**Exemplo: IF aninhado em WHILE**
+**Exemplo: IF aninhado em while**
 ```
-((i 100 MENOR)
+((i 100 menor)
  (
-   ((i 2 RESTO 0 IGUAL)
+   ((i 2 resto 0 igual)
     (i PRINT)
     (NADA)
-    IFELSE)
-   (i 1 SOMA i MEM)
+    ifelse)
+   (i 1 soma i mem)
  )
- WHILE)
+ while)
 
 Semântica:
   while (i < 100) {
@@ -888,9 +888,9 @@ Semântica:
 ```
 
 **Análise de Pós-Fixação:**
-1. `(i 2 RESTO 0 IGUAL)` → pós-fixada ✅
-2. `IFELSE` após 3 operandos → pós-fixada ✅
-3. `WHILE` após condição e corpo → pós-fixada ✅
+1. `(i 2 resto 0 igual)` → pós-fixada ✅
+2. `ifelse` após 3 operandos → pós-fixada ✅
+3. `while` após condição e corpo → pós-fixada ✅
 
 **🎯 TODAS as estruturas de controle são pós-fixadas!**
 
@@ -900,7 +900,7 @@ Semântica:
 
 ### 6.1 Exemplo 1: Expressão Aritmética Simples
 
-**Entrada:** `(5 3 SOMA)`
+**Entrada:** `(5 3 soma)`
 
 **Derivação Completa:**
 ```
@@ -908,16 +908,16 @@ PROGRAM
 ⇒ LINHA PROGRAM_PRIME
 ⇒ ( SEQUENCIA ) PROGRAM_PRIME
 ⇒ ( OPERANDO SEQUENCIA_PRIME ) PROGRAM_PRIME
-⇒ ( NUMERO_REAL SEQUENCIA_PRIME ) PROGRAM_PRIME
+⇒ ( numero_real SEQUENCIA_PRIME ) PROGRAM_PRIME
 ⇒ ( 5 SEQUENCIA_PRIME ) PROGRAM_PRIME
 ⇒ ( 5 OPERANDO SEQUENCIA_PRIME ) PROGRAM_PRIME
-⇒ ( 5 NUMERO_REAL SEQUENCIA_PRIME ) PROGRAM_PRIME
+⇒ ( 5 numero_real SEQUENCIA_PRIME ) PROGRAM_PRIME
 ⇒ ( 5 3 SEQUENCIA_PRIME ) PROGRAM_PRIME
 ⇒ ( 5 3 OPERADOR_FINAL ) PROGRAM_PRIME
 ⇒ ( 5 3 ARITH_OP ) PROGRAM_PRIME
-⇒ ( 5 3 SOMA ) PROGRAM_PRIME
-⇒ ( 5 3 SOMA ) ε
-⇒ ( 5 3 SOMA )
+⇒ ( 5 3 soma ) PROGRAM_PRIME
+⇒ ( 5 3 soma ) ε
+⇒ ( 5 3 soma )
 ```
 
 **Árvore Sintática:**
@@ -936,7 +936,7 @@ PROGRAM
                             |
                         ARITH_OP
                             |
-                          SOMA
+                          soma
 ```
 
 **Decisões do Parser LL(1):**
@@ -946,15 +946,15 @@ Token Atual    Pilha                  Ação
 (              [PROGRAM]              Aplicar: PROGRAM → LINHA PROGRAM_PRIME
 (              [LINHA, PROGRAM_PRIME] Aplicar: LINHA → ( SEQUENCIA )
 5              [SEQUENCIA, ), ...]    Aplicar: SEQUENCIA → OPERANDO SEQUENCIA_PRIME
-5              [OPERANDO, SEQ', ...]  Aplicar: OPERANDO → NUMERO_REAL
-5              [NUMERO_REAL, ...]     Match e pop
+5              [OPERANDO, SEQ', ...]  Aplicar: OPERANDO → numero_real
+5              [numero_real, ...]     Match e pop
 3              [SEQ', ), ...]         Aplicar: SEQUENCIA_PRIME → OPERANDO SEQ'
-3              [OPERANDO, SEQ', ...]  Aplicar: OPERANDO → NUMERO_REAL
-3              [NUMERO_REAL, ...]     Match e pop
-SOMA           [SEQ', ), ...]         Aplicar: SEQUENCIA_PRIME → OPERADOR_FINAL
-SOMA           [OPERADOR_FINAL, ...] Aplicar: OPERADOR_FINAL → ARITH_OP
-SOMA           [ARITH_OP, ), ...]     Aplicar: ARITH_OP → SOMA
-SOMA           [SOMA, ), ...]         Match e pop
+3              [OPERANDO, SEQ', ...]  Aplicar: OPERANDO → numero_real
+3              [numero_real, ...]     Match e pop
+soma           [SEQ', ), ...]         Aplicar: SEQUENCIA_PRIME → OPERADOR_FINAL
+soma           [OPERADOR_FINAL, ...] Aplicar: OPERADOR_FINAL → ARITH_OP
+soma           [ARITH_OP, ), ...]     Aplicar: ARITH_OP → soma
+soma           [soma, ), ...]         Match e pop
 )              [), ...]               Match e pop
 $              [PROGRAM_PRIME]        Aplicar: PROGRAM_PRIME → ε
 $              []                     ACEITO ✅
@@ -964,19 +964,19 @@ $              []                     ACEITO ✅
 
 ### 6.2 Exemplo 2: Expressão Lógica
 
-**Entrada:** `(x y AND)`
+**Entrada:** `(x y and)`
 
 **Derivação Resumida:**
 ```
 PROGRAM
 ⇒ ( SEQUENCIA )
 ⇒ ( OPERANDO SEQUENCIA_PRIME )
-⇒ ( VARIAVEL SEQUENCIA_PRIME )
+⇒ ( variavel SEQUENCIA_PRIME )
 ⇒ ( x OPERANDO SEQUENCIA_PRIME )
-⇒ ( x VARIAVEL SEQUENCIA_PRIME )
+⇒ ( x variavel SEQUENCIA_PRIME )
 ⇒ ( x y OPERADOR_FINAL )
 ⇒ ( x y LOGIC_OP )
-⇒ ( x y AND )
+⇒ ( x y and )
 ```
 
 **Árvore Sintática:**
@@ -991,14 +991,14 @@ PROGRAM
                 |
              LOGIC_OP
                 |
-               AND
+               and
 ```
 
 ---
 
-### 6.3 Exemplo 3: Estrutura de Controle IFELSE
+### 6.3 Exemplo 3: Estrutura de Controle ifelse
 
-**Entrada:** `((x 0 MAIOR) (x 2 MULTIPLICACAO) (x) IFELSE)`
+**Entrada:** `((x 0 maior) (x 2 multiplicacao) (x) ifelse)`
 
 **Derivação Resumida:**
 ```
@@ -1006,51 +1006,51 @@ PROGRAM
 ⇒ ( SEQUENCIA )
 ⇒ ( OPERANDO SEQUENCIA_PRIME )
 ⇒ ( LINHA SEQUENCIA_PRIME )        # condição
-⇒ ( (x 0 MAIOR) SEQUENCIA_PRIME )
-⇒ ( (x 0 MAIOR) OPERANDO SEQUENCIA_PRIME )
-⇒ ( (x 0 MAIOR) LINHA SEQUENCIA_PRIME )  # blocoTrue
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) SEQUENCIA_PRIME )
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) OPERANDO SEQUENCIA_PRIME )
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) LINHA SEQUENCIA_PRIME )  # blocoFalse
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) (x) SEQUENCIA_PRIME )
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) (x) OPERADOR_FINAL )
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) (x) CONTROL_OP )
-⇒ ( (x 0 MAIOR) (x 2 MULTIPLICACAO) (x) IFELSE )
+⇒ ( (x 0 maior) SEQUENCIA_PRIME )
+⇒ ( (x 0 maior) OPERANDO SEQUENCIA_PRIME )
+⇒ ( (x 0 maior) LINHA SEQUENCIA_PRIME )  # blocoTrue
+⇒ ( (x 0 maior) (x 2 multiplicacao) SEQUENCIA_PRIME )
+⇒ ( (x 0 maior) (x 2 multiplicacao) OPERANDO SEQUENCIA_PRIME )
+⇒ ( (x 0 maior) (x 2 multiplicacao) LINHA SEQUENCIA_PRIME )  # blocoFalse
+⇒ ( (x 0 maior) (x 2 multiplicacao) (x) SEQUENCIA_PRIME )
+⇒ ( (x 0 maior) (x 2 multiplicacao) (x) OPERADOR_FINAL )
+⇒ ( (x 0 maior) (x 2 multiplicacao) (x) CONTROL_OP )
+⇒ ( (x 0 maior) (x 2 multiplicacao) (x) ifelse )
 ```
 
 **Observação:**
-- Condição: `(x 0 MAIOR)` → pós-fixada ✅
-- BlocoTrue: `(x 2 MULTIPLICACAO)` → pós-fixada ✅
+- Condição: `(x 0 maior)` → pós-fixada ✅
+- BlocoTrue: `(x 2 multiplicacao)` → pós-fixada ✅
 - BlocoFalse: `(x)` → pós-fixada ✅
-- IFELSE aparece APÓS todos os operandos ✅
+- ifelse aparece APÓS todos os operandos ✅
 
 ---
 
 ### 6.4 Exemplo 4: Expressão Aninhada Complexa
 
-**Entrada:** `((2 3 SOMA) (4 5 MULTIPLICACAO) DIVISAO_REAL)`
+**Entrada:** `((2 3 soma) (4 5 multiplicacao) divisao_real)`
 
 **Análise:**
-- Primeiro operando: `(2 3 SOMA)` → subexpressão pós-fixada
-- Segundo operando: `(4 5 MULTIPLICACAO)` → subexpressão pós-fixada
-- Operador: `DIVISAO_REAL` → aparece APÓS ambos os operandos
+- Primeiro operando: `(2 3 soma)` → subexpressão pós-fixada
+- Segundo operando: `(4 5 multiplicacao)` → subexpressão pós-fixada
+- Operador: `divisao_real` → aparece APÓS ambos os operandos
 
-**Derivação da Sub-expressão `(2 3 SOMA)`:**
+**Derivação da Sub-expressão `(2 3 soma)`:**
 ```
 OPERANDO → LINHA → ( SEQUENCIA )
          → ( OPERANDO SEQUENCIA_PRIME )
          → ( 2 OPERANDO SEQUENCIA_PRIME )
          → ( 2 3 OPERADOR_FINAL )
          → ( 2 3 ARITH_OP )
-         → ( 2 3 SOMA )
+         → ( 2 3 soma )
 ```
 
 **Estrutura Final:**
 ```
 (
-  (2 3 SOMA)                    ← Operando 1 (sub-expressão)
-  (4 5 MULTIPLICACAO)           ← Operando 2 (sub-expressão)
-  DIVISAO_REAL                  ← Operador (APÓS operandos)
+  (2 3 soma)                    ← Operando 1 (sub-expressão)
+  (4 5 multiplicacao)           ← Operando 2 (sub-expressão)
+  divisao_real                  ← Operador (APÓS operandos)
 )
 ```
 
@@ -1062,27 +1062,27 @@ OPERANDO → LINHA → ( SEQUENCIA )
 
 **Entrada:**
 ```
-(10 x MEM)
-(20 y MEM)
-(x y SOMA resultado MEM)
+(10 x mem)
+(20 y mem)
+(x y soma resultado mem)
 ```
 
 **Derivação:**
 ```
 PROGRAM
 ⇒ LINHA PROGRAM_PRIME
-⇒ (10 x MEM) PROGRAM_PRIME
-⇒ (10 x MEM) LINHA PROGRAM_PRIME
-⇒ (10 x MEM) (20 y MEM) PROGRAM_PRIME
-⇒ (10 x MEM) (20 y MEM) LINHA PROGRAM_PRIME
-⇒ (10 x MEM) (20 y MEM) (x y SOMA resultado MEM) PROGRAM_PRIME
-⇒ (10 x MEM) (20 y MEM) (x y SOMA resultado MEM) ε
+⇒ (10 x mem) PROGRAM_PRIME
+⇒ (10 x mem) LINHA PROGRAM_PRIME
+⇒ (10 x mem) (20 y mem) PROGRAM_PRIME
+⇒ (10 x mem) (20 y mem) LINHA PROGRAM_PRIME
+⇒ (10 x mem) (20 y mem) (x y soma resultado mem) PROGRAM_PRIME
+⇒ (10 x mem) (20 y mem) (x y soma resultado mem) ε
 ```
 
 **Análise:**
-1. `(10 x MEM)` → armazena 10 em x (pós-fixada ✅)
-2. `(20 y MEM)` → armazena 20 em y (pós-fixada ✅)
-3. `(x y SOMA resultado MEM)` → soma x e y, armazena em resultado (pós-fixada ✅)
+1. `(10 x mem)` → armazena 10 em x (pós-fixada ✅)
+2. `(20 y mem)` → armazena 20 em y (pós-fixada ✅)
+3. `(x y soma resultado mem)` → soma x e y, armazena em resultado (pós-fixada ✅)
 
 ---
 
@@ -1119,7 +1119,7 @@ Demonstramos que:
 **✅ PROVA 5: Operadores de Controle são LL(1) e Pós-Fixados**
 
 - FIRST sets disjuntos de todas outras categorias (Seção 5.3.3)
-- Sintaxe pós-fixada para FOR, WHILE, IFELSE (Seção 5.3.4)
+- Sintaxe pós-fixada para for, while, ifelse (Seção 5.3.4)
 
 ---
 
@@ -1168,11 +1168,11 @@ Demonstramos que:
 1. **É FORMALMENTE LL(1)** ✅
 2. **É 100% PÓS-FIXADA** ✅
 3. **Suporta TODOS os operadores requeridos:**
-   - ✅ Aritméticos (SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO_INTEIRA, DIVISAO_REAL, RESTO, POTENCIA)
-   - ✅ Lógicos (AND, OR, NOT)
-   - ✅ Relacionais (MENOR, MAIOR, IGUAL, MENOR_IGUAL, MAIOR_IGUAL, DIFERENTE)
-   - ✅ Controle (FOR, WHILE, IFELSE)
-   - ✅ Comandos (MEM, RES)
+   - ✅ Aritméticos (soma, subtracao, multiplicacao, divisao_inteira, divisao_real, resto, potencia)
+   - ✅ Lógicos (and, or, not)
+   - ✅ Relacionais (menor, maior, igual, menor_igual, maior_igual, diferente)
+   - ✅ Controle (for, while, ifelse)
+   - ✅ Comandos (mem, res)
 
 4. **Permite aninhamento ILIMITADO** ✅
 5. **Gera código ASSEMBLY compatível com Arduino** ✅
