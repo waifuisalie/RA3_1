@@ -8,156 +8,214 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
-# Símbolo inicial da gramática corrigida
+from typing import Union, Set, Dict, Any
+
+# ============================================================================
+# CONSTANTES DE CONFIGURAÇÃO DA GRAMÁTICA E SÍMBOLOS CANÔNICOS
+# ============================================================================
+
+# Símbolo inicial da gramática
 SIMBOLO_INICIAL = 'PROGRAM'
 
+# Símbolo canônico para Epsilon (produção vazia), em minúsculas como um terminal
+EPSILON_SYMBOL = 'epsilon'
+
+# Mapeamento dos tokens teóricos (agora em lowercase) para tokens reais do projeto.
+# Estes são os terminais que o lexer/scanner reconhece.
+MAPEAMENTO_TOKENS = {
+    'numero_real': 'NUMBER',
+    'variavel': 'IDENTIFIER',
+    'abre_parenteses': '(',
+    'fecha_parenteses': ')',
+    'soma': '+',
+    'subtracao': '-',
+    'multiplicacao': '*',
+    'divisao_inteira': '/',
+    'divisao_real': '|',
+    'resto': '%',
+    'potencia': '^',
+    'menor': '<',
+    'maior': '>',
+    'igual': '==',
+    'menor_igual': '<=',
+    'maior_igual': '>=',
+    'diferente': '!=',
+    'and': '&&',
+    'or': '||',
+    'not': '!',
+    'for': 'FOR',
+    'while': 'WHILE',
+    'ifelse': 'IFELSE',
+    'res': 'RES',
+    EPSILON_SYMBOL: '' # Epsilon é mapeado para uma string vazia
+}
+
+# Definição da gramática.
+# Não-Terminais são em MAIÚSCULAS.
+# Terminais teóricos são em minúsculas.
 GRAMATICA_RPN = {
     # Programa principal
     'PROGRAM': [['LINHA', 'PROGRAM_PRIME']],
-    'PROGRAM_PRIME': [['LINHA', 'PROGRAM_PRIME'], ['EPSILON']],
+    'PROGRAM_PRIME': [['LINHA', 'PROGRAM_PRIME'], [EPSILON_SYMBOL]],
     
     # Estrutura de linha
-    'LINHA': [['ABRE_PARENTESES', 'CONTENT', 'FECHA_PARENTESES']],
+    'LINHA': [['abre_parenteses', 'CONTENT', 'fecha_parenteses']],
     
     # Conteúdo principal - diferenciado deterministicamente
     'CONTENT': [
-        ['NUMERO_REAL', 'AFTER_NUM'],
-        ['VARIAVEL', 'AFTER_VAR'],
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],
-        ['FOR', 'FOR_STRUCT'],
-        ['WHILE', 'WHILE_STRUCT'],
-        ['IFELSE', 'IFELSE_STRUCT']
+        ['numero_real', 'AFTER_NUM'],
+        ['variavel', 'AFTER_VAR'],
+        ['abre_parenteses', 'EXPR', 'fecha_parenteses', 'AFTER_EXPR'],
+        ['for', 'FOR_STRUCT'],
+        ['while', 'WHILE_STRUCT'],
+        ['ifelse', 'IFELSE_STRUCT']
     ],
     
     # AFTER_NUM - processar após número inicial
     'AFTER_NUM': [
-        ['NUMERO_REAL', 'OPERATOR'],
-        ['VARIAVEL', 'AFTER_VAR_OP'],  # INOVAÇÃO: Continuação não-terminal
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'OPERATOR'],
-        ['NOT'],  # Suporte para operador unário NOT
-        ['RES'],
-        ['EPSILON']  # Para permitir fechamento direto como em (5)
+        ['numero_real', 'OPERATOR'],
+        ['variavel', 'AFTER_VAR_OP'],
+        ['abre_parenteses', 'EXPR', 'fecha_parenteses', 'OPERATOR'],
+        ['not'],
+        ['res'],
+        [EPSILON_SYMBOL]
     ],
     
-    'AFTER_VAR_OP': [['OPERATOR'], ['EPSILON']],
+    'AFTER_VAR_OP': [['OPERATOR'], [EPSILON_SYMBOL]],
     
     # AFTER_VAR - processar após variável inicial  
     'AFTER_VAR': [
-        ['NUMERO_REAL', 'OPERATOR'],
-        ['VARIAVEL', 'AFTER_VAR_OP'],  # Permite variável sem operador obrigatório
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'OPERATOR'],
-        ['NOT'],  # Suporte para operador unário NOT
-        ['EPSILON']
+        ['numero_real', 'OPERATOR'],
+        ['variavel', 'AFTER_VAR_OP'],
+        ['abre_parenteses', 'EXPR', 'fecha_parenteses', 'OPERATOR'],
+        ['not'],
+        [EPSILON_SYMBOL]
     ],
     
     # AFTER_EXPR - processar após expressão em parênteses
     'AFTER_EXPR': [
-        ['NUMERO_REAL', 'OPERATOR'],
-        ['VARIAVEL', 'AFTER_VAR_OP'],  # Usa mesma estratégia de AFTER_NUM
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],  # Permite expr recursiva
-        ['OPERATOR', 'EXPR_CHAIN'],  # Para operadores seguidos de mais expressões
-        ['EPSILON']    # Para permitir fechamento direto
+        ['numero_real', 'OPERATOR'],
+        ['variavel', 'AFTER_VAR_OP'],
+        ['abre_parenteses', 'EXPR', 'fecha_parenteses', 'AFTER_EXPR'],
+        ['OPERATOR', 'EXPR_CHAIN'],
+        [EPSILON_SYMBOL]
     ],
     
     # EXPR_CHAIN - para operadores entre expressões
     'EXPR_CHAIN': [
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],
-        ['EPSILON']
+        ['abre_parenteses', 'EXPR', 'fecha_parenteses', 'AFTER_EXPR'],
+        [EPSILON_SYMBOL]
     ],
     
     # EXPR - expressões internas
     'EXPR': [
-        ['NUMERO_REAL', 'AFTER_NUM'],
-        ['VARIAVEL', 'AFTER_VAR'],
-        ['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'AFTER_EXPR'],
-        ['IFELSE', 'IFELSE_STRUCT']  # Permite IFELSE em expressões
+        ['numero_real', 'AFTER_NUM'],
+        ['variavel', 'AFTER_VAR'],
+        ['abre_parenteses', 'EXPR', 'fecha_parenteses', 'AFTER_EXPR'],
+        ['ifelse', 'IFELSE_STRUCT']
     ],
     
     # Hierarquia de operadores
     'OPERATOR': [['ARITH_OP'], ['COMP_OP'], ['LOGIC_OP']],
-        'ARITH_OP': [['SOMA'], ['SUBTRACAO'], ['MULTIPLICACAO'], ['DIVISAO_INTEIRA'], ['DIVISAO_REAL'], ['RESTO'], ['POTENCIA']],
-    'COMP_OP': [['MENOR'], ['MAIOR'], ['IGUAL'], ['MENOR_IGUAL'], ['MAIOR_IGUAL'], ['DIFERENTE']],
-    'LOGIC_OP': [['AND'], ['OR'], ['NOT']],
+    'ARITH_OP': [['soma'], ['subtracao'], ['multiplicacao'], ['divisao_inteira'], ['divisao_real'], ['resto'], ['potencia']],
+    'COMP_OP': [['menor'], ['maior'], ['igual'], ['menor_igual'], ['maior_igual'], ['diferente']],
+    'LOGIC_OP': [['and'], ['or'], ['not']],
     
     # Estruturas de controle
-    'FOR_STRUCT': [['ABRE_PARENTESES', 'NUMERO_REAL', 'FECHA_PARENTESES', 
-                   'ABRE_PARENTESES', 'NUMERO_REAL', 'FECHA_PARENTESES', 
-                   'ABRE_PARENTESES', 'NUMERO_REAL', 'FECHA_PARENTESES', 'LINHA']],
-    'WHILE_STRUCT': [['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'LINHA']],
-    'IFELSE_STRUCT': [['ABRE_PARENTESES', 'EXPR', 'FECHA_PARENTESES', 'LINHA', 'LINHA']]
+    'FOR_STRUCT': [['abre_parenteses', 'numero_real', 'fecha_parenteses', 
+                   'abre_parenteses', 'numero_real', 'fecha_parenteses', 
+                   'abre_parenteses', 'numero_real', 'fecha_parenteses', 'LINHA']],
+    'WHILE_STRUCT': [['abre_parenteses', 'EXPR', 'fecha_parenteses', 'LINHA']],
+    'IFELSE_STRUCT': [['abre_parenteses', 'EXPR', 'fecha_parenteses', 'LINHA', 'LINHA']]
 }
 
-# Mapeamento dos tokens teóricos para tokens reais do projeto
-MAPEAMENTO_TOKENS = {
-    'NUMERO_REAL': 'NUMBER',
-    'VARIAVEL': 'IDENTIFIER', 
-    'ABRE_PARENTESES': '(',
-    'FECHA_PARENTESES': ')',
-    'SOMA': '+',
-    'SUBTRACAO': '-',
-    'MULTIPLICACAO': '*',
-    'DIVISAO_INTEIRA': '/',
-    'DIVISAO_REAL': '|',
-    'RESTO': '%',
-    'POTENCIA': '^',
-    'MENOR': '<',
-    'MAIOR': '>',
-    'IGUAL': '==',
-    'MENOR_IGUAL': '<=',
-    'MAIOR_IGUAL': '>=',
-    'DIFERENTE': '!=',
-    'AND': '&&',
-    'OR': '||',
-    'NOT': '!',
-    'FOR': 'FOR',
-    'WHILE': 'WHILE',
-    'IFELSE': 'IFELSE',
-    'RES': 'RES'
-}
+# ============================================================================
+# FUNÇÕES DE IDENTIFICAÇÃO DE SÍMBOLOS
+# ============================================================================
+
+def is_non_terminal(symbol: str) -> bool:
+    """
+    Determines if a symbol is a non-terminal based on casing (ALL CAPS).
+
+    Args:
+        symbol: The grammar symbol string to check.
+
+    Returns:
+        True if the symbol is an uppercase string, False otherwise.
+    """
+    return isinstance(symbol, str) and symbol.isupper()
+
+def is_terminal(symbol: str) -> bool:
+    """
+    Determines if a symbol is a terminal. A terminal is any symbol that is not
+    a non-terminal (i.e., not an all-caps string).
+
+    Args:
+        symbol: The grammar symbol string to check.
+
+    Returns:
+        True if the symbol is a terminal, False otherwise.
+    """
+    return not is_non_terminal(symbol)
+
 
 # ============================================================================
 # FUNÇÕES DE MAPEAMENTO - Centralizadas para evitar duplicação
 # ============================================================================
 
-def mapear_gramatica_para_tokens_reais(gramatica_teorica):
-    """Converte gramática com tokens teóricos para tokens reais do projeto"""
+def mapear_gramatica_para_tokens_reais(gramatica_teorica: dict) -> dict:
+    """
+    Converte a gramática com símbolos teóricos para uma gramática com os
+    tokens reais reconhecidos pelo lexer.
+
+    Args:
+        gramatica_teorica: Dicionário da gramática com terminais em minúsculas.
+
+    Returns:
+        Uma nova gramática com os terminais mapeados para suas representações reais.
+    """
     gramatica_real = {}
-    
     for nt, producoes in gramatica_teorica.items():
         gramatica_real[nt] = []
         for producao in producoes:
             producao_real = []
             for simbolo in producao:
-                # Se é um token teórico, mapeia para o real
+                # Se o símbolo é um terminal teórico, mapeia para o real.
                 if simbolo in MAPEAMENTO_TOKENS:
                     producao_real.append(MAPEAMENTO_TOKENS[simbolo])
                 else:
+                    # Senão, é um não-terminal (MAIÚSCULAS) e é mantido.
                     producao_real.append(simbolo)
             gramatica_real[nt].append(producao_real)
-    
     return gramatica_real
 
-def mapear_tokens_reais_para_teoricos(conjunto_ou_dict):
-    """Converte tokens reais de volta para tokens teóricos para exibição"""
-    # Cria mapeamento inverso
+def mapear_tokens_reais_para_teoricos(conjunto_ou_dict: Union[Set[str], Dict[str, Any]]) -> Union[Set[str], Dict[str, Any]]:
+    """
+    Converte tokens reais de volta para teóricos para exibição (e.g., FIRST/FOLLOW/Tabela).
+
+    Args:
+        conjunto_ou_dict: O conjunto de terminais ou o dicionário da tabela de parsing.
+
+    Returns:
+        Uma nova estrutura com os tokens convertidos para suas representações teóricas.
+    """
     mapeamento_inverso = {v: k for k, v in MAPEAMENTO_TOKENS.items()}
     
     if isinstance(conjunto_ou_dict, set):
-        # Para conjuntos FIRST/FOLLOW
         return {mapeamento_inverso.get(token, token) for token in conjunto_ou_dict}
-    elif isinstance(conjunto_ou_dict, dict):
-        # Para tabela LL(1) 
+    
+    if isinstance(conjunto_ou_dict, dict):
         resultado = {}
         for nt, terminais_dict in conjunto_ou_dict.items():
             resultado[nt] = {}
             for terminal, producao in terminais_dict.items():
                 terminal_teorico = mapeamento_inverso.get(terminal, terminal)
                 if producao is not None:
-                    # Mapear tokens na produção de volta para teóricos
-                    producao_teorica = [mapeamento_inverso.get(simbolo, simbolo) for simbolo in producao]
+                    # Mapear símbolos na produção de volta para teóricos
+                    producao_teorica = [mapeamento_inverso.get(s, s) for s in producao]
                     resultado[nt][terminal_teorico] = producao_teorica
                 else:
                     resultado[nt][terminal_teorico] = None
         return resultado
-    else:
-        return conjunto_ou_dict
+
+    return conjunto_ou_dict
