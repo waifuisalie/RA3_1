@@ -25,7 +25,7 @@ def imprimir_gramatica_completa():
     for producoes in gramatica_teorica.values():
         for producao in producoes:
             for simbolo in producao:
-                if simbolo not in nao_terminais and simbolo != 'EPSILON':
+                if simbolo not in nao_terminais and simbolo != 'epsilon':
                     terminais.add(simbolo)
     
     # Calcular conjuntos
@@ -53,7 +53,7 @@ def imprimir_gramatica_completa():
     producoes_lista = []
     for nt, producoes in gramatica_teorica.items():
         for producao in producoes:
-            if producao == ['EPSILON']:
+            if producao == ['epsilon']:
                 producoes_lista.append(f"{nt} -> ε")
             else:
                 producoes_lista.append(f"{nt} -> {' '.join(producao)}")

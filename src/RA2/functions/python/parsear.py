@@ -23,11 +23,11 @@ def parsear(tabela_ll1: Dict, tokens_linha: List[Token]) -> List[str]:
         # Verificar se é número
         try:
             float(token.valor)
-            entrada.append(MAPEAMENTO_TOKENS['NUMERO_REAL'])  # 'NUMBER'
+            entrada.append(MAPEAMENTO_TOKENS['numero_real'])  # 'NUMBER'
         except ValueError:
             # Verificar se é variável (uma letra A-Z)
             if len(token.valor) == 1 and token.valor.isalpha() and token.valor.isupper():
-                entrada.append(MAPEAMENTO_TOKENS['VARIAVEL'])  # 'IDENTIFIER'
+                entrada.append(MAPEAMENTO_TOKENS['variavel'])  # 'IDENTIFIER'
             # Usar mapeamento existente para outros tokens
             else:
                 # Buscar no mapeamento reverso
@@ -36,7 +36,7 @@ def parsear(tabela_ll1: Dict, tokens_linha: List[Token]) -> List[str]:
                     if real == token.valor:
                         token_mapeado = real
                         break
-                entrada.append(token_mapeado if token_mapeado else MAPEAMENTO_TOKENS['VARIAVEL'])
+                entrada.append(token_mapeado if token_mapeado else MAPEAMENTO_TOKENS['variavel'])
     entrada.append('$')  # Símbolo de fim de cadeia
     
     # Inicializa pilha e índice de entrada
@@ -71,7 +71,7 @@ def parsear(tabela_ll1: Dict, tokens_linha: List[Token]) -> List[str]:
             pilha.pop()
             
             # Adiciona a produção à derivação
-            if producao == ['EPSILON']:
+            if producao == ['epsilon']:
                 derivacao.append(f"{topo} → ε")
             else:
                 # Mapear produção para símbolos teóricos usando mapeamento reverso
@@ -89,7 +89,7 @@ def parsear(tabela_ll1: Dict, tokens_linha: List[Token]) -> List[str]:
                 
                 # Adiciona os símbolos da produção à pilha (ordem inversa)
                 for simbolo in reversed(producao):
-                    if simbolo != 'EPSILON':
+                    if simbolo != 'epsilon':
                         pilha.append(simbolo)
         
         # Verifica se toda a entrada foi consumida
