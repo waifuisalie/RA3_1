@@ -6,7 +6,7 @@
 # Nome Completo 3 - Rafael Olivare Piveta
 # Nome Completo 4 - Stefan Benjamim Seixas Lourenço Rodrigues
 #
-# Nome do grupo no Canvas: RA2_1
+# Nome do grupo no Canvas: RA3_1
 
 # Símbolo inicial da gramática corrigida
 SIMBOLO_INICIAL = 'PROGRAM'
