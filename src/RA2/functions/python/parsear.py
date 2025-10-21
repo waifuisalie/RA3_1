@@ -109,7 +109,7 @@ def parsear_todas_linhas(tabela_ll1: Dict, tokens_por_linha: List[List[Token]]) 
         print(f"Processando linha {i+1}: {[t.valor for t in tokens_linha]}")
         
         derivacao = parsear(tabela_ll1, tokens_linha)
-        
+    
         if derivacao:
             print(f"    Derivação gerada com {len(derivacao)} passos")
             derivacoes.append(derivacao)
