@@ -78,6 +78,22 @@ Formato: `(A B op)` onde A e B são operandos e op é um operador
 
 Todos aceitam operandos `int` ou `real` e retornam `booleano`.
 
+**Lógicos (retornam tipo booleano):**
+- `&&` E lógico (AND): `(A B &&)`
+- `||` OU lógico (OR): `(A B ||)`
+- `!` Negação lógica (NOT): `(A !)` (unário postfix)
+
+**Modo Permissivo (Truthiness):**
+Os operadores lógicos aceitam operandos `int`, `real` ou `boolean`:
+- Valores numéricos são convertidos via truthiness: `0` e `0.0` = false, outros valores = true
+- Operandos boolean são usados diretamente
+- Resultado SEMPRE é boolean
+
+**Exemplos:**
+- `(5 3 &&)` → `true && true` = `true`
+- `(0 5 ||)` → `false || true` = `true`
+- `((x 0 >) !)` → negação de comparação
+
 ### 3.3 Tipos de Dados
 
 A linguagem suporta três tipos:
@@ -87,6 +103,13 @@ A linguagem suporta três tipos:
 3. **booleano:** Resultado de operações relacionais (usado internamente)
 
 **⚠️ IMPORTANTE:** O tipo booleano NÃO pode ser armazenado em memórias (MEM), apenas usado como resultado de expressões relacionais em estruturas de controle.
+
+**Tipos Válidos para Armazenamento:**
+- MEM aceita: `int`, `real`
+- MEM rejeita: `boolean`
+- RES aceita: `int`, `real`, `boolean` (diferente de MEM!)
+
+**⚠️ NOTA:** O sistema utiliza **exatamente 3 tipos**. Não há tipo `void` ou outros tipos auxiliares.
 
 ### 3.4 Precisão Numérica
 
@@ -129,9 +152,19 @@ A, B, C, D, E podem ser literais ou referências a memórias.
 
 ### 4.2 Regras de Escopo
 
-- Cada arquivo = escopo de memória independente
+**Escopo Global (Arquivo):**
+- Cada arquivo de texto representa um escopo de memória independente
+- Variáveis não compartilham estado entre arquivos
+
+**Escopo de Estruturas de Controle:**
+- Variáveis dentro de estruturas de controle aninhadas (FOR, WHILE, IFELSE) devem ter escopo validado
+- O atributo `escopo` deve rastrear o nível de aninhamento
+- Cada estrutura de controle pode criar um novo nível de escopo
+
+**Nomenclatura:**
 - MEM pode ser qualquer conjunto de letras maiúsculas: `MEM`, `VAR`, `X`, `CONTADOR`
-- `RES` é keyword da linguagem
+- `RES` é uma keyword reservada da linguagem
+- Nomes de variáveis são case-insensitive (convertidos para UPPERCASE internamente)
 
 ---
 
@@ -158,8 +191,12 @@ Devem ser incluídas na gramática em notação pós-fixada (RPN).
    - Validar uso correto de `(N RES)`, `(V MEM)`, `(MEM)`
 
 4. **Verificação de Estruturas de Controle:**
-   - Formação correta
-   - Condições válidas
+   - Formação correta das estruturas (IFELSE, WHILE, FOR)
+   - Condições devem resultar em valor booleano **ou equivalente**
+   - **"Equivalente"** significa: int/real podem ser usados via truthiness (0 = false, não-zero = true)
+   - IFELSE: Ambos os ramos devem ter o **mesmo tipo**
+   - WHILE/FOR: Retornam o tipo da última expressão do corpo
+   - FOR: Parâmetros inicio, fim e passo DEVEM ser int
 
 5. **Detecção de Erros Semânticos:**
    - Mensagens claras
@@ -246,6 +283,35 @@ tabela(f) = (T₁, …, Tₙ) → Tret    Γ ⊢ eᵢ : T'ᵢ    T'ᵢ ≤ Tᵢ 
   - RPN (código): `(e₁ e₂ e₃ IF)`
 - Semântica de tipagem permanece a mesma
 
+#### 6. Estruturas de Controle e Tipos de Retorno
+
+**IFELSE:**
+```
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ etrue : T    Γ ⊢ efalse : T
+────────────────────────────────────────────────────────────────────
+              Γ ⊢ (cond etrue efalse IFELSE) : T
+```
+- Condição: Qualquer tipo convertível para boolean
+- **Restrição:** Ambos os ramos DEVEM ter o mesmo tipo T
+- Resultado: tipo T (tipo dos ramos)
+
+**WHILE:**
+```
+Γ ⊢ cond : Tcond    truthy(Tcond)    Γ ⊢ corpo : T
+──────────────────────────────────────────────────
+         Γ ⊢ (cond corpo WHILE) : T
+```
+- Resultado: tipo da última expressão do corpo
+
+**FOR:**
+```
+Γ ⊢ init : int    Γ ⊢ end : int    Γ ⊢ step : int    Γ ⊢ corpo : T
+────────────────────────────────────────────────────────────────────
+              Γ ⊢ (init end step corpo FOR) : T
+```
+- **Restrição:** init, end, step DEVEM ser int
+- Resultado: tipo da última expressão do corpo
+
 ### 6.4 Exemplo de Aplicação em RPN
 
 **Expressão:** `(5 3 +)`
@@ -278,6 +344,7 @@ Aplicação:
 - Regras de verificação de tipos para operadores aritméticos
 - Regras para validação de escopo e uso de memórias (MEM)
 - Ações semânticas para estruturas de controle
+- Implementar conversão de truthiness para operadores lógicos e condições
 - Funções auxiliares: `inicializarTabelaSimbolos()`, `adicionarSimbolo()`, `buscarSimbolo()`
 
 #### Interface
