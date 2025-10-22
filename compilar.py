@@ -16,7 +16,7 @@ from datetime import datetime
 from src.RA1.functions.python.io_utils import lerArquivo
 from src.RA1.functions.python.exibirResultados import exibirResultados
 from src.RA1.functions.assembly import gerarAssemblyMultiple, save_assembly, save_registers_inc
-from src.RA2.functions.python.gerarArvore import gerar_e_salvar_todas_arvores
+from src.RA2.functions.python.gerarArvore import gerar_e_salvar_todas_arvores, exportar_arvores_json
 from src.RA2.functions.python.lerTokens import lerTokens, validarTokens, reconhecerToken
 from src.RA2.functions.python.construirGramatica import imprimir_gramatica_completa
 from src.RA2.functions.python.construirTabelaLL1 import construirTabelaLL1
@@ -330,6 +330,17 @@ if __name__ == "__main__":
         # Gera e salva todas as árvores sintáticas
         print("\n--- GERAÇÃO DAS ÁRVORES SINTÁTICAS ---")
         gerar_e_salvar_todas_arvores(derivacoes, "arvore_output.txt")
+
+        # Gera JSON das árvores sintáticas (entrada para RA3)
+        # Reconstrói linhas originais a partir dos tokens
+        linhas_originais = []
+        tokens_list = []
+        for tokens_linha in tokens_por_linha:
+            linha_texto = ' '.join([str(token.valor) for token in tokens_linha])
+            linhas_originais.append(linha_texto)
+            tokens_list.append([str(token.valor) for token in tokens_linha])
+
+        exportar_arvores_json(derivacoes, tokens_list, linhas_originais)
 
         # Atualiza a documentação da gramática com a última árvore gerada
         print("\n--- ATUALIZAÇÃO DA DOCUMENTAÇÃO ---")
