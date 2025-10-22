@@ -97,7 +97,7 @@ def parsear(tabela_ll1: Dict, tokens_linha: List[Token]) -> List[str]:
             
             # Adiciona a produção à derivação
             if producao == ['epsilon']:
-                derivacao.append(f"{topo} → ε")
+                derivacao.append(f"{topo} → epsilon")
             else:
                 # Mapear produção para símbolos teóricos usando mapeamento reverso
                 producao_teorica = []

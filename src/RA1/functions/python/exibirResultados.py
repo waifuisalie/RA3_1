@@ -14,7 +14,12 @@ from pathlib import Path
 from src.RA1.functions.python.rpn_calc import parseExpressao, executarExpressao
 from src.RA1.functions.python.io_utils import salvar_tokens
 from src.RA1.functions.python.tokens import Tipo_de_Token
-from src.RA1.functions.python.validarExpressao import validarExpressao, criarMensagemErro
+
+def criarMensagemErro(linha: str, numero_linha: int, tipo_erro: str, detalhes: str = "") -> str:
+    """Cria mensagem de erro formatada para exibição"""
+    erro = f"Linha {numero_linha:02d}: Expressão '{linha}'\n"
+    erro += f"    ERRO DE {tipo_erro}: {detalhes}"
+    return erro
 
 def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, int, int]:
     
@@ -30,25 +35,9 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
         # Pula linhas vazias ou comentários
         if not linha.strip() or linha.strip().startswith('#'):
             continue
-        
+
         linhas_processadas += 1
-        
-        # Valida a expressão usando a função dedicada
-        eh_valida, mensagem_erro = validarExpressao(linha, i)
-        if not eh_valida:
-            print(mensagem_erro)
-            # NOTA: Mesmo com erro de validação RA1, tokenizamos para o RA2
-            # (estruturas de controle pós-fixadas falham validação RA1 mas são válidas para RA2)
-            try:
-                lista_de_tokens = parseExpressao(linha)
-                tokens_completos = [str(token.valor) for token in lista_de_tokens if token.tipo != Tipo_de_Token.FIM]
-                tokens_salvos_txt.append(tokens_completos)
-            except:
-                tokens_salvos_txt.append([])
-            memoria_global['historico_resultados'].append(None)
-            contador_erros += 1
-            continue
-            
+
         try:
             lista_de_tokens = parseExpressao(linha)
             # para salvar tokens completos (incluindo parênteses) para RA2
