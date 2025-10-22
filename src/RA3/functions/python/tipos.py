@@ -19,12 +19,10 @@ Tipos Suportados:
     - int: Números inteiros
     - real: Números de ponto flutuante (IEEE 754)
     - boolean: Valores booleanos (resultado de comparações e operações lógicas)
-    - void: Tipo especial para estruturas sem valor de retorno
 
 Hierarquia de Tipos:
     int < real (int pode ser promovido a real)
     boolean - separado (sem promoção automática)
-    void - separado (tipo não-valor)
 """
 
 # ============================================================================
@@ -40,11 +38,8 @@ TYPE_REAL = 'real'
 TYPE_BOOLEAN = 'boolean'
 """Tipo booleano - resultado de operações relacionais e lógicas"""
 
-TYPE_VOID = 'void'
-"""Tipo void - sem valor (para estruturas que não retornam valor)"""
-
 # Conjunto de todos os tipos válidos
-TIPOS_VALIDOS = {TYPE_INT, TYPE_REAL, TYPE_BOOLEAN, TYPE_VOID}
+TIPOS_VALIDOS = {TYPE_INT, TYPE_REAL, TYPE_BOOLEAN}
 
 # Tipos numéricos (aceitam operações aritméticas)
 TIPOS_NUMERICOS = {TYPE_INT, TYPE_REAL}
@@ -108,7 +103,6 @@ def para_booleano(valor, tipo: str) -> bool:
         - boolean: uso direto
         - int: 0 = false, qualquer outro = true
         - real: 0.0 = false, qualquer outro = true
-        - void: não conversível (erro)
 
     Args:
         valor: O valor a ser convertido
@@ -320,8 +314,6 @@ def tipos_compativeis_logico(tipo1: str, tipo2: str) -> bool:
         True
         >>> tipos_compativeis_logico('int', 'int')
         True
-        >>> tipos_compativeis_logico('void', 'int')
-        False
     """
     return tipo1 in TIPOS_TRUTHY and tipo2 in TIPOS_TRUTHY
 
@@ -345,8 +337,6 @@ def tipo_compativel_logico_unario(tipo: str) -> bool:
         True
         >>> tipo_compativel_logico_unario('int')
         True
-        >>> tipo_compativel_logico_unario('void')
-        False
     """
     return tipo in TIPOS_TRUTHY
 
@@ -369,8 +359,6 @@ def tipo_compativel_condicao(tipo: str) -> bool:
         True
         >>> tipo_compativel_condicao('int')
         True
-        >>> tipo_compativel_condicao('void')
-        False
     """
     return tipo in TIPOS_TRUTHY
 
@@ -381,7 +369,7 @@ def tipo_compativel_armazenamento(tipo: str) -> bool:
 
     Restrição Crítica: Boolean NÃO pode ser armazenado em memória!
     Aceita: int, real
-    Rejeita: boolean, void
+    Rejeita: boolean
 
     Args:
         tipo: Tipo a ser armazenado
@@ -395,8 +383,6 @@ def tipo_compativel_armazenamento(tipo: str) -> bool:
         >>> tipo_compativel_armazenamento('real')
         True
         >>> tipo_compativel_armazenamento('boolean')
-        False
-        >>> tipo_compativel_armazenamento('void')
         False
     """
     return tipo in TIPOS_NUMERICOS
@@ -594,8 +580,7 @@ def descricao_tipo(tipo: str) -> str:
     descricoes = {
         TYPE_INT: 'inteiro',
         TYPE_REAL: 'real (ponto flutuante)',
-        TYPE_BOOLEAN: 'booleano',
-        TYPE_VOID: 'void (sem valor)'
+        TYPE_BOOLEAN: 'booleano'
     }
     return descricoes.get(tipo, f'tipo desconhecido ({tipo})')
 

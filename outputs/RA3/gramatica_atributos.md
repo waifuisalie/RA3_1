@@ -48,14 +48,12 @@ Esta gramática de atributos define as regras semânticas para a linguagem RPN (
 | `int` | Números inteiros | ✅ Sim |
 | `real` | Números de ponto flutuante | ✅ Sim |
 | `boolean` | Valores booleanos | ❌ **Não** |
-| `void` | Sem valor (estruturas) | ❌ Não |
 
 ### Hierarquia de Tipos
 
 ```
 int < real  (int pode ser promovido para real)
 boolean     (separado, sem promoção)
-void        (tipo não-valor)
 ```
 
 ---
