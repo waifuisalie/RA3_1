@@ -25,7 +25,7 @@ def construirTabelaLL1():
     for producoes in gramatica.values():
         for producao in producoes:
             todos_simbolos.update(producao)
-    terminais = sorted(list(todos_simbolos - nao_terminais - {'EPSILON'})) + ['$']
+    terminais = sorted(list(todos_simbolos - nao_terminais - {'epsilon'})) + ['$']
     
     # Calcula conjuntos FIRST e FOLLOW
     FIRST = calcularFirst()
@@ -40,7 +40,7 @@ def construirTabelaLL1():
             first_producao = calcular_first_da_sequencia(producao, FIRST, nao_terminais)
             
             # Regra 1: FIRST
-            for terminal in first_producao - {'EPSILON'}:
+            for terminal in first_producao - {'epsilon'}:
                 if tabela[nt_head][terminal] is not None:
                     raise ConflictError(
                         f"Conflito FIRST/FIRST em [{nt_head}, {terminal}]! "
@@ -48,9 +48,9 @@ def construirTabelaLL1():
                         f"Nova produção: {producao}"
                     )
                 tabela[nt_head][terminal] = producao
-                
-            # Regra 2: FOLLOW (se a produção pode derivar EPSILON)
-            if 'EPSILON' in first_producao:
+
+            # Regra 2: FOLLOW (se a produção pode derivar epsilon)
+            if 'epsilon' in first_producao:
                 for terminal in FOLLOW[nt_head]:
                     if tabela[nt_head][terminal] is not None:
                         raise ConflictError(

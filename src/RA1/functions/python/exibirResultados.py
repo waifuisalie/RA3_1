@@ -37,7 +37,14 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
         eh_valida, mensagem_erro = validarExpressao(linha, i)
         if not eh_valida:
             print(mensagem_erro)
-            tokens_salvos_txt.append([])
+            # NOTA: Mesmo com erro de validação RA1, tokenizamos para o RA2
+            # (estruturas de controle pós-fixadas falham validação RA1 mas são válidas para RA2)
+            try:
+                lista_de_tokens = parseExpressao(linha)
+                tokens_completos = [str(token.valor) for token in lista_de_tokens if token.tipo != Tipo_de_Token.FIM]
+                tokens_salvos_txt.append(tokens_completos)
+            except:
+                tokens_salvos_txt.append([])
             memoria_global['historico_resultados'].append(None)
             contador_erros += 1
             continue

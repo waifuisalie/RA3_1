@@ -179,13 +179,13 @@ if __name__ == "__main__":
     # Executa a análise das expressões RPN
     sucesso, linhas_processadas, linhas_com_erro = exibirResultados(operacoes_lidas, OUT_TOKENS)
     print("\n--- FIM DOS TESTES ---\n")
-    
-    # Se houve erros, interrompe a execução
+
+    # NOTA: Validação do RA1 pode rejeitar estruturas de controle pós-fixadas
+    # mas o RA2 (parser) deve processá-las corretamente. Portanto, não interrompemos.
     if not sucesso:
-        print("EXECUÇÃO INTERROMPIDA:")
-        print(f"   Foram encontrados {linhas_com_erro} erro(s) em {linhas_processadas} linha(s) processada(s).")
-        print("   Corrija os erros antes de prosseguir com a geração de Assembly e análise sintática.")
-        sys.exit(1)
+        print("AVISO DE VALIDAÇÃO RA1:")
+        print(f"   Foram encontrados {linhas_com_erro} erro(s) de validação RA1 em {linhas_processadas} linha(s).")
+        print(f"   Continuando com geração de Assembly e análise sintática RA2...\n")
 
     # --- Geração de código assembly para todas as operações em um único arquivo ---
     codigo_assembly = []

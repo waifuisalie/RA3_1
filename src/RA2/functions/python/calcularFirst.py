@@ -29,9 +29,9 @@ def calcularFirst():
         for nt_head, producoes in gramatica.items():
             for producao in producoes:
                 # Produção vazia
-                if producao == ['EPSILON']:
-                    if 'EPSILON' not in FIRST[nt_head]:
-                        FIRST[nt_head].add('EPSILON')
+                if producao == ['epsilon']:
+                    if 'epsilon' not in FIRST[nt_head]:
+                        FIRST[nt_head].add('epsilon')
                         mudou = True
                     continue
                 
@@ -46,11 +46,11 @@ def calcularFirst():
                     # Se o símbolo é um não-terminal
                     else:
                         tamanho_anterior = len(FIRST[nt_head])
-                        FIRST[nt_head].update(FIRST[simbolo] - {'EPSILON'})
+                        FIRST[nt_head].update(FIRST[simbolo] - {'epsilon'})
                         if len(FIRST[nt_head]) > tamanho_anterior:
                             mudou = True
-                        
-                        if 'EPSILON' not in FIRST[simbolo]:
+
+                        if 'epsilon' not in FIRST[simbolo]:
                             break  # interrompe a análise aqui
     
     return FIRST
@@ -58,16 +58,16 @@ def calcularFirst():
 
 def calcular_first_da_sequencia(sequencia, FIRST, nao_terminais):
     first_seq = set()
-    
+
     for simbolo in sequencia:
         if simbolo not in nao_terminais:  # É terminal
             first_seq.add(simbolo)
             return first_seq
         else:  # É não-terminal
-            first_seq.update(FIRST[simbolo] - {'EPSILON'})
-            if 'EPSILON' not in FIRST[simbolo]:
+            first_seq.update(FIRST[simbolo] - {'epsilon'})
+            if 'epsilon' not in FIRST[simbolo]:
                 return first_seq
-    
+
     # Se chegou aqui, todos os símbolos da sequência são NULLABLE
-    first_seq.add('EPSILON')
+    first_seq.add('epsilon')
     return first_seq
