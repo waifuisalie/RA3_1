@@ -485,26 +485,80 @@ Linha 1: (MEM 3 +)   # ERRO: MEM não foi inicializada
 
 ### 3. Referência a Resultado (RES)
 
-**Sintaxe:** `(N RES)` onde N = número de linhas atrás
+**Sintaxe:**
+- `(N RES)` onde N é um **literal inteiro** representando número de linhas atrás
+- `(VAR RES)` onde VAR é uma **variável** contendo o offset de linhas
 
-**Regra Semântica:**
+**Regra Semântica (Literal):**
 ```
 Γ ⊢ N : int    N ≥ 0    linha_atual - N ≥ 1    tipo_linha(atual - N) = T
 ──────────────────────────────────────────────────────────────────────────
                       Γ ⊢ (N RES) : T
 ```
 
+**Regra Semântica (Variável):**
+```
+Γ(VAR) = (int, initialized)    VAR ≥ 0    linha_atual - VAR ≥ 1    tipo_linha(atual - VAR) = T
+───────────────────────────────────────────────────────────────────────────────────────────────
+                               Γ ⊢ (VAR RES) : T
+```
+
 **⚠️ Diferença de MEM:** RES **PODE** referenciar resultados boolean.
 
-**Exemplos:**
+**Exemplos (Literal):**
 ```
 Linha 1: (5 3 +)        # Resultado: int 8
-Linha 2: (1 RES 2 *)    # OK: referencia int, resultado int 16
+Linha 2: (1 RES 2 *)    # OK: referencia int literal 1 linha atrás, resultado int 16
 
 Linha 1: (5 3 >)        # Resultado: boolean true
 Linha 2: (1 RES !)      # OK: referencia boolean, resultado boolean false
 Linha 3: (2 RES 5 +)    # ERRO: boolean + int (incompatível)
 ```
+
+**Exemplos (Variável):**
+```
+Linha 1: (5 3 +)           # Resultado: int 8
+Linha 2: (1 OFFSET)        # Armazena 1 em OFFSET
+Linha 3: (OFFSET RES 2 *)  # OK: OFFSET=1, referencia linha 2 (int 8), resultado int 16
+
+Linha 1: (10 20 +)         # Resultado: int 30
+Linha 2: (2 LINHAS_ATRAS)  # Armazena 2 em LINHAS_ATRAS
+Linha 3: (50 60 +)         # Resultado: int 110
+Linha 4: (LINHAS_ATRAS RES)  # OK: Referencia linha 2 (int 30)
+```
+
+---
+
+### 4. Expressão de Identidade (Epsilon)
+
+**Sintaxe:** `(valor)`
+
+**Regra Semântica:**
+```
+Γ ⊢ e : T
+─────────────
+ Γ ⊢ (e) : T
+```
+
+**Descrição:** Parênteses podem envolver um único valor sem operador. O tipo é preservado inalterado (função identidade).
+
+**Casos de Uso:**
+- **Carga de memória:** `(VAR)` carrega o valor armazenado na variável
+- **Agrupamento:** `((A B +))` resultado de expressão aninhada sem operador externo
+- **Literal direto:** `(5)` retorna o literal (semanticamente neutro, mas válido)
+
+**Exemplos Válidos:**
+```
+(5)           → tipo: int (literal)
+(3.14)        → tipo: real (literal)
+(CONTADOR)    → tipo: int/real (carga de memória)
+((5 3 +))     → tipo: int (expressão aninhada = 8)
+```
+
+**Observação:** Esta construção é particularmente útil para:
+1. Carregar valores de memória sem operação: `(VAR)`
+2. Organizar código com expressões aninhadas explícitas
+3. Referências diretas a literais (embora raramente necessário)
 
 ---
 
@@ -585,6 +639,28 @@ Linha 2: (1 RES !)         # OK: referencia boolean via RES
 
 ---
 
+### Exemplo 5: Expressão de Identidade (Epsilon)
+
+```
+Linha 1: (10 CONTADOR)      # Armazena 10 em CONTADOR
+Linha 2: (CONTADOR)         # Acessa CONTADOR sem operação
+Linha 3: (5)                # Literal solto (semanticamente neutro)
+Linha 4: ((2 3 +))          # Expressão aninhada sem operador externo
+```
+
+**Análise de Tipos:**
+1. Linha 1: `MEM(int)` → armazena int 10 em CONTADOR ✅
+2. Linha 2: `(CONTADOR)` → tipo: int, valor: 10 (carga de memória via epsilon)
+3. Linha 3: `(5)` → tipo: int, valor: 5 (literal direto, função identidade)
+4. Linha 4: `((2 3 +))` → tipo: int, valor: 5 (aninhamento sem operador)
+
+**Observação:**
+- Linha 2 demonstra o uso principal da expressão epsilon: **carregar memória sem operação**
+- Linha 3 é tecnicamente válida mas raramente útil (retorna o próprio literal)
+- Linha 4 mostra agrupamento explícito de subexpressão
+
+---
+
 ## Sumário de Restrições Semânticas
 
 | Operador/Comando | Restrição | Exemplo Inválido |
@@ -600,12 +676,12 @@ Linha 2: (1 RES !)         # OK: referencia boolean via RES
 
 ## Estatísticas
 
-- **Total de Regras Semânticas:** 22
+- **Total de Regras Semânticas:** 23
 - **Operadores Aritméticos:** 7
 - **Operadores de Comparação:** 6
 - **Operadores Lógicos:** 3
 - **Estruturas de Controle:** 3
-- **Comandos Especiais:** 3
+- **Comandos Especiais:** 4 (MEM_STORE, MEM_LOAD, RES, EPSILON)
 
 ---
 

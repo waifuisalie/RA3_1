@@ -462,29 +462,75 @@ def definir_regras_comandos() -> Dict[str, RegraSemantica]:
     }
 
     # RES: (N RES) - referencia resultado N linhas atrás
+    # Suporta tanto literal inteiro quanto variável contendo offset
     regras['RES'] = {
         'categoria': 'comando',
         'operador': 'RES',
         'nome': 'res',
         'aridade': 1,
-        'tipos_operandos': [{tipos.TYPE_INT}],
+        'tipos_operandos': [{tipos.TYPE_INT}],  # Aceita int (literal ou variável)
         'tipo_resultado': None,  # Depende da linha referenciada
         'restricoes': [
-            'N deve ser inteiro não negativo',
-            'Linha referenciada deve existir',
+            'Operando deve ser inteiro (literal ou variável)',
+            'Se variável, deve estar inicializada',
+            'Valor deve ser não negativo (N ≥ 0)',
+            'Linha referenciada deve existir (linha_atual - N ≥ 1)',
             'Pode referenciar resultados boolean (diferente de MEM)'
         ],
-        'acao_semantica': lambda n, linha_atual, historico_tipos: {
-            'tipo': historico_tipos.get(linha_atual - n['valor']) if n.get('valor') is not None else None,
-            'linha_referencia': linha_atual - n.get('valor', 0),
+        'acao_semantica': lambda operando, linha_atual, historico_tipos, tabela: {
+            # Operando pode ser literal ou variável
+            # Se for variável, valor já foi resolvido pela análise semântica
+            'tipo': historico_tipos.get(linha_atual - operando.get('valor', 0))
+                    if operando.get('valor') is not None else None,
+            'linha_referencia': linha_atual - operando.get('valor', 0),
             'operacao': 'referencia',
-            'erro': None if (linha_atual - n.get('valor', 0)) >= 1
-                    else f"Referência inválida: linha {linha_atual - n.get('valor', 0)}"
+            'operando_tipo': operando.get('operando_tipo', 'literal'),  # 'literal' ou 'variavel'
+            'erro': None if (operando.get('valor') is not None and
+                           operando['valor'] >= 0 and
+                           linha_atual - operando['valor'] >= 1)
+                    else (f"Offset inválido: {operando.get('valor')}" if operando.get('valor', -1) < 0
+                          else f"Referência inválida: linha {linha_atual - operando.get('valor', 0)}")
         },
-        'descricao': 'Referência a resultado anterior - aceita boolean',
-        'regra_formal': 'Γ ⊢ N : int    N ≥ 0    linha_atual - N ≥ 1    tipo_linha(atual - N) = T\n'
-                       '──────────────────────────────────────────────────────────────────────────\n'
-                       '                      Γ ⊢ (N RES) : T'
+        'descricao': 'Referência a resultado anterior - aceita literal ou variável - aceita boolean',
+        'regra_formal':
+            '# Caso 1: Literal inteiro\n'
+            'Γ ⊢ N : int    N ≥ 0    linha_atual - N ≥ 1    tipo_linha(atual - N) = T\n'
+            '──────────────────────────────────────────────────────────────────────────\n'
+            '                      Γ ⊢ (N RES) : T\n\n'
+            '# Caso 2: Variável contendo offset\n'
+            'Γ(VAR) = (int, initialized)    VAR ≥ 0    linha_atual - VAR ≥ 1    tipo_linha(atual - VAR) = T\n'
+            '───────────────────────────────────────────────────────────────────────────────────────────────\n'
+            '                               Γ ⊢ (VAR RES) : T'
+    }
+
+    # EPSILON (Identidade): (valor) - expressão com operando único sem operador
+    # Suporta: (5), (VAR), ((A B +))
+    regras['EPSILON'] = {
+        'categoria': 'comando',
+        'operador': 'EPSILON',
+        'nome': 'identidade',
+        'aridade': 1,
+        'tipos_operandos': [tipos.TIPOS_VALIDOS],  # Aceita qualquer tipo
+        'tipo_resultado': lambda operando: operando['tipo'],  # Função identidade
+        'restricoes': [
+            'Nenhuma restrição de tipo',
+            'Retorna o operando inalterado (função identidade)'
+        ],
+        'acao_semantica': lambda operando, tabela: {
+            'tipo': operando['tipo'],
+            'valor': operando.get('valor'),
+            'operando': operando,
+            'operacao': 'identidade'
+        },
+        'descricao': 'Expressão de identidade - retorna operando sem modificação',
+        'regra_formal':
+            'Γ ⊢ e : T\n'
+            '─────────────\n'
+            ' Γ ⊢ (e) : T\n\n'
+            '# Casos de uso:\n'
+            '# - Carga de memória: (VAR)\n'
+            '# - Literal direto: (5), (3.14)\n'
+            '# - Expressão aninhada: ((A B +))'
     }
 
     return regras
