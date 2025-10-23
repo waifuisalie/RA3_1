@@ -67,132 +67,171 @@ def encontrar_blocos_controle(tokens: list[Token], inicio: int, num_blocos: int)
 
 def processarEstruturaControle(tokens: list[Token], memoria: dict) -> float:
     """
-    Processa estruturas de controle (IFELSE, WHILE, FOR)
+    Processa estruturas de controle (IFELSE, WHILE, FOR) em notação PÓS-FIXADA.
+    O operador de controle aparece NO FINAL, após os blocos.
+    Exemplo: ((condição)(verdadeiro)(falso) IFELSE) - operador por último
     """
-    # Encontra a estrutura de controle
-    for i, token in enumerate(tokens):
+    # Busca o operador de controle de TRÁS PARA FRENTE (pós-fixado)
+    for i in range(len(tokens) - 1, -1, -1):
+        token = tokens[i]
         if token.tipo == Tipo_de_Token.IFELSE:
-            return processarIFELSE(tokens, i, memoria)
+            return processarIFELSE_posfixado(tokens, i, memoria)
         elif token.tipo == Tipo_de_Token.WHILE:
-            return processarWHILE(tokens, i, memoria)
+            return processarWHILE_posfixado(tokens, i, memoria)
         elif token.tipo == Tipo_de_Token.FOR:
-            return processarFOR(tokens, i, memoria)
-    
+            return processarFOR_posfixado(tokens, i, memoria)
+
     return 0.0
 
-def processarIFELSE(tokens: list[Token], inicio: int, memoria: dict) -> float:
+def processarIFELSE_posfixado(tokens: list[Token], pos_ifelse: int, memoria: dict) -> float:
     """
-    Processa estrutura IFELSE: (IFELSE (condição)(verdadeiro)(falso))
+    Processa estrutura IFELSE PÓS-FIXADA: ((condição)(verdadeiro)(falso) IFELSE)
+
+    Args:
+        tokens: Lista de tokens da expressão
+        pos_ifelse: Posição do token IFELSE (operador no final)
+        memoria: Dicionário de variáveis
+
+    Sintaxe: Blocos aparecem ANTES do operador IFELSE
+    Exemplo: (((1.0 0.0 >) (10.0) (20.0) IFELSE) RESULTADO_IF)
     """
     try:
-        # Encontra os 3 blocos necessários
-        blocos, _ = encontrar_blocos_controle(tokens, inicio + 1, 3)
-        
+        # Extrai tokens ANTES do operador IFELSE
+        tokens_blocos = tokens[:pos_ifelse]
+
+        # Remove parêntese de abertura extra (da subexpressão que contém o IFELSE)
+        if tokens_blocos and tokens_blocos[0].tipo == Tipo_de_Token.ABRE_PARENTESES:
+            tokens_blocos = tokens_blocos[1:]
+
+        # Encontra os 3 blocos necessários: (condição)(verdadeiro)(falso)
+        blocos, _ = encontrar_blocos_controle(tokens_blocos, 0, 3)
+
         if len(blocos) != 3:
-            print("ERRO -> IFELSE requer 3 blocos: (condição)(verdadeiro)(falso)")
+            print("ERRO -> IFELSE pós-fixado requer 3 blocos: (condição)(verdadeiro)(falso) IFELSE")
             return 0.0
-            
-        # Processa os blocos diretamente com processarTokens
+
+        # Processa a condição
         condicao = processarTokens(blocos[0], memoria)
 
-        
         # Executa o bloco apropriado (verdadeiro se != 0)
         if float(condicao) != 0.0:
             resultado = processarTokens(blocos[1], memoria)
-
             return resultado
         else:
             resultado = processarTokens(blocos[2], memoria)
-
             return resultado
-            
+
     except Exception as e:
-        print(f"ERRO no IFELSE: {e}")
+        print(f"ERRO no IFELSE pós-fixado: {e}")
         return 0.0
 
-def processarWHILE(tokens: list[Token], inicio: int, memoria: dict) -> float:
+def processarWHILE_posfixado(tokens: list[Token], pos_while: int, memoria: dict) -> float:
     """
-    Processa estrutura WHILE: (WHILE (condição)(corpo))
-    Exemplo: (WHILE (X 5 <)((X X 1 +)(Y X 2 *)))
+    Processa estrutura WHILE PÓS-FIXADA: ((condição)(corpo) WHILE)
+
+    Args:
+        tokens: Lista de tokens da expressão
+        pos_while: Posição do token WHILE (operador no final)
+        memoria: Dicionário de variáveis
+
+    Sintaxe: Blocos aparecem ANTES do operador WHILE
+    Exemplo: (((X 5.0 <)((X 1.0 +) X) WHILE) LOOP_X)
     """
     try:
-        # Encontra os 2 blocos necessários
-        blocos, _ = encontrar_blocos_controle(tokens, inicio + 1, 2)
-        
+        # Extrai tokens ANTES do operador WHILE
+        tokens_blocos = tokens[:pos_while]
+
+        # Remove parêntese de abertura extra (da subexpressão que contém o WHILE)
+        if tokens_blocos and tokens_blocos[0].tipo == Tipo_de_Token.ABRE_PARENTESES:
+            tokens_blocos = tokens_blocos[1:]
+
+        # Encontra os 2 blocos necessários: (condição)(corpo)
+        blocos, _ = encontrar_blocos_controle(tokens_blocos, 0, 2)
+
         if len(blocos) != 2:
-            print("ERRO -> WHILE requer 2 blocos: (condição)(corpo)")
+            print("ERRO -> WHILE pós-fixado requer 2 blocos: (condição)(corpo) WHILE")
             return 0.0
-            
+
         resultado = 0.0
         iteracoes = 0
         max_iteracoes = 1000  # Limite de segurança
-        
+
         while iteracoes < max_iteracoes:
             # Avalia a condição
             condicao = processarTokens(blocos[0], memoria)
-            
+
             # Se a condição é falsa, sai do loop
             if float(condicao) == 0.0:
                 break
-                
+
             # Executa o corpo do loop
-            # O corpo pode conter múltiplas expressões separadas por parênteses
             resultado = executarCorpoLoop(blocos[1], memoria)
             iteracoes += 1
-            
+
         return resultado
-        
+
     except Exception as e:
-        print(f"ERRO no WHILE: {e}")
+        print(f"ERRO no WHILE pós-fixado: {e}")
         return 0.0
 
-def processarFOR(tokens: list[Token], inicio: int, memoria: dict) -> float:
+def processarFOR_posfixado(tokens: list[Token], pos_for: int, memoria: dict) -> float:
     """
-    Processa estrutura FOR: (FOR (inicial)(final)(incremento)(corpo))
-    Exemplo: (FOR (1)(10)(2)((P P 1 +)(Q P 2 *)))
+    Processa estrutura FOR PÓS-FIXADA: ((inicial)(final)(incremento)(corpo) FOR)
+
+    Args:
+        tokens: Lista de tokens da expressão
+        pos_for: Posição do token FOR (operador no final)
+        memoria: Dicionário de variáveis
+
+    Sintaxe: Blocos aparecem ANTES do operador FOR
+    Exemplo: (((1.0)(10.0)(1.0)((I 1.0 +) SOMA) FOR) RESULTADO_FOR)
     """
     try:
-        # Encontra os 4 blocos necessários
-        blocos, _ = encontrar_blocos_controle(tokens, inicio + 1, 4)
-        
+        # Extrai tokens ANTES do operador FOR
+        tokens_blocos = tokens[:pos_for]
+
+        # Remove parêntese de abertura extra (da subexpressão que contém o FOR)
+        if tokens_blocos and tokens_blocos[0].tipo == Tipo_de_Token.ABRE_PARENTESES:
+            tokens_blocos = tokens_blocos[1:]
+
+        # Encontra os 4 blocos necessários: (inicial)(final)(incremento)(corpo)
+        blocos, _ = encontrar_blocos_controle(tokens_blocos, 0, 4)
+
         if len(blocos) != 4:
-            print("ERRO -> FOR requer 4 blocos: (inicial)(final)(incremento)(corpo)")
+            print("ERRO -> FOR pós-fixado requer 4 blocos: (inicial)(final)(incremento)(corpo) FOR")
             return 0.0
-            
+
         # Avalia os parâmetros do FOR
         inicial = int(processarTokens(blocos[0], memoria))
         final = int(processarTokens(blocos[1], memoria))
         incremento = int(processarTokens(blocos[2], memoria)) or 1
-        
+
         resultado = 0.0
         contador = inicial
         iteracoes = 0
         max_iteracoes = 1000  # Limite de segurança
-        
+
         # Cria uma variável de controle implícita para o loop
         memoria['_FOR_COUNTER'] = float(contador)
-        
+
         while contador < final and iteracoes < max_iteracoes:
             # Atualiza a variável de controle
             memoria['_FOR_COUNTER'] = float(contador)
-            
+
             # Executa o corpo do loop
             resultado = executarCorpoLoop(blocos[3], memoria)
-            
+
             contador += incremento
             iteracoes += 1
-            
-            # Debug para acompanhar execução
-            # print(f"FOR iteração {iteracoes}: contador={contador-incremento}, resultado={resultado}")
-            
+
         # Remove a variável de controle temporária
         if '_FOR_COUNTER' in memoria:
             del memoria['_FOR_COUNTER']
-            
+
         return resultado
-        
+
     except Exception as e:
-        print(f"ERRO no FOR: {e}")
+        print(f"ERRO no FOR pós-fixado: {e}")
         return 0.0
 
 def executarCorpoLoop(tokens_corpo: list[Token], memoria: dict) -> float:
@@ -260,13 +299,18 @@ def executarExpressao(tokens: list[Token], memoria: dict) -> float:
     """
     if not tokens:
         return 0.0
-    
-    # Remove tokens de parênteses e FIM para simplificar o processamento
-    tokens_limpos = []
-    for token in tokens:
-        if token.tipo not in [Tipo_de_Token.ABRE_PARENTESES, Tipo_de_Token.FECHA_PARENTESES, Tipo_de_Token.FIM]:
-            tokens_limpos.append(token)
-    
+
+    # Remove apenas tokens FIM e parênteses EXTERNOS (primeiro e último)
+    tokens_sem_fim = [token for token in tokens if token.tipo != Tipo_de_Token.FIM]
+
+    # Remove parênteses externos se existirem
+    if (len(tokens_sem_fim) >= 2 and
+        tokens_sem_fim[0].tipo == Tipo_de_Token.ABRE_PARENTESES and
+        tokens_sem_fim[-1].tipo == Tipo_de_Token.FECHA_PARENTESES):
+        tokens_limpos = tokens_sem_fim[1:-1]
+    else:
+        tokens_limpos = tokens_sem_fim
+
     if not tokens_limpos:
         return 0.0
     
@@ -284,7 +328,7 @@ def executarExpressao(tokens: list[Token], memoria: dict) -> float:
     # Verifica se contém estruturas de controle primeiro
     for token in tokens_limpos:
         if token.tipo in [Tipo_de_Token.IFELSE, Tipo_de_Token.WHILE, Tipo_de_Token.FOR]:
-            return processarEstruturaControle(tokens, memoria)
+            return processarEstruturaControle(tokens_limpos, memoria)
     
     # Verifica se é uma atribuição com expressão aninhada (EXPRESSAO VARIAVEL)
     if (len(tokens_limpos) >= 2 and 
