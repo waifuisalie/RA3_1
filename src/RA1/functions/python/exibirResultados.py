@@ -47,13 +47,26 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
             # Captura saída para detectar erros do RA1
             old_stdout = sys.stdout
             sys.stdout = buffer = io.StringIO()
-            
+
             try:
                 resultado = executarExpressao(lista_de_tokens, memoria_global)
                 sys.stdout = old_stdout
-                
+
                 # Verifica se houve erro capturado
                 output = buffer.getvalue()
+
+                # Detecta se é uma CONSULTA RES PURA (não deve adicionar ao histórico)
+                # Formato: ( NUMERO RES ) -> tokens = [ABRE, NUMERO, RES, FECHA, FIM]
+                is_res_query = False
+                tokens_sem_fim = [t for t in lista_de_tokens if t.tipo != Tipo_de_Token.FIM]
+
+                if len(tokens_sem_fim) == 4:  # ( NUMERO RES )
+                    if (tokens_sem_fim[0].tipo == Tipo_de_Token.ABRE_PARENTESES and
+                        tokens_sem_fim[1].tipo == Tipo_de_Token.NUMERO_REAL and
+                        tokens_sem_fim[2].tipo == Tipo_de_Token.RES and
+                        tokens_sem_fim[3].tipo == Tipo_de_Token.FECHA_PARENTESES):
+                        is_res_query = True
+
                 if 'ERRO' in output:
                     print(f"Linha {i:02d}: Expressão '{linha}' -> Resultado: {resultado}")
                     # Formata o erro com indentação
@@ -64,8 +77,10 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
                     contador_erros += 1
                 else:
                     print(f"Linha {i:02d}: Expressão '{linha}' -> Resultado: {resultado}")
-                    
-                memoria_global['historico_resultados'].append(resultado)
+
+                # Só adiciona ao histórico se NÃO for uma consulta RES pura
+                if not is_res_query:
+                    memoria_global['historico_resultados'].append(resultado)
             except Exception as exec_error:
                 sys.stdout = old_stdout
                 raise exec_error

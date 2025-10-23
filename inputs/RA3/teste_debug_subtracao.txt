@@ -1,0 +1,9 @@
+# Teste isolado para bug de subtração
+# Linha 1: Atribuir valor a A
+(20 A)
+# Linha 2: Atribuir valor a X
+(15 X)
+# Linha 3: Testar subtração A - X (esperado: 20 - 15 = 5)
+((A X -) B)
+# Linha 4: Exibir B para verificar
+(B C)

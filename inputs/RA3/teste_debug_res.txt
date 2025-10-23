@@ -1,0 +1,9 @@
+# Teste isolado para bug RES
+# Linha 1: Primeiro resultado para histórico
+(10.5 2.0 *)
+# Linha 2: Segundo resultado para histórico
+(2.5 3.0 ^)
+# Linha 3: Recuperar penúltimo resultado (10.5 * 2.0 = 21.0)
+(2 RES)
+# Linha 4: Recuperar último resultado (2.5 ^ 3.0 = 15.625)
+(1 RES)
