@@ -13,9 +13,20 @@ import traceback
 from pathlib import Path
 from datetime import datetime
 
-from src.RA1.functions.python.io_utils import lerArquivo
-from src.RA1.functions.python.exibirResultados import exibirResultados
-from src.RA1.functions.assembly import gerarAssemblyMultiple, save_assembly, save_registers_inc
+# ============================================================================
+# IMPORTS - RA1 (Análise Léxica)
+# ============================================================================
+# Mantemos apenas o necessário para tokenização (entrada do RA2/RA3)
+# Execução de expressões e geração de Assembly foram removidos (legacy RA1)
+# ============================================================================
+
+from src.RA1.functions.python.io_utils import lerArquivo, salvar_tokens
+from src.RA1.functions.python.rpn_calc import parseExpressao
+from src.RA1.functions.python.tokens import Tipo_de_Token
+
+# LEGACY: Imports comentados - não mais necessários para RA2/RA3
+# from src.RA1.functions.python.exibirResultados import exibirResultados  # Executa expressões (legacy)
+# from src.RA1.functions.assembly import gerarAssemblyMultiple, save_assembly, save_registers_inc  # Assembly (legacy)
 from src.RA2.functions.python.gerarArvore import gerar_e_salvar_todas_arvores, exportar_arvores_json
 from src.RA2.functions.python.lerTokens import lerTokens, validarTokens, reconhecerToken
 from src.RA2.functions.python.construirGramatica import imprimir_gramatica_completa
@@ -176,58 +187,59 @@ if __name__ == "__main__":
         
     print(f"\nArquivo de teste: {mostrar}\n")
 
-    # Executa a análise das expressões RPN
-    sucesso, linhas_processadas, linhas_com_erro = exibirResultados(operacoes_lidas, OUT_TOKENS)
-    print("\n--- FIM DOS TESTES ---\n")
+    # ============================================================================
+    # TOKENIZAÇÃO (RA1 - Mantida para RA2/RA3)
+    # ============================================================================
+    # Tokenizamos as expressões sem executá-las (execução era apenas para RA1)
+    # Os tokens gerados são a entrada necessária para RA2 (Parser) e RA3 (Semântico)
+    # ============================================================================
 
-    # NOTA: Validação do RA1 pode rejeitar estruturas de controle pós-fixadas
-    # mas o RA2 (parser) deve processá-las corretamente. Portanto, não interrompemos.
-    if not sucesso:
-        print("AVISO DE VALIDAÇÃO RA1:")
-        print(f"   Foram encontrados {linhas_com_erro} erro(s) de validação RA1 em {linhas_processadas} linha(s).")
-        print(f"   Continuando com geração de Assembly e análise sintática RA2...\n")
+    print("--- TOKENIZAÇÃO (RA1 Lexical Analysis - Input for RA2/RA3) ---")
+    tokens_salvos_txt = []
+    linhas_processadas = 0
 
-    # --- Geração de código assembly para todas as operações em um único arquivo ---
-    codigo_assembly = []
+    for i, linha in enumerate(operacoes_lidas, 1):
+        # Pula linhas vazias ou comentários
+        if not linha.strip() or linha.strip().startswith('#'):
+            continue
 
-    # tokens foram salvos em raiz/outputs/tokens/tokens_gerados.txt
-    linhas = lerArquivo(str(OUT_TOKENS))
+        linhas_processadas += 1
 
-    # Salvar registers.inc em ambos os locais
-    save_registers_inc(str(OUT_ASM_DIR / "registers.inc"))  # Em RA1
-    # save_registers_inc(str(BASE_DIR / "registers.inc"))  # Na raiz
+        try:
+            # Tokeniza sem executar
+            lista_de_tokens = parseExpressao(linha)
+            # Salva tokens completos (incluindo parênteses) para RA2
+            tokens_completos = [str(token.valor) for token in lista_de_tokens if token.tipo != Tipo_de_Token.FIM]
+            tokens_salvos_txt.append(tokens_completos)
+        except Exception as e:
+            print(f"  ERRO na linha {i}: {e}")
+            tokens_salvos_txt.append([])  # Adiciona lista vazia para manter índices
 
-    # Preparar lista de todas as operações (filtrar parênteses para assembly)
-    all_tokens = []
-    for linha in linhas:
-        tokens = linha.split()
-        # Filtrar parênteses apenas para geração de assembly (RA1 compatibility)
-        tokens_sem_parenteses = [token for token in tokens if token not in ['(', ')']]
-        all_tokens.append(tokens_sem_parenteses)
+    # Salva os tokens gerados
+    salvar_tokens(tokens_salvos_txt, OUT_TOKENS)
+    print(f"  ✓ {linhas_processadas} linha(s) tokenizadas")
+    print(f"  ✓ Tokens salvos em: {OUT_TOKENS.relative_to(BASE_DIR)}\n")
 
-    # Gerar um único arquivo com todas as operações
-    gerarAssemblyMultiple(all_tokens, codigo_assembly)
-    
-    # Salvar programa_completo.S em ambos os locais
-    nome_arquivo_ra1 = OUT_ASM_DIR / "programa_completo.S"
-    nome_arquivo_root = BASE_DIR / "programa_completo.S"
-    
-    save_assembly(codigo_assembly, str(nome_arquivo_ra1))  # Salva em RA1
-    # save_assembly(codigo_assembly, str(nome_arquivo_root))  # Salva na raiz
-    
-    print(f"Arquivo {nome_arquivo_ra1.name} gerado com sucesso em:")
-    print(f"- {OUT_ASM_DIR}")
-    print(f"Contém {len(all_tokens)} operações RPN em sequência.")
-
-    print("\nPara testar:")
-    print("- Compile e carregue programa_completo.S no Arduino Uno")
-    print("- Monitore a saída serial em 9600 baud para ver os resultados!")
-    print("- Todas as operações serão executadas sequencialmente")
+    # ============================================================================
+    # LEGACY RA1: Execução e Assembly Generation (DESABILITADOS)
+    # ============================================================================
+    # As seguintes operações do RA1 NÃO são mais executadas:
+    # 1. exibirResultados() -> executarExpressao() - execução de RPN para validação
+    # 2. gerarAssemblyMultiple() - geração de código RISC-V para Arduino
+    # 3. save_assembly() - salvamento de programa_completo.S
+    #
+    # MOTIVO: Especificação RA3 afirma "não será necessário gerar código Assembly"
+    # O foco mudou para análise sintática (RA2) e semântica (RA3)
+    #
+    # Os arquivos assembly/*.py e rpn_calc.py foram marcados como legacy
+    # ============================================================================
 
 
-    ##################################################################
-    # COMEÇO RA2
-    ##################################################################
+    # ============================================================================
+    # RA2: ANÁLISE SINTÁTICA (Parser LL(1))
+    # ============================================================================
+    # Grammar, FIRST/FOLLOW sets, LL(1) table, parsing, syntax tree generation
+    # ============================================================================
 
     # Leitura e validação dos tokens para análise sintática
     try:

@@ -8,6 +8,25 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
+# ============================================================================
+# LEGACY CODE - RA1 PHASE ONLY
+# ============================================================================
+# Este módulo foi usado na RA1 (Fase de Análise Léxica) para:
+# - Execução e validação de expressões RPN
+# - Processamento de estruturas de controle (WHILE, FOR, IFELSE)
+# - Validação de resultados do código Assembly gerado
+#
+# STATUS: Não é mais necessário para RA2 (Parser) ou RA3+ (Analisador Semântico)
+# MOTIVO: A especificação do RA3 afirma "Nesta fase, não será necessário gerar
+#         código Assembly" - análise semântica não requer execução
+#
+# Este arquivo é mantido para:
+# 1. Referência histórica e preservação da nota do RA1
+# 2. Possível reutilização futura se validação de execução for necessária
+#
+# NÃO CORRIJA BUGS neste arquivo a menos que esteja trabalhando especificamente no RA1
+# ============================================================================
+
 import math
 from .tokens import Token, Tipo_de_Token
 from .analisador_lexico import Analisador_Lexico
