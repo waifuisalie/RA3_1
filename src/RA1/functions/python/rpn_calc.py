@@ -27,42 +27,58 @@ def arredondar_16bit(valor):
 def encontrar_blocos_controle(tokens: list[Token], inicio: int, num_blocos: int) -> tuple[list, int]:
     """
     Encontra blocos delimitados por parênteses para estruturas de controle.
+    Extrai exatamente num_blocos blocos sequenciais começando da posição inicio.
+
+    Args:
+        tokens: Lista de tokens
+        inicio: Índice para começar a busca
+        num_blocos: Número de blocos a extrair
+
+    Returns:
+        Tupla com (lista de blocos extraídos, próximo índice após os blocos)
     """
     blocos = []
     idx = inicio
-    
+
     while idx < len(tokens) and len(blocos) < num_blocos:
-        # Procura o próximo parêntese de abertura
+        # Pula tokens que não são parênteses de abertura (espaços, etc)
         while idx < len(tokens) and tokens[idx].tipo != Tipo_de_Token.ABRE_PARENTESES:
             idx += 1
-        
+
         if idx >= len(tokens):
             break
-            
-        # Encontrou um parêntese de abertura
+
+        # Encontrou um parêntese de abertura - extrair bloco completo
         bloco = []
         contagem = 1
-        idx += 1  # Pula o parêntese de abertura
-        
-        # Coleta tokens até encontrar o parêntese de fechamento correspondente
+        idx += 1  # Pula o parêntese de abertura inicial
+
+        # Coleta todos os tokens até encontrar o parêntese de fechamento correspondente
         while idx < len(tokens) and contagem > 0:
             token_atual = tokens[idx]
-            
+
             if token_atual.tipo == Tipo_de_Token.ABRE_PARENTESES:
                 bloco.append(token_atual)
                 contagem += 1
             elif token_atual.tipo == Tipo_de_Token.FECHA_PARENTESES:
                 contagem -= 1
                 if contagem > 0:
+                    # Parêntese interno - adiciona ao bloco
                     bloco.append(token_atual)
+                # Se contagem chegou a 0, encontramos o fechamento do bloco - não adiciona
             else:
                 bloco.append(token_atual)
-                
+
             idx += 1
-        
+
+        # Só adiciona o bloco se foi fechado corretamente
         if contagem == 0:
             blocos.append(bloco)
-            
+        else:
+            # Bloco mal formado - parênteses não balanceados
+            print(f"AVISO -> Bloco {len(blocos)+1} tem parênteses não balanceados")
+            break
+
     return blocos, idx
 
 def processarEstruturaControle(tokens: list[Token], memoria: dict) -> float:
@@ -97,11 +113,9 @@ def processarIFELSE_posfixado(tokens: list[Token], pos_ifelse: int, memoria: dic
     """
     try:
         # Extrai tokens ANTES do operador IFELSE
+        # Estes tokens já foram processados e não têm os parênteses externos
+        # Estrutura esperada: (condição) (verdadeiro) (falso)
         tokens_blocos = tokens[:pos_ifelse]
-
-        # Remove parêntese de abertura extra (da subexpressão que contém o IFELSE)
-        if tokens_blocos and tokens_blocos[0].tipo == Tipo_de_Token.ABRE_PARENTESES:
-            tokens_blocos = tokens_blocos[1:]
 
         # Encontra os 3 blocos necessários: (condição)(verdadeiro)(falso)
         blocos, _ = encontrar_blocos_controle(tokens_blocos, 0, 3)
@@ -139,11 +153,9 @@ def processarWHILE_posfixado(tokens: list[Token], pos_while: int, memoria: dict)
     """
     try:
         # Extrai tokens ANTES do operador WHILE
+        # Estes tokens já foram processados e não têm os parênteses externos
+        # Estrutura esperada: (condição) (corpo)
         tokens_blocos = tokens[:pos_while]
-
-        # Remove parêntese de abertura extra (da subexpressão que contém o WHILE)
-        if tokens_blocos and tokens_blocos[0].tipo == Tipo_de_Token.ABRE_PARENTESES:
-            tokens_blocos = tokens_blocos[1:]
 
         # Encontra os 2 blocos necessários: (condição)(corpo)
         blocos, _ = encontrar_blocos_controle(tokens_blocos, 0, 2)
@@ -188,11 +200,9 @@ def processarFOR_posfixado(tokens: list[Token], pos_for: int, memoria: dict) -> 
     """
     try:
         # Extrai tokens ANTES do operador FOR
+        # Estes tokens já foram processados e não têm os parênteses externos
+        # Estrutura esperada: (inicial) (final) (incremento) (corpo)
         tokens_blocos = tokens[:pos_for]
-
-        # Remove parêntese de abertura extra (da subexpressão que contém o FOR)
-        if tokens_blocos and tokens_blocos[0].tipo == Tipo_de_Token.ABRE_PARENTESES:
-            tokens_blocos = tokens_blocos[1:]
 
         # Encontra os 4 blocos necessários: (inicial)(final)(incremento)(corpo)
         blocos, _ = encontrar_blocos_controle(tokens_blocos, 0, 4)
