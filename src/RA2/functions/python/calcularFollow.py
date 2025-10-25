@@ -42,12 +42,12 @@ def calcularFollow():
                             first_beta = calcular_first_da_sequencia(beta, FIRST, nao_terminais)
                             
                             tamanho_anterior = len(FOLLOW[simbolo])
-                            FOLLOW[simbolo].update(first_beta - {'EPSILON'})
+                            FOLLOW[simbolo].update(first_beta - {'epsilon'})
                             if len(FOLLOW[simbolo]) > tamanho_anterior:
                                 mudou = True
-                            
+
                             # Regra 2.b: Se beta é NULLABLE, adicionar FOLLOW(head) a FOLLOW(simbolo)
-                            if 'EPSILON' in first_beta:
+                            if 'epsilon' in first_beta:
                                 tamanho_anterior = len(FOLLOW[simbolo])
                                 FOLLOW[simbolo].update(FOLLOW[nt_head])
                                 if len(FOLLOW[simbolo]) > tamanho_anterior:

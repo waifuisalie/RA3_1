@@ -25,7 +25,7 @@ def imprimir_gramatica_completa():
     for producoes in gramatica_teorica.values():
         for producao in producoes:
             for simbolo in producao:
-                if simbolo not in nao_terminais and simbolo != 'EPSILON':
+                if simbolo not in nao_terminais and simbolo != 'epsilon':
                     terminais.add(simbolo)
     
     # Calcular conjuntos
@@ -53,8 +53,8 @@ def imprimir_gramatica_completa():
     producoes_lista = []
     for nt, producoes in gramatica_teorica.items():
         for producao in producoes:
-            if producao == ['EPSILON']:
-                producoes_lista.append(f"{nt} -> ε")
+            if producao == ['epsilon']:
+                producoes_lista.append(f"{nt} -> epsilon")
             else:
                 producoes_lista.append(f"{nt} -> {' '.join(producao)}")
     
@@ -96,7 +96,7 @@ def imprimir_gramatica_completa():
             for terminal in sorted(table[nt].keys()):
                 if table[nt][terminal] is not None:
                     production = ' '.join(table[nt][terminal])
-                    print(f"M[{nt}, {terminal}] = {nt} → {production}")
+                    print(f"M[{nt}, {terminal}] = {nt} -> {production}")
                     total_entries += 1
         
         print(f"\nTotal de entradas na tabela: {total_entries}")

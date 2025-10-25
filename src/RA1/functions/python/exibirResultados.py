@@ -8,13 +8,34 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
+# ============================================================================
+# LEGACY CODE - RA1 PHASE ONLY
+# ============================================================================
+# Este módulo foi usado na RA1 (Fase de Análise Léxica) para:
+# - Tokenização de expressões RPN (AINDA NECESSÁRIO para RA2/RA3)
+# - Execução e exibição de resultados (NÃO MAIS NECESSÁRIO)
+#
+# STATUS: Parcialmente legacy - a função executarExpressao() não é mais usada
+# MOTIVO: RA3 não requer execução de expressões, apenas análise semântica
+#
+# NOTA: A tokenização (parseExpressao) ainda é necessária para gerar
+#       tokens_gerados.txt que é entrada para RA2 e RA3
+#
+# Este arquivo é mantido para referência histórica do RA1
+# ============================================================================
+
 import io
 import sys
 from pathlib import Path
 from src.RA1.functions.python.rpn_calc import parseExpressao, executarExpressao
 from src.RA1.functions.python.io_utils import salvar_tokens
 from src.RA1.functions.python.tokens import Tipo_de_Token
-from src.RA1.functions.python.validarExpressao import validarExpressao, criarMensagemErro
+
+def criarMensagemErro(linha: str, numero_linha: int, tipo_erro: str, detalhes: str = "") -> str:
+    """Cria mensagem de erro formatada para exibição"""
+    erro = f"Linha {numero_linha:02d}: Expressão '{linha}'\n"
+    erro += f"    ERRO DE {tipo_erro}: {detalhes}"
+    return erro
 
 def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, int, int]:
     
@@ -30,18 +51,9 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
         # Pula linhas vazias ou comentários
         if not linha.strip() or linha.strip().startswith('#'):
             continue
-        
+
         linhas_processadas += 1
-        
-        # Valida a expressão usando a função dedicada
-        eh_valida, mensagem_erro = validarExpressao(linha, i)
-        if not eh_valida:
-            print(mensagem_erro)
-            tokens_salvos_txt.append([])
-            memoria_global['historico_resultados'].append(None)
-            contador_erros += 1
-            continue
-            
+
         try:
             lista_de_tokens = parseExpressao(linha)
             # para salvar tokens completos (incluindo parênteses) para RA2
@@ -51,13 +63,26 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
             # Captura saída para detectar erros do RA1
             old_stdout = sys.stdout
             sys.stdout = buffer = io.StringIO()
-            
+
             try:
                 resultado = executarExpressao(lista_de_tokens, memoria_global)
                 sys.stdout = old_stdout
-                
+
                 # Verifica se houve erro capturado
                 output = buffer.getvalue()
+
+                # Detecta se é uma CONSULTA RES PURA (não deve adicionar ao histórico)
+                # Formato: ( NUMERO RES ) -> tokens = [ABRE, NUMERO, RES, FECHA, FIM]
+                is_res_query = False
+                tokens_sem_fim = [t for t in lista_de_tokens if t.tipo != Tipo_de_Token.FIM]
+
+                if len(tokens_sem_fim) == 4:  # ( NUMERO RES )
+                    if (tokens_sem_fim[0].tipo == Tipo_de_Token.ABRE_PARENTESES and
+                        tokens_sem_fim[1].tipo == Tipo_de_Token.NUMERO_REAL and
+                        tokens_sem_fim[2].tipo == Tipo_de_Token.RES and
+                        tokens_sem_fim[3].tipo == Tipo_de_Token.FECHA_PARENTESES):
+                        is_res_query = True
+
                 if 'ERRO' in output:
                     print(f"Linha {i:02d}: Expressão '{linha}' -> Resultado: {resultado}")
                     # Formata o erro com indentação
@@ -68,8 +93,10 @@ def exibirResultados(vetor_linhas: list[str], out_tokens: Path) -> tuple[bool, i
                     contador_erros += 1
                 else:
                     print(f"Linha {i:02d}: Expressão '{linha}' -> Resultado: {resultado}")
-                    
-                memoria_global['historico_resultados'].append(resultado)
+
+                # Só adiciona ao histórico se NÃO for uma consulta RES pura
+                if not is_res_query:
+                    memoria_global['historico_resultados'].append(resultado)
             except Exception as exec_error:
                 sys.stdout = old_stdout
                 raise exec_error
