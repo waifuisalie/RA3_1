@@ -18,14 +18,15 @@ GRAMATICA_RPN = {
     'SEQUENCIA': [['OPERANDO', 'SEQUENCIA_PRIME']],
     'SEQUENCIA_PRIME': [
         ['OPERANDO', 'SEQUENCIA_PRIME'],
-        ['OPERADOR_FINAL']
+        ['OPERADOR_FINAL'],
+        ['epsilon']
     ],
     'OPERANDO': [
-        ['numero_real'],
-        ['variavel', 'OPERANDO_VAR_OPCIONAL'],
+        ['numero_real', 'OPERANDO_OPCIONAL'],
+        ['variavel', 'OPERANDO_OPCIONAL'],
         ['LINHA']
     ],
-    'OPERANDO_VAR_OPCIONAL': [['res'], ['not'], ['epsilon']],
+    'OPERANDO_OPCIONAL': [['res'], ['epsilon']],
     'OPERADOR_FINAL': [
         ['ARITH_OP'], 
         ['COMP_OP'], 

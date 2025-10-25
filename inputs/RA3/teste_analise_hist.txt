@@ -1,0 +1,5 @@
+# Teste para analisar histórico exato
+(100 50 +)
+(2.5 3.0 ^)
+(1 RES)
+(2 RES)

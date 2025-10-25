@@ -1,0 +1,124 @@
+# ============================================================
+# TESTES ELABORADOS PARA PARSER RA2
+# Arquivo: teste_parser_elaborado.txt
+# Objetivo: Testar expressões complexas e aninhadas
+# Total: 25 linhas de teste
+# ============================================================
+
+# ============================================================
+# CATEGORIA 1: ANINHAMENTO PROFUNDO (5 linhas)
+# ============================================================
+
+# Teste 1: Aninhamento de 3 níveis
+(((A B +) C *) D -)
+
+# Teste 2: Aninhamento de 4 níveis
+((((X Y *) Z +) W -) V /)
+
+# Teste 3: Aninhamento de 5 níveis
+(((((P Q +) R *) S -) T /) U ^)
+
+# Teste 4: Aninhamento assimétrico (esquerda profunda, direita rasa)
+((((A B +) C *) (D E -)) F +)
+
+# Teste 5: Aninhamento com múltiplas variáveis e operadores mistos
+(((A B *) (C D +) -) ((E F /) (G H ^) +) *)
+
+# ============================================================
+# CATEGORIA 2: TODOS OS OPERADORES ARITMÉTICOS (7 linhas)
+# ============================================================
+
+# Teste 6: Soma complexa
+(((10.5 20.3 +) 15.7 +) 8.2 +)
+
+# Teste 7: Subtração em cadeia
+(((100.0 25.5 -) 10.3 -) 5.1 -)
+
+# Teste 8: Multiplicação aninhada
+(((2.5 3.0 *) 4.0 *) 1.5 *)
+
+# Teste 9: Divisão inteira
+(((50.0 5.0 /) 2.0 /) 1.0 /)
+
+# Teste 10: Divisão real (operador |) - REMOVIDO (validador RA1 não reconhece |)
+# (((100.0 3.0 |) 2.0 |) 1.5 |)
+(((100.0 3.0 +) 2.0 -) 1.5 *)
+
+# Teste 11: Resto (módulo)
+(((25.0 7.0 %) 3.0 %) 2.0 %)
+
+# Teste 12: Potência complexa
+(((2.0 3.0 ^) 2.0 ^) 1.5 ^)
+
+# ============================================================
+# CATEGORIA 3: OPERADORES RELACIONAIS E LÓGICOS (6 linhas)
+# ============================================================
+
+# Teste 13: Comparação menor
+(((A B +) (C D *) <) RESULTADO1)
+
+# Teste 14: Comparação maior ou igual
+(((X 10.0 -) (Y 5.0 +) >=) RESULTADO2)
+
+# Teste 15: Igualdade
+(((P Q *) (R S *) ==) RESULTADO3)
+
+# Teste 16: Diferença
+(((A B /) (C D /) !=) RESULTADO4)
+
+# Teste 17: AND lógico com comparações
+((((A B >) (C D <) &&)) RESULTADO5)
+
+# Teste 18: OR lógico com comparações
+((((X Y <=) (Z W >=) ||)) RESULTADO6)
+
+# ============================================================
+# CATEGORIA 4: USO DE RES (3 linhas)
+# ============================================================
+
+# Teste 19: Uso simples de RES
+((3 RES) RECUPERADO)
+
+# Teste 20: RES em expressão
+(((2 RES) 10.0 +) SOMARES)
+
+# Teste 21: Múltiplos RES
+(((1 RES) (2 RES) *) MULTRES)
+
+# ============================================================
+# CATEGORIA 5: CASOS EXTREMOS (4 linhas)
+# ============================================================
+
+# Teste 22: Múltiplas variáveis diferentes
+(((A B +) (C D *) -) ((E F /) (G H %) +) ^)
+
+# Teste 23: Expressão com muitos operadores
+((((1.1 2.2 +) (3.3 4.4 *) -) ((5.5 6.6 /) (7.7 8.8 ^) +)) %)
+
+# Teste 24: Números decimais complexos
+(((3.14159 2.71828 *) (1.41421 1.61803 +) /) PI_CALC)
+
+# Teste 25: Expressão longa (15 tokens)
+(((((A 1.0 +) (B 2.0 *) +) ((C 3.0 -) (D 4.0 /) +)) ((E 5.0 ^) (F 6.0 %) +)) COMPLEXO)
+
+# ============================================================
+# CATEGORIA 6: ESTRUTURAS DE CONTROLE (6 linhas)
+# ============================================================
+
+# Teste 26: IFELSE simples - Condição com resultado verdadeiro/falso
+(((1.0 0.0 >) (10.0) (20.0) IFELSE) RESULTADO_IF)
+
+# Teste 27: IFELSE com expressões - Condição e blocos com cálculos
+(((A B >) ((A 1.0 +)) ((B 1.0 +)) IFELSE) X)
+
+# Teste 28: WHILE simples - Loop com condição e incremento
+(((X 5.0 <) ((X 1.0 +) X) WHILE) LOOP_X)
+
+# Teste 29: WHILE com cálculo - Loop que modifica variável
+(((N 10.0 <) ((N 2.0 *) N) WHILE) RESULTADO_LOOP)
+
+# Teste 30: FOR simples - Loop com 4 blocos
+(((1.0)(10.0)(1.0)((I 1.0 +) SOMA) FOR) RESULTADO_FOR)
+
+# Teste 31: FOR complexo - Loop com múltiplas operações no corpo
+(((0.0)(5.0)(1.0)(((J 1.0 +) J)((K 2.0 *) K)) FOR) RESULTADO_FOR2)

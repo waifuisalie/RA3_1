@@ -1,0 +1,40 @@
+# Teste Completo de RES - Todos os Casos de Uso
+# ==================================================
+
+# --- PARTE 1: Construir Histórico ---
+# Linha 1: A=10, hist=[10.0]
+(10.0 A)
+# Linha 2: B=20, hist=[10.0, 20.0]
+(20.0 B)
+# Linha 3: 8.0, hist=[10.0, 20.0, 8.0]
+(5.0 3.0 +)
+# Linha 4: 15.62, hist=[10.0, 20.0, 8.0, 15.62]
+(2.5 3.0 ^)
+
+# --- PARTE 2: Consultas RES Puras (NÃO devem adicionar ao histórico) ---
+# Linha 5: Recupera hist[-1]=15.62, hist MANTÉM [10.0, 20.0, 8.0, 15.62]
+(1 RES)
+# Linha 6: Recupera hist[-2]=8.0, hist MANTÉM [10.0, 20.0, 8.0, 15.62]
+(2 RES)
+# Linha 7: Recupera hist[-3]=20.0, hist MANTÉM [10.0, 20.0, 8.0, 15.62]
+(3 RES)
+# Linha 8: Recupera hist[-4]=10.0, hist MANTÉM [10.0, 20.0, 8.0, 15.62]
+(4 RES)
+
+# --- PARTE 3: RES em Atribuições (DEVEM adicionar ao histórico) ---
+# Linha 9: C=15.62, hist=[10.0, 20.0, 8.0, 15.62, 15.62]
+((1 RES) C)
+# Linha 10: D=15.62 (hist[-2] após linha 9), hist=[10.0, 20.0, 8.0, 15.62, 15.62, 15.62]
+((2 RES) D)
+
+# --- PARTE 4: RES em Operações (DEVEM adicionar ao histórico) ---
+# Linha 11: 15.62*2=31.24, hist=[..., 31.24]
+((1 RES) 2.0 *)
+# Linha 12: 15.62+31.24=46.86, hist=[..., 46.86]
+((2 RES) (1 RES) +)
+
+# --- PARTE 5: Validação Final (consultas não corrompem) ---
+# Linha 13: Deve ser 46.86 (último resultado)
+(1 RES)
+# Linha 14: Deve ser 31.24 (penúltimo resultado)
+(2 RES)
