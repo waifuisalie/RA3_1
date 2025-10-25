@@ -8,6 +8,13 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
+# ============================================================================
+# LEGACY CODE - RA1 PHASE ONLY (Assembly Generation)
+# ============================================================================
+# Geração de código Assembly RISC-V para Arduino Uno
+# Não usado em RA2/RA3+ - mantido apenas para referência histórica do RA1
+# ============================================================================
+
 from pathlib import Path
 
 def save_assembly(codigo_assembly: list[str], nome_arquivo: str | Path = "programa.s") -> bool:

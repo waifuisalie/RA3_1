@@ -8,6 +8,13 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
+# ============================================================================
+# LEGACY CODE - RA1 PHASE ONLY (Assembly Generation)
+# ============================================================================
+# Geração de código Assembly RISC-V para Arduino Uno
+# Não usado em RA2/RA3+ - mantido apenas para referência histórica do RA1
+# ============================================================================
+
 def gerar_secao_dados(codigo: list[str]) -> None:
     dados = [
         "; ====================================================================",

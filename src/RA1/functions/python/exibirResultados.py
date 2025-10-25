@@ -8,6 +8,22 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
+# ============================================================================
+# LEGACY CODE - RA1 PHASE ONLY
+# ============================================================================
+# Este módulo foi usado na RA1 (Fase de Análise Léxica) para:
+# - Tokenização de expressões RPN (AINDA NECESSÁRIO para RA2/RA3)
+# - Execução e exibição de resultados (NÃO MAIS NECESSÁRIO)
+#
+# STATUS: Parcialmente legacy - a função executarExpressao() não é mais usada
+# MOTIVO: RA3 não requer execução de expressões, apenas análise semântica
+#
+# NOTA: A tokenização (parseExpressao) ainda é necessária para gerar
+#       tokens_gerados.txt que é entrada para RA2 e RA3
+#
+# Este arquivo é mantido para referência histórica do RA1
+# ============================================================================
+
 import io
 import sys
 from pathlib import Path
