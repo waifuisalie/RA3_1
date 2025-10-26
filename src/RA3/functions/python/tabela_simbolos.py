@@ -108,7 +108,7 @@ class TabelaSimbolos:
 
     Examples:
         >>> tabela = TabelaSimbolos()
-        >>> tabela.adicionar('CONTADOR', 'int', inicializada=True, linha=5)
+        >>> _ = tabela.adicionar('CONTADOR', 'int', inicializada=True, linha=5)
         >>> info = tabela.buscar('CONTADOR')
         >>> print(info.tipo)
         int
@@ -169,8 +169,9 @@ class TabelaSimbolos:
             >>> simbolo = tabela.adicionar('VAR', 'int', True, 10)
             >>> simbolo.inicializada
             True
-            >>> simbolo = tabela.adicionar('VAR', 'real', True, 15)
-            >>> simbolo.tipo
+            >>> _ = tabela.adicionar('VAR', 'real', True, 15)
+            >>> simbolo_novo = tabela.buscar('VAR')
+            >>> simbolo_novo.tipo
             'real'
         """
         nome = nome.upper()  # Garantir uppercase
@@ -200,7 +201,7 @@ class TabelaSimbolos:
             escopo=self._escopo_atual,
             linha_declaracao=linha
         )
-
+        
         self._simbolos[nome] = simbolo
         self._contador_acessos[nome] = 0
 
@@ -218,8 +219,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int')
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int')
             >>> info = tabela.buscar('VAR')
             >>> info.nome
             'VAR'
@@ -241,8 +241,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int')
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int')
             >>> tabela.existe('VAR')
             True
             >>> tabela.existe('INEXISTENTE')
@@ -263,8 +262,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int', False)
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int', False)
             >>> tabela.marcar_inicializada('VAR', 10)
             True
             >>> tabela.verificar_inicializacao('VAR')
@@ -294,12 +292,10 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int', True)
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int', True)
             >>> tabela.verificar_inicializacao('VAR')
             True
-            >>> tabela.adicionar('UNINIT', 'int', False)
-            <...>
+            >>> _ = tabela.adicionar('UNINIT', 'int', False)
             >>> tabela.verificar_inicializacao('UNINIT')
             False
         """
@@ -320,8 +316,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'real')
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'real')
             >>> tabela.obter_tipo('VAR')
             'real'
             >>> tabela.obter_tipo('INEXISTENTE') is None
@@ -345,8 +340,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int')
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int')
             >>> tabela.registrar_uso('VAR', 20)
             True
         """
@@ -374,8 +368,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int')
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int')
             >>> tabela.registrar_uso('VAR')
             True
             >>> tabela.registrar_uso('VAR')
@@ -393,8 +386,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int')
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int')
             >>> len(tabela.simbolos) > 0
             True
             >>> tabela.limpar()
@@ -416,10 +408,8 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('A', 'int', True)
-            <...>
-            >>> tabela.adicionar('B', 'int', False)
-            <...>
+            >>> _ = tabela.adicionar('A', 'int', True)
+            >>> _ = tabela.adicionar('B', 'int', False)
             >>> len(tabela.listar_simbolos())
             2
             >>> len(tabela.listar_simbolos(apenas_inicializadas=True))
@@ -444,8 +434,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> tabela.adicionar('VAR', 'int', True, 5)
-            <...>
+            >>> _ = tabela.adicionar('VAR', 'int', True, 5)
             >>> print(tabela.gerar_relatorio())  # doctest: +ELLIPSIS
             ==================...
         """
