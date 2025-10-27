@@ -15,6 +15,11 @@ outputs/RA1/assembly/registers.inc
 outputs/RA1/tokens/tokens_gerados.txt
 arvore_output.txt
 outputs/RA2/arvore_output.txt
+tests/RA3/__pycache__/
+src/RA3/functions/python/__pycache__/
+outputs/RA2/arvore_sintatica.json
+outputs/RA3/gramatica_atributos.md
+.pytest_cache/
 
 
 
