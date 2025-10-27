@@ -83,16 +83,16 @@ def _construir_contexto_expressao(linha_ou_seq: Dict[str, Any]) -> str:
 
 
 def _parse_valor_literal(token: Dict[str, Any]) -> Any:
-    if token.get('subtipo') not in ['numero_real', 'numero_inteiro']:
+    if token.get('subtipo') not in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
         return None
     raw = token.get('valor')
     if raw is None:
         return None
     try:
-        # Para numero_inteiro, sempre retorna int
-        if token.get('subtipo') == 'numero_inteiro':
+        # Para numero_inteiro e numero_inteiro_res, sempre retorna int
+        if token.get('subtipo') in ['numero_inteiro', 'numero_inteiro_res']:
             return int(raw)
-        # Para numero_real, verifica se é inteiro ou real
+        # Para numero_real e numero_real_res, verifica se é inteiro ou real
         f = float(raw)
         if float(f).is_integer():
             return int(f)

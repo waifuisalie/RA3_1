@@ -505,7 +505,7 @@ def analisarSemanticaDaJsonRA2(json_data: Dict[str, Any]) -> Optional[List[str]]
         if erros_formatados:
             return erros_formatados
         
-        return None  # Sucesso
+        return {'arvore_anotada': arvore_anotada, 'tabela_simbolos': tabela}  # Sucesso
         
     except Exception as e:
         return [f"ERRO INTERNO: {str(e)}"]

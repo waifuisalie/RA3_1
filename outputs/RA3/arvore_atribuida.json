@@ -234,7 +234,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": "int",
+      "tipo_inferido": "real",
       "numero_linha": 7,
       "filhos": [
         {
@@ -247,8 +247,8 @@
               "tipo_inferido": null,
               "numero_linha": 7,
               "filhos": [],
-              "valor": "100",
-              "subtipo": "numero_inteiro"
+              "valor": "100.1",
+              "subtipo": "numero_real"
             },
             {
               "tipo_vertice": "LINHA",
@@ -265,7 +265,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": "int",
+      "tipo_inferido": "real",
       "numero_linha": 8,
       "filhos": [
         {
@@ -278,8 +278,8 @@
               "tipo_inferido": null,
               "numero_linha": 8,
               "filhos": [],
-              "valor": "10",
-              "subtipo": "numero_inteiro"
+              "valor": "10.1",
+              "subtipo": "numero_real"
             },
             {
               "tipo_vertice": "LINHA",
@@ -295,7 +295,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": null,
+      "tipo_inferido": "real",
       "numero_linha": 9,
       "filhos": [
         {
@@ -432,7 +432,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": null,
+      "tipo_inferido": "real",
       "numero_linha": 12,
       "filhos": [
         {
@@ -547,7 +547,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": null,
+      "tipo_inferido": "real",
       "numero_linha": 14,
       "filhos": [
         {
@@ -709,7 +709,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": null,
+      "tipo_inferido": "real",
       "numero_linha": 17,
       "filhos": [
         {
@@ -920,7 +920,7 @@
     },
     {
       "tipo_vertice": "LINHA",
-      "tipo_inferido": null,
+      "tipo_inferido": "int",
       "numero_linha": 20,
       "filhos": [
         {

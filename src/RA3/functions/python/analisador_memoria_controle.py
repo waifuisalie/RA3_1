@@ -60,17 +60,37 @@ def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dic
                 linha['tipo'] = tabela_local.obter_tipo(var)
             continue
 
-        if operador == 'RES':
+        if operador == 'RES' or (operador in [None, ''] and elementos and any(e.get('subtipo', '').endswith('_res') for e in elementos)):
             if not elementos:
                 erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Operando RES inválido\nContexto: RES"})
                 continue
             oper = elementos[0]
-            if oper.get('subtipo') == 'numero_real':
+            offset = None
+            if oper.get('subtipo') in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
                 val = _parse_valor_literal(oper)
                 if not isinstance(val, int) or val < 1:
                     erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Referência RES deve ter índice inteiro positivo\nContexto: RES"})
                     continue
-                linha_ref = num - val
+                offset = val
+            elif oper.get('subtipo') == 'variavel':
+                var_name = oper.get('valor')
+                if not tabela_local.existe(var_name) or not tabela_local.verificar_inicializacao(var_name):
+                    erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Variável '{var_name}' utilizada em RES sem inicialização\nContexto: RES"})
+                    continue
+                var_tipo = tabela_local.obter_tipo(var_name)
+                if var_tipo != tipos.TYPE_INT:
+                    erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Variável em RES deve ser do tipo int\nContexto: RES"})
+                    continue
+                # Para implementação completa, precisaríamos do valor da variável
+                # Por enquanto, assumimos que não podemos resolver o valor em tempo de análise
+                erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: RES com variável como offset não suportado - requer avaliação em tempo de execução\nContexto: RES"})
+                continue
+            else:
+                erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Operando RES inválido\nContexto: RES"})
+                continue
+            
+            if offset is not None:
+                linha_ref = num - offset  # RES N significa resultado de N linhas para trás (linha atual - N)
                 if linha_ref < 1:
                     erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Referência RES aponta para linha inexistente\nContexto: RES"})
                     continue
@@ -79,12 +99,6 @@ def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dic
                     erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Referência RES aponta para linha sem tipo conhecido\nContexto: RES"})
                     continue
                 linha['tipo'] = ref_l.get('tipo')
-                continue
-            elif oper.get('subtipo') == 'variavel':
-                erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: RES com variável como offset não suportado neste analisador simplificado\nContexto: RES"})
-                continue
-            else:
-                erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Operando RES inválido\nContexto: RES"})
                 continue
 
     return erros_m

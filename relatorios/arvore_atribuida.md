@@ -1,12 +1,12 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-10-27 19:06:07
+**Gerado em:** 2025-10-27 19:38:04
 
 ## Resumo
 
 - **Total de linhas:** 22
-- **Linhas com tipo definido:** 15
-- **Linhas sem tipo definido:** 7
+- **Linhas com tipo definido:** 20
+- **Linhas sem tipo definido:** 2
 
 ## Detalhes da Árvore Atribuída por Linha
 
@@ -96,38 +96,38 @@ LINHA : int
 
 ### Linha 7
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
+LINHA : real
   ARITH_OP (+)
-    LINHA [100] {numero_inteiro}
+    LINHA [100.1] {numero_real}
     LINHA [50] {numero_inteiro}
 ```
 
 ### Linha 8
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
+LINHA : real
   LINHA
-    LINHA [10] {numero_inteiro}
+    LINHA [10.1] {numero_real}
     LINHA [I] {variavel}
 ```
 
 ### Linha 9
 
-**Tipo Resultado:** `None`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA
+LINHA : real
   LINHA
     LINHA [1] {numero_inteiro_res}
 ```
@@ -167,12 +167,12 @@ LINHA
 
 ### Linha 12
 
-**Tipo Resultado:** `None`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA
+LINHA : real
   CONTROL_OP (FOR)
     LINHA
       LINHA [1] {numero_inteiro}
@@ -200,12 +200,12 @@ LINHA : int
 
 ### Linha 14
 
-**Tipo Resultado:** `None`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA
+LINHA : real
   CONTROL_OP (IFELSE)
     COMP_OP (>)
       LINHA [X] {variavel}
@@ -248,12 +248,12 @@ LINHA : int
 
 ### Linha 17
 
-**Tipo Resultado:** `None`
+**Tipo Resultado:** `real`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA
+LINHA : real
   CONTROL_OP (IFELSE)
     LOGIC_OP (&&)
       COMP_OP (>)
@@ -302,12 +302,12 @@ LINHA : real
 
 ### Linha 20
 
-**Tipo Resultado:** `None`
+**Tipo Resultado:** `int`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA
+LINHA : int
   LINHA
     LINHA [2] {numero_inteiro_res}
 ```

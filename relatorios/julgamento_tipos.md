@@ -1,6 +1,6 @@
 # Julgamento de Tipos
 
-**Gerado em:** 2025-10-27 19:06:07
+**Gerado em:** 2025-10-27 19:38:04
 
 ## Análise de Tipos por Linha
 
@@ -12,20 +12,20 @@
 | 4 | `boolean` |   Tipo definido |
 | 5 | `int` |   Tipo definido |
 | 6 | `int` |   Tipo definido |
-| 7 | `int` |   Tipo definido |
-| 8 | `int` |   Tipo definido |
-| 9 | `N/A` |   Tipo indefinido |
+| 7 | `real` |   Tipo definido |
+| 8 | `real` |   Tipo definido |
+| 9 | `real` |   Tipo definido |
 | 10 | `int` |   Tipo definido |
 | 11 | `N/A` |   Tipo indefinido |
-| 12 | `N/A` |   Tipo indefinido |
+| 12 | `real` |   Tipo definido |
 | 13 | `int` |   Tipo definido |
-| 14 | `N/A` |   Tipo indefinido |
+| 14 | `real` |   Tipo definido |
 | 15 | `int` |   Tipo definido |
 | 16 | `int` |   Tipo definido |
-| 17 | `N/A` |   Tipo indefinido |
+| 17 | `real` |   Tipo definido |
 | 18 | `int` |   Tipo definido |
 | 19 | `real` |   Tipo definido |
-| 20 | `N/A` |   Tipo indefinido |
+| 20 | `int` |   Tipo definido |
 | 21 | `int` |   Tipo definido |
 | 22 | `N/A` |   Tipo indefinido |
 
@@ -33,8 +33,8 @@
 
 ### Estatísticas
 - **Total de expressões:** 22
-- **Com tipo definido:** 15
-- **Sem tipo definido:** 7
+- **Com tipo definido:** 20
+- **Sem tipo definido:** 2
 
 ### Tipos Utilizados
 - `boolean`

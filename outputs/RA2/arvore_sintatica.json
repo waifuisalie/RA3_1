@@ -818,10 +818,10 @@
     },
     {
       "numero_linha": 7,
-      "expressao_original": "( 100 50 + )",
+      "expressao_original": "( 100.1 50 + )",
       "tokens": [
         "(",
-        "100",
+        "100.1",
         "50",
         "+",
         ")"
@@ -843,7 +843,7 @@
                     "label": "OPERANDO",
                     "filhos": [
                       {
-                        "label": "numero_inteiro",
+                        "label": "numero_real",
                         "filhos": []
                       },
                       {
@@ -923,10 +923,10 @@
     },
     {
       "numero_linha": 8,
-      "expressao_original": "( 10 I )",
+      "expressao_original": "( 10.1 I )",
       "tokens": [
         "(",
-        "10",
+        "10.1",
         "I",
         ")"
       ],
@@ -947,7 +947,7 @@
                     "label": "OPERANDO",
                     "filhos": [
                       {
-                        "label": "numero_inteiro",
+                        "label": "numero_real",
                         "filhos": []
                       },
                       {

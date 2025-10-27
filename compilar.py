@@ -218,7 +218,7 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"  ERRO na linha {i}: {e}")
             tokens_salvos_txt.append([])  # Adiciona lista vazia para manter índices
-            
+
     # ============================================================================
     # LEGACY RA1: Execução e Assembly Generation (DESABILITADOS)
     # ============================================================================
@@ -379,27 +379,28 @@ if __name__ == "__main__":
             arvore_ra2 = json.load(f)
 
         # Perform semantic analysis
-        erros_semanticos = analisarSemanticaDaJsonRA2(arvore_ra2)
+        resultado_semantico_ra2 = analisarSemanticaDaJsonRA2(arvore_ra2)
 
         # Report results
-        if erros_semanticos is None:
-            print("    Análise semântica concluída com sucesso sem nenhum erro")
-        else:
+        if isinstance(resultado_semantico_ra2, list):
             print("    Erro(s) semântico(s) encontrado(s):")
-            for erro in erros_semanticos:
+            for erro in resultado_semantico_ra2:
                 print(f"    {erro}")
-
-        print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
-
-        # Para obter a árvore anotada, precisamos executar a análise semântica novamente
-        # mas desta vez capturando o resultado completo
-
-        arvore_convertida = _converter_arvore_json_para_analisador(arvore_ra2)
-        resultado_semantico = analisarSemantica(arvore_convertida)
-
-        if resultado_semantico['sucesso']:
-            # Gerar árvore atribuída e relatórios
+            print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+            print("  Falha na análise semântica detalhada para geração da árvore atribuída")
+            print("  Tentando gerar árvore atribuída com dados parciais...")
+            # Criar resultado_semantico fictício para geração parcial
+            resultado_semantico = {'arvore_anotada': arvore_ra2, 'tabela_simbolos': None}
             resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+            if resultado_arvore['sucesso']:
+                print("  ✓ Árvore atribuída gerada com dados parciais")
+        else:
+            # Sucesso - resultado_semantico_ra2 é {'arvore_anotada': ..., 'tabela_simbolos': ...}
+            print("    Análise semântica concluída com sucesso sem nenhum erro")
+
+            print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+            # Gerar árvore atribuída e relatórios
+            resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico_ra2)
 
             if resultado_arvore['sucesso']:
                 print("    Árvore atribuída gerada e salva")
@@ -410,12 +411,6 @@ if __name__ == "__main__":
                 print("    - tabela_simbolos.md")
             else:
                 print(f"    Falha na geração da árvore atribuída: {resultado_arvore.get('erro', 'Erro desconhecido')}")
-        else:
-            print("  Falha na análise semântica detalhada para geração da árvore atribuída")
-            print("  Tentando gerar árvore atribuída com dados parciais...")
-            resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
-            if resultado_arvore['sucesso']:
-                print("  ✓ Árvore atribuída gerada com dados parciais")
 
     except Exception as e:
         print(f"  Erro na análise semântica: {e}")
