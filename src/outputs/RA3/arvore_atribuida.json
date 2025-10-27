@@ -1,0 +1,92 @@
+{
+  "arvore_atribuida": [
+    {
+      "linha": 1,
+      "tipo": "int"
+    },
+    {
+      "linha": 2,
+      "tipo": "real"
+    },
+    {
+      "linha": 3,
+      "tipo": "boolean"
+    },
+    {
+      "linha": 4,
+      "tipo": "boolean"
+    },
+    {
+      "linha": 5,
+      "tipo": "int"
+    },
+    {
+      "linha": 6,
+      "tipo": "int"
+    },
+    {
+      "linha": 7,
+      "tipo": "int"
+    },
+    {
+      "linha": 8,
+      "tipo": "int"
+    },
+    {
+      "linha": 9,
+      "tipo": null
+    },
+    {
+      "linha": 10,
+      "tipo": "int"
+    },
+    {
+      "linha": 11,
+      "tipo": "boolean"
+    },
+    {
+      "linha": 12,
+      "tipo": "int"
+    },
+    {
+      "linha": 13,
+      "tipo": "int"
+    },
+    {
+      "linha": 14,
+      "tipo": "boolean"
+    },
+    {
+      "linha": 15,
+      "tipo": "int"
+    },
+    {
+      "linha": 16,
+      "tipo": "int"
+    },
+    {
+      "linha": 17,
+      "tipo": "boolean"
+    },
+    {
+      "linha": 18,
+      "tipo": "int"
+    },
+    {
+      "linha": 19,
+      "tipo": "real"
+    },
+    {
+      "linha": 20,
+      "tipo": null
+    },
+    {
+      "linha": 21,
+      "tipo": "int"
+    },
+    {
+      "linha": 22,
+      "tipo": null
+    }
+  ]
+}

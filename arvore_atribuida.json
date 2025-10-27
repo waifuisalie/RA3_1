@@ -1,0 +1,16 @@
+{
+  "arvore_atribuida": [
+    {
+      "linha": 1,
+      "tipo": "real"
+    },
+    {
+      "linha": 2,
+      "tipo": "int"
+    },
+    {
+      "linha": 3,
+      "tipo": "real"
+    }
+  ]
+}

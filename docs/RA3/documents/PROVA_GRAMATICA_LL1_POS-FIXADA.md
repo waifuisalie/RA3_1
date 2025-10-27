@@ -66,7 +66,8 @@ Portanto, é **CRÍTICO** provar formalmente que esta gramática é LL(1).
                      | ε                             # Operando único
 
 # Operandos válidos
-⟨OPERANDO⟩ ::= numero_real
+⟨OPERANDO⟩ ::= numero_inteiro
+              | numero_real
               | variavel
               | ⟨LINHA⟩  # Sub-expressão aninhada
 
@@ -107,7 +108,7 @@ N = {PROGRAM, PROGRAM_PRIME, LINHA, SEQUENCIA, SEQUENCIA_PRIME,
 
 **Símbolos Terminais (T):**
 ```
-T = {abre_parenteses, fecha_parenteses, numero_real, variavel,
+T = {abre_parenteses, fecha_parenteses, numero_inteiro, numero_real, variavel,
      soma, subtracao, multiplicacao, divisao_inteira, divisao_real,
      resto, potencia, menor, maior, igual, menor_igual, maior_igual,
      diferente, and, or, not, for, while, ifelse, mem, res, $}
@@ -175,12 +176,12 @@ FIRST(LINHA) = {abre_parenteses}
 ```
 
 ```
-FIRST(OPERANDO) = {numero_real, variavel, abre_parenteses}
+FIRST(OPERANDO) = {numero_inteiro, numero_real, variavel, abre_parenteses}
 ```
 
 ```
 FIRST(SEQUENCIA) = FIRST(OPERANDO)
-                 = {numero_real, variavel, abre_parenteses}
+                 = {numero_inteiro, numero_real, variavel, abre_parenteses}
 ```
 
 ```
@@ -230,7 +231,7 @@ FOLLOW(SEQUENCIA_PRIME) = FOLLOW(SEQUENCIA)
                         = {fecha_parenteses}
 
 FOLLOW(OPERANDO) = FIRST(SEQUENCIA_PRIME) ∪ FOLLOW(SEQUENCIA_PRIME)
-                 = {numero_real, variavel, abre_parenteses}
+                 = {numero_inteiro, numero_real, variavel, abre_parenteses}
                    ∪ {soma, ..., res} ∪ {fecha_parenteses}
 
 FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
@@ -255,7 +256,7 @@ FOLLOW(COMMAND_OP) = FOLLOW(OPERADOR_FINAL) = {fecha_parenteses}
 
 **Cálculo dos FIRST:**
 ```
-FIRST₁ = {numero_real, variavel, abre_parenteses}
+FIRST₁ = {numero_inteiro, numero_real, variavel, abre_parenteses}
 FIRST₂ = {soma, subtracao, multiplicacao, ..., mem, res}
 FIRST₃ = {ε}
 ```
@@ -326,22 +327,27 @@ FIRST₁ ∩ FOLLOW(PROGRAM_PRIME) = {abre_parenteses} ∩ {$}
 #### 3.5.3 Verificação para OPERANDO
 
 **Produções:**
-1. `numero_real`
-2. `variavel`
-3. `LINHA`
+1. `numero_inteiro`
+2. `numero_real`
+3. `variavel`
+4. `LINHA`
 
 **Cálculo dos FIRST:**
 ```
-FIRST₁ = {numero_real}
-FIRST₂ = {variavel}
-FIRST₃ = {abre_parenteses}
+FIRST₁ = {numero_inteiro}
+FIRST₂ = {numero_real}
+FIRST₃ = {variavel}
+FIRST₄ = {abre_parenteses}
 ```
 
 **Verificação Condição 1:**
 ```
-FIRST₁ ∩ FIRST₂ = {numero_real} ∩ {variavel} = ∅  ✅
-FIRST₁ ∩ FIRST₃ = {numero_real} ∩ {abre_parenteses} = ∅  ✅
-FIRST₂ ∩ FIRST₃ = {variavel} ∩ {abre_parenteses} = ∅  ✅
+FIRST₁ ∩ FIRST₂ = {numero_inteiro} ∩ {numero_real} = ∅  ✅
+FIRST₁ ∩ FIRST₃ = {numero_inteiro} ∩ {variavel} = ∅  ✅
+FIRST₁ ∩ FIRST₄ = {numero_inteiro} ∩ {abre_parenteses} = ∅  ✅
+FIRST₂ ∩ FIRST₃ = {numero_real} ∩ {variavel} = ∅  ✅
+FIRST₂ ∩ FIRST₄ = {numero_real} ∩ {abre_parenteses} = ∅  ✅
+FIRST₃ ∩ FIRST₄ = {variavel} ∩ {abre_parenteses} = ∅  ✅
 ```
 
 **🎯 CONCLUSÃO:** OPERANDO satisfaz todas as condições LL(1)!
@@ -403,20 +409,21 @@ Como cada produção tem um FIRST diferente (tokens únicos), **todas são LL(1)
 
 ### 3.6 Tabela de Análise LL(1) (Parcial)
 
-| Não-Terminal      | numero_real | variavel | ( | soma | ... | ) | $ |
-|-------------------|-------------|----------|---|------|-----|---|---|
-| PROGRAM           | —           | —        | 1 | —    | —   | — | — |
-| PROGRAM_PRIME     | —           | —        | 1 | —    | —   | — | 2 |
-| LINHA             | —           | —        | 1 | —    | —   | — | — |
-| SEQUENCIA         | 1           | 1        | 1 | —    | —   | — | — |
-| SEQUENCIA_PRIME   | 1           | 1        | 1 | 2    | ... | 3 | — |
-| OPERANDO          | 1           | 2        | 3 | —    | —   | — | — |
-| OPERADOR_FINAL    | —           | —        | — | 1    | ... | — | — |
+| Não-Terminal      | numero_inteiro | numero_real | variavel | ( | soma | ... | ) | $ |
+|-------------------|-----------------|-------------|----------|---|------|-----|---|---|
+| PROGRAM           | —               | —           | —        | 1 | —    | —   | — | — |
+| PROGRAM_PRIME     | —               | —           | —        | 1 | —    | —   | — | 2 |
+| LINHA             | —               | —           | —        | 1 | —    | —   | — | — |
+| SEQUENCIA         | 1               | 1           | 1        | 1 | —    | —   | — | — |
+| SEQUENCIA_PRIME   | 1               | 1           | 1        | 1 | 2    | ... | 3 | — |
+| OPERANDO          | 1               | 2           | 3        | 4 | —    | —   | — | — |
+| OPERADOR_FINAL    | —               | —           | —        | — | 1    | ... | — | — |
 
 **Legenda das Produções:**
 - PROGRAM: `1 = LINHA PROGRAM_PRIME`
 - PROGRAM_PRIME: `1 = LINHA PROGRAM_PRIME`, `2 = ε`
 - SEQUENCIA_PRIME: `1 = OPERANDO SEQUENCIA_PRIME`, `2 = OPERADOR_FINAL`, `3 = ε`
+- OPERANDO: `1 = numero_inteiro`, `2 = numero_real`, `3 = variavel`, `4 = LINHA`
 
 **🎯 Observação Crítica:** Não há **NENHUMA célula com múltiplas entradas**, o que confirma que a gramática é LL(1)!
 

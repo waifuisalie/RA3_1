@@ -20,6 +20,8 @@ src/RA3/functions/python/__pycache__/
 outputs/RA2/arvore_sintatica.json
 outputs/RA3/gramatica_atributos.md
 .pytest_cache/
+__pycache__/
+src/RA3/functions/python/__pycache__/
 
 
 
