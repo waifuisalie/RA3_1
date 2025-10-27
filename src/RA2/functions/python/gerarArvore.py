@@ -73,8 +73,8 @@ def exportar_arvore_ascii(arvore, nome_arquivo='arvore_output.txt'):
         conteudo += filho.desenhar_ascii('', eh_ultimo)
 
     # Exportar para a raiz
-    with open(nome_arquivo, 'w', encoding='utf-8') as f:
-        f.write(conteudo)
+    #with open(nome_arquivo, 'w', encoding='utf-8') as f:
+    #    f.write(conteudo)
 
     # Exportar para /outputs/RA2/
     output_dir = os.path.join(os.getcwd(), 'outputs', 'RA2')
