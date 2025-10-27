@@ -12,6 +12,7 @@ import sys
 import traceback
 from pathlib import Path
 from datetime import datetime
+import json
 
 # ============================================================================
 # IMPORTS - RA1 (Análise Léxica)
@@ -38,10 +39,10 @@ BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 INPUTS_DIR  = BASE_DIR / "inputs" / "RA1"                       # raiz/inputs
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
 OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"          # raiz/outputs/assembly
+OUT_ARVORE_JSON = BASE_DIR / "outputs" / "RA2" / "arvore_sintatica.json"
 
-# garante pastas de saída
-OUT_ASM_DIR.mkdir(parents=True, exist_ok=True)
 OUT_TOKENS.parent.mkdir(parents=True, exist_ok=True)
+
 
 def atualizar_documentacao_gramatica():
     """Atualiza a seção Latest Syntax Tree no grammar_documentation.md com a última árvore gerada"""
@@ -221,21 +222,6 @@ if __name__ == "__main__":
     print(f"  ✓ Tokens salvos em: {OUT_TOKENS.relative_to(BASE_DIR)}\n")
 
     # ============================================================================
-    # LEGACY RA1: Execução e Assembly Generation (DESABILITADOS)
-    # ============================================================================
-    # As seguintes operações do RA1 NÃO são mais executadas:
-    # 1. exibirResultados() -> executarExpressao() - execução de RPN para validação
-    # 2. gerarAssemblyMultiple() - geração de código RISC-V para Arduino
-    # 3. save_assembly() - salvamento de programa_completo.S
-    #
-    # MOTIVO: Especificação RA3 afirma "não será necessário gerar código Assembly"
-    # O foco mudou para análise sintática (RA2) e semântica (RA3)
-    #
-    # Os arquivos assembly/*.py e rpn_calc.py foram marcados como legacy
-    # ============================================================================
-
-
-    # ============================================================================
     # RA2: ANÁLISE SINTÁTICA (Parser LL(1))
     # ============================================================================
     # Grammar, FIRST/FOLLOW sets, LL(1) table, parsing, syntax tree generation
@@ -341,7 +327,7 @@ if __name__ == "__main__":
         
         # Gera e salva todas as árvores sintáticas
         print("\n--- GERAÇÃO DAS ÁRVORES SINTÁTICAS ---")
-        gerar_e_salvar_todas_arvores(derivacoes, "arvore_output.txt")
+        # gerar_e_salvar_todas_arvores(derivacoes, "arvore_output.txt")  # Removido - não precisamos mais do arquivo ASCII
 
         # Gera JSON das árvores sintáticas (entrada para RA3)
         # Reconstrói linhas originais a partir dos tokens
@@ -361,3 +347,38 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"  Erro na análise sintática: {e}")
         traceback.print_exc()
+
+    # ============================================================================
+    # RA3: ANÁLISE SEMÂNTICA
+    # ============================================================================
+    # Semantic analysis: type checking, memory validation, control structures
+    # ============================================================================
+
+    print("\n--- RA3: ANÁLISE SEMÂNTICA ---")
+    
+    try:
+        # Import RA3 modules
+        from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJsonRA2
+        
+        # Load AST from RA2
+        with open(str(OUT_ARVORE_JSON), 'r', encoding='utf-8') as f:
+            arvore_ra2 = json.load(f)
+        
+        # Perform semantic analysis
+        erros_semanticos = analisarSemanticaDaJsonRA2(arvore_ra2)
+        
+        # Report results
+        if erros_semanticos is None:
+            print("    Análise semântica concluída com sucesso sem nenhum erro")
+        else:
+            print("    Erro(s) semântico(s) encontrado(s):")
+            for erro in erros_semanticos:
+                print(f"    {erro}")
+        
+        # TODO: Aluno 4 - Implementar geração de relatórios finais
+        # gerar_relatorios_ra3(resultado_semantico, gramatica, tabela, BASE_DIR / "outputs" / "RA3")
+        
+    except Exception as e:
+        print(f"  Erro na análise semântica: {e}")
+        traceback.print_exc()
+        # Continue execution even if semantic analysis fails

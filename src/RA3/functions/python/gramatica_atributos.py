@@ -37,8 +37,8 @@ Estrutura de uma Regra Semântica:
 """
 
 from typing import Dict, List, Callable, Any, Optional
-import tipos
-from tabela_simbolos import TabelaSimbolos
+from src.RA3.functions.python import tipos
+from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos
 
 
 # ============================================================================
@@ -586,7 +586,7 @@ def inicializar_sistema_semantico() -> tuple[Dict, TabelaSimbolos]:
         >>> isinstance(tabela, TabelaSimbolos)
         True
     """
-    from tabela_simbolos import criar_tabela_simbolos
+    from src.RA3.functions.python.tabela_simbolos import criar_tabela_simbolos
 
     gramatica = definir_gramatica_atributos()
     tabela = criar_tabela_simbolos()
@@ -597,22 +597,6 @@ def inicializar_sistema_semantico() -> tuple[Dict, TabelaSimbolos]:
 # ============================================================================
 # UTILIDADES E HELPERS
 # ============================================================================
-
-def listar_operadores_por_categoria() -> Dict[str, List[str]]:
-    """
-    Lista todos os operadores organizados por categoria.
-
-    Returns:
-        Dicionário categoria → lista de operadores
-    """
-    gramatica = definir_gramatica_atributos()
-
-    resultado = {}
-    for categoria, regras in gramatica.items():
-        resultado[categoria] = list(regras.keys())
-
-    return resultado
-
 
 def obter_regra(operador: str, categoria: Optional[str] = None) -> Optional[RegraSemantica]:
     """

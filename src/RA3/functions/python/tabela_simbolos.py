@@ -24,7 +24,7 @@ Funcionalidades:
 
 from typing import Optional, Dict, Any
 from dataclasses import dataclass, field
-import tipos
+from src.RA3.functions.python import tipos
 
 
 # ============================================================================
