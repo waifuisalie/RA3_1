@@ -235,8 +235,8 @@ if __name__ == "__main__":
 
     # Salva os tokens gerados
     salvar_tokens(tokens_salvos_txt, OUT_TOKENS)
-    print(f"  ✓ {linhas_processadas} linha(s) tokenizadas")
-    print(f"  ✓ Tokens salvos em: {OUT_TOKENS.relative_to(BASE_DIR)}\n")
+    print(f"  [OK] {linhas_processadas} linha(s) tokenizadas")
+    print(f"  [OK] Tokens salvos em: {OUT_TOKENS.relative_to(BASE_DIR)}\n")
 
     # ============================================================================
     # RA2: ANÁLISE SINTÁTICA (Parser LL(1))
@@ -393,7 +393,7 @@ if __name__ == "__main__":
             resultado_semantico = {'arvore_anotada': arvore_ra2, 'tabela_simbolos': None}
             resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
             if resultado_arvore['sucesso']:
-                print("  ✓ Árvore atribuída gerada com dados parciais")
+                print("  [OK] Árvore atribuída gerada com dados parciais")
         else:
             # Sucesso - resultado_semantico_ra2 é {'arvore_anotada': ..., 'tabela_simbolos': ...}
             print("    Análise semântica concluída com sucesso sem nenhum erro")

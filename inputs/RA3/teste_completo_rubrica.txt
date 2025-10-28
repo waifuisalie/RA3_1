@@ -1,0 +1,197 @@
+# Teste Completo para Validação de Todas as Funcionalidades (Fases 1, 2 e 3)
+# Este arquivo testa todos os requisitos das 3 fases do compilador RPN
+
+# ============================================================================
+# FASE 1 - ANÁLISE LÉXICA
+# ============================================================================
+# Validação de tokens: números inteiros, reais, operadores, variáveis, parênteses
+
+# Teste 1: Números inteiros
+(10 5 +)
+
+# Teste 2: Números reais
+(3.14 2.71 +)
+
+# Teste 3: Expressão mista (int + real → real)
+(5 2.5 +)
+
+# ============================================================================
+# FASE 2 - ANÁLISE SINTÁTICA + FASE 3 - ANÁLISE SEMÂNTICA
+# ============================================================================
+
+# --- OPERADORES ARITMÉTICOS ---
+
+# Teste 4: Adição (int + int → int)
+(100 50 +)
+
+# Teste 5: Subtração (real - real → real)
+(10.5 3.2 -)
+
+# Teste 6: Multiplicação com promoção de tipo (int * real → real)
+(5 2.0 *)
+
+# Teste 7: Divisão real | (sempre retorna real)
+(10 3 |)
+
+# Teste 8: Divisão inteira / (somente int, retorna int)
+(15 7 /)
+
+# Teste 9: Módulo % (somente int, retorna int)
+(23 6 %)
+
+# Teste 10: Potenciação ^ (base: numeric, expoente: OBRIGATORIAMENTE int)
+(2.5 3 ^)
+
+# --- OPERADORES RELACIONAIS (retornam boolean) ---
+
+# Teste 11: Maior que
+(10.5 5.0 >)
+
+# Teste 12: Menor que
+(3 8 <)
+
+# Teste 13: Maior ou igual
+(5.5 5.5 >=)
+
+# Teste 14: Menor ou igual
+(2 10 <=)
+
+# Teste 15: Igual
+(7.0 7.0 ==)
+
+# Teste 16: Diferente
+(5 3 !=)
+
+# --- OPERADORES LÓGICOS (retornam boolean) ---
+
+# Teste 17: AND lógico &&
+((10 5 >) (3 2 <) &&)
+
+# Teste 18: OR lógico ||
+((5 10 >) (3 2 <) ||)
+
+# Teste 19: NOT lógico ! (unário)
+((5 3 >) !)
+
+# --- COMANDOS ESPECIAIS ---
+
+# Teste 20: (V MEM) - Armazenar valor na variável
+(42 CONTADOR)
+
+# Teste 21: (MEM) - Recuperar valor da variável (deve estar inicializada)
+(CONTADOR 10 +)
+
+# Teste 22: (N RES) - Referenciar resultado de N linhas atrás
+(1 RES)
+
+# Teste 23: RES com offset maior
+(5 RES)
+
+# --- ESTRUTURAS DE CONTROLE ---
+
+# Teste 24: IFELSE - condição verdadeira
+((10 5 >) (100) (200) IFELSE)
+
+# Teste 25: IFELSE - condição falsa
+((3 8 >) (100) (200) IFELSE)
+
+# Teste 26: IFELSE - com tipos compatíveis nos branches (int e int → int)
+((5 3 >) (50) (30) IFELSE)
+
+# Teste 27: IFELSE - com promoção de tipo (int e real → real)
+((5 3 >) (50) (30.5) IFELSE)
+
+# Teste 28: WHILE - Loop condicional
+(0 INDEX)
+((INDEX 5 <) (((INDEX 1 +) INDEX)) WHILE)
+
+# Teste 29: FOR - Loop com contador
+((1) (10) (2) (((2 RES) 2 *) TEMP) FOR)
+
+# --- EXPRESSÕES ANINHADAS ---
+
+# Teste 30: Expressão com múltiplos níveis de aninhamento
+(((5 3 +) (2 4 *) *) RESULTADO1)
+
+# Teste 31: Expressão complexa com operadores mistos
+(((10.5 2.0 |) (5 3 -) +) RESULTADO2)
+
+# Teste 32: IFELSE aninhado em expressão aritmética
+(((10 5 >) (20) (30) IFELSE) 2 *)
+
+# --- TESTES DE INICIALIZAÇÃO E MEMÓRIA ---
+
+# Teste 33: Variável inicializada e reutilizada
+(100 VAR1)
+(VAR1 50 +)
+((VAR1 2 *) VAR1)
+
+# Teste 34: Múltiplas variáveis
+(10 A)
+(20 B)
+(30 C)
+((A B +) (C 2 *) +)
+
+# Teste 35: RES em expressão aritmética
+((1 RES) (2 RES) +)
+
+# --- TESTES DE PROMOÇÃO DE TIPOS ---
+
+# Teste 36: int + int = int, depois * real = real
+((5 3 +) 2.5 *)
+
+# Teste 37: real | int = real
+(10.5 2 |)
+
+# --- TESTES DE COMPATIBILIDADE LÓGICA (Truthiness) ---
+
+# Teste 38: Valor numérico usado em contexto lógico (permitido)
+(10 NUMERO)
+((NUMERO 0 >) (5) (0) IFELSE)
+
+# --- TESTES COMPLEXOS DE INTEGRAÇÃO ---
+
+# Teste 39: Programa com múltiplas operações e controle de fluxo
+(5 X)
+(10 Y)
+((X Y +) SOMA)
+((X Y *) PROD)
+((SOMA PROD >) (SOMA) (PROD) IFELSE)
+
+# Teste 40: Loop WHILE com RES
+(1 CONT)
+((CONT 3 <=) (((CONT 1 +) CONT) ((2 RES) 2 *) ACUM) WHILE)
+
+# Teste 41: Expressão aritmética complexa com divisão real
+(((10 3 |) (5.5 2.0 *) +) 2.0 /)
+
+# Teste 42: Comparação em contexto lógico
+(((10 5 >) (20 15 <) &&) (1) (0) IFELSE)
+
+# Teste 43: Potenciação com base real e expoente int
+(2.5 4 ^)
+
+# Teste 44: Sequência de operações com armazenamento
+(50 BASE)
+((BASE 2 ^) QUADRADO)
+((QUADRADO 2 |) METADE_QUAD)
+
+# Teste 45: IFELSE com expressões aritméticas nos branches
+((100 50 >) ((10 5 +)) ((20 3 -)) IFELSE)
+
+# --- TESTES DE COMPATIBILIDADE DE TIPOS EM OPERADORES ---
+
+# Teste 46: Divisão inteira (somente int)
+(15 4 /)
+
+# Teste 47: Módulo (somente int)
+(17 5 %)
+
+# Teste 48: Potência com expoente int
+(3 5 ^)
+
+# Teste 49: Divisão real sempre retorna real
+(20 4 |)
+
+# Teste 50: Comparação com promoção de tipo (int e real)
+(5 5.0 ==)

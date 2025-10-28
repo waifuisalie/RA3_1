@@ -1,148 +1,113 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-10-27 19:38:04
+**Gerado em:** 2025-10-28 17:16:14
 
 ## Resumo
 
-- **Total de linhas:** 22
-- **Linhas com tipo definido:** 20
-- **Linhas sem tipo definido:** 2
+- **Total de linhas:** 15
+- **Linhas com tipo definido:** 0
+- **Linhas sem tipo definido:** 15
 
 ## Detalhes da Árvore Atribuída por Linha
 
 ### Linha 1
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
-  ARITH_OP (+)
-    LINHA [5] {numero_inteiro}
-    LINHA [3] {numero_inteiro}
+LINHA
 ```
 
 ### Linha 2
 
-**Tipo Resultado:** `real`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : real
-  ARITH_OP (*)
-    LINHA [10.5] {numero_real}
-    LINHA [2.0] {numero_real}
+LINHA
 ```
 
 ### Linha 3
 
-**Tipo Resultado:** `boolean`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : boolean
-  COMP_OP (>)
-    LINHA [5.5] {numero_real}
-    LINHA [3.2] {numero_real}
+LINHA
 ```
 
 ### Linha 4
 
-**Tipo Resultado:** `boolean`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : boolean
-  LOGIC_OP (&&)
-    COMP_OP (>)
-      LINHA [5] {numero_inteiro}
-      LINHA [3] {numero_inteiro}
-    COMP_OP (<)
-      LINHA [2] {numero_inteiro}
-      LINHA [1] {numero_inteiro}
+LINHA
 ```
 
 ### Linha 5
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
-  LINHA
-    LINHA [10] {numero_inteiro}
-    LINHA [X] {variavel}
+LINHA
 ```
 
 ### Linha 6
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
-  LINHA
-    ARITH_OP (+)
-      LINHA [X] {variavel}
-      LINHA [5] {numero_inteiro}
-    LINHA [Y] {variavel}
+LINHA
 ```
 
 ### Linha 7
 
-**Tipo Resultado:** `real`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : real
-  ARITH_OP (+)
-    LINHA [100.1] {numero_real}
-    LINHA [50] {numero_inteiro}
+LINHA
 ```
 
 ### Linha 8
 
-**Tipo Resultado:** `real`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : real
-  LINHA
-    LINHA [10.1] {numero_real}
-    LINHA [I] {variavel}
+LINHA
 ```
 
 ### Linha 9
 
-**Tipo Resultado:** `real`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : real
-  LINHA
-    LINHA [1] {numero_inteiro_res}
+LINHA
 ```
 
 ### Linha 10
 
-**Tipo Resultado:** `int`
+**Tipo Resultado:** `None`
 
 **Estrutura da Árvore:**
 
 ```
-LINHA : int
-  LINHA
-    LINHA [0] {numero_inteiro}
-    LINHA [COUNTER] {variavel}
+LINHA
 ```
 
 ### Linha 11
@@ -153,181 +118,9 @@ LINHA : int
 
 ```
 LINHA
-  CONTROL_OP (WHILE)
-    COMP_OP (<)
-      LINHA [COUNTER] {variavel}
-      LINHA [5] {numero_inteiro}
-    LINHA
-      LINHA
-        ARITH_OP (+)
-          LINHA [COUNTER] {variavel}
-          LINHA [1] {numero_inteiro}
-        LINHA [COUNTER] {variavel}
 ```
 
 ### Linha 12
-
-**Tipo Resultado:** `real`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : real
-  CONTROL_OP (FOR)
-    LINHA
-      LINHA [1] {numero_inteiro}
-    LINHA
-      LINHA [10] {numero_inteiro}
-    LINHA
-      LINHA [1] {numero_inteiro}
-    ARITH_OP (*)
-      LINHA [I] {variavel}
-      LINHA [2] {numero_inteiro}
-```
-
-### Linha 13
-
-**Tipo Resultado:** `int`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : int
-  ARITH_OP (%)
-    LINHA [23] {numero_inteiro}
-    LINHA [6] {numero_inteiro}
-```
-
-### Linha 14
-
-**Tipo Resultado:** `real`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : real
-  CONTROL_OP (IFELSE)
-    COMP_OP (>)
-      LINHA [X] {variavel}
-      LINHA [15] {numero_inteiro}
-    LINHA
-      LINHA [100] {numero_inteiro}
-    LINHA
-      LINHA [200] {numero_inteiro}
-```
-
-### Linha 15
-
-**Tipo Resultado:** `int`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : int
-  ARITH_OP (*)
-    ARITH_OP (+)
-      LINHA [5] {numero_inteiro}
-      LINHA [3] {numero_inteiro}
-    ARITH_OP (*)
-      LINHA [2] {numero_inteiro}
-      LINHA [4] {numero_inteiro}
-```
-
-### Linha 16
-
-**Tipo Resultado:** `int`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : int
-  LINHA
-    LINHA [20] {numero_inteiro}
-    LINHA [A] {variavel}
-```
-
-### Linha 17
-
-**Tipo Resultado:** `real`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : real
-  CONTROL_OP (IFELSE)
-    LOGIC_OP (&&)
-      COMP_OP (>)
-        LINHA [A] {variavel}
-        LINHA [10] {numero_inteiro}
-      COMP_OP (>)
-        LINHA [Y] {variavel}
-        LINHA [5] {numero_inteiro}
-    LINHA
-      ARITH_OP (|)
-        ARITH_OP (+)
-          LINHA [A] {variavel}
-          LINHA [Y] {variavel}
-        LINHA [2.0] {numero_real}
-    LINHA
-      ARITH_OP (*)
-        LINHA [A] {variavel}
-        LINHA [Y] {variavel}
-```
-
-### Linha 18
-
-**Tipo Resultado:** `int`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : int
-  ARITH_OP (/)
-    LINHA [15] {numero_inteiro}
-    LINHA [7] {numero_inteiro}
-```
-
-### Linha 19
-
-**Tipo Resultado:** `real`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : real
-  ARITH_OP (^)
-    LINHA [2.1] {numero_real}
-    LINHA [3] {numero_inteiro}
-```
-
-### Linha 20
-
-**Tipo Resultado:** `int`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : int
-  LINHA
-    LINHA [2] {numero_inteiro_res}
-```
-
-### Linha 21
-
-**Tipo Resultado:** `int`
-
-**Estrutura da Árvore:**
-
-```
-LINHA : int
-  LINHA
-    ARITH_OP (-)
-      LINHA [A] {variavel}
-      LINHA [X] {variavel}
-    LINHA [B] {variavel}
-```
-
-### Linha 22
 
 **Tipo Resultado:** `None`
 
@@ -335,16 +128,36 @@ LINHA : int
 
 ```
 LINHA
-  CONTROL_OP (WHILE)
-    COMP_OP (>)
-      LINHA [B] {variavel}
-      LINHA [0] {numero_inteiro}
-    LINHA
-      LINHA
-        ARITH_OP (-)
-          LINHA [B] {variavel}
-          LINHA [1] {numero_inteiro}
-        LINHA [B] {variavel}
+```
+
+### Linha 13
+
+**Tipo Resultado:** `None`
+
+**Estrutura da Árvore:**
+
+```
+LINHA
+```
+
+### Linha 14
+
+**Tipo Resultado:** `None`
+
+**Estrutura da Árvore:**
+
+```
+LINHA
+```
+
+### Linha 15
+
+**Tipo Resultado:** `None`
+
+**Estrutura da Árvore:**
+
+```
+LINHA
 ```
 
 

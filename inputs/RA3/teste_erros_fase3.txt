@@ -1,0 +1,167 @@
+# TESTES DE ERROS SEMÂNTICOS - FASE 3
+# Este arquivo contém casos que DEVEM gerar erros semânticos
+
+# ============================================================================
+# CATEGORIA 1: ERROS DE TIPO EM OPERADORES ARITMÉTICOS
+# ============================================================================
+
+# ERRO 1: Divisão inteira com operando real (esquerda)
+(5.5 2 /)
+
+# ERRO 2: Divisão inteira com operando real (direita)
+(10 3.5 /)
+
+# ERRO 3: Divisão inteira com ambos reais
+(10.5 3.2 /)
+
+# ERRO 4: Módulo com operando real (esquerda)
+(10.5 3 %)
+
+# ERRO 5: Módulo com operando real (direita)
+(15 3.7 %)
+
+# ERRO 6: Módulo com ambos reais
+(15.8 4.2 %)
+
+# ERRO 7: Potência com expoente real (base int)
+(2 3.5 ^)
+
+# ERRO 8: Potência com expoente real (base real)
+(2.5 3.5 ^)
+
+# ERRO 9: Potência com expoente negativo real
+(3 -2.5 ^)
+
+# ============================================================================
+# CATEGORIA 2: ERROS DE COMPATIBILIDADE DE TIPOS
+# ============================================================================
+
+# ERRO 10: Tentar usar boolean em operação aritmética (resultado de comparação + número)
+((5 3 >) 2 +)
+
+# ERRO 11: Boolean em subtração
+((10 5 <) 3 -)
+
+# ERRO 12: Boolean em multiplicação
+((7 7 ==) 5 *)
+
+# ERRO 13: Boolean em divisão
+((10 5 !=) 2 /)
+
+# ERRO 14: Comparação com boolean
+((5 3 >) 10 >)
+
+# ============================================================================
+# CATEGORIA 3: ERROS DE ARMAZENAMENTO EM MEMÓRIA
+# ============================================================================
+
+# ERRO 15: Tentar armazenar boolean em memória (resultado de comparação)
+((5 3 >) BOOL_VAR)
+
+# ERRO 16: Tentar armazenar resultado de operação lógica
+((10 5 >) (3 2 <) &&)
+(1 RES LOGIC_VAR)
+
+# ERRO 17: Tentar armazenar resultado de NOT
+((5 3 >) !)
+(1 RES NEG_VAR)
+
+# ============================================================================
+# CATEGORIA 4: ERROS DE INICIALIZAÇÃO DE VARIÁVEIS
+# ============================================================================
+
+# ERRO 18: Usar variável não inicializada
+(Y 10 +)
+
+# ERRO 19: Usar múltiplas variáveis não inicializadas
+((A B +) C)
+
+# ERRO 20: Usar variável não inicializada em expressão complexa
+(((X 5 +) (Y 3 *) -) Z)
+
+# ERRO 21: Tentar recuperar variável que nunca foi definida
+(INEXISTENTE 5 *)
+
+# ============================================================================
+# CATEGORIA 5: ERROS COM COMANDO RES
+# ============================================================================
+
+# ERRO 22: RES com índice negativo
+(-1 RES)
+
+# ERRO 23: RES com índice zero
+(0 RES)
+
+# ERRO 24: RES com índice maior que linhas disponíveis
+(100 RES)
+
+# ERRO 25: RES referenciando linha futura (índice muito grande para contexto atual)
+(10 5 +)
+(50 RES)
+
+# ERRO 26: RES com índice não inteiro (real)
+(2.5 RES)
+
+# ============================================================================
+# CATEGORIA 6: ERROS EM IFELSE
+# ============================================================================
+
+# ERRO 27: IFELSE com condição não booleana direta (número puro como condição - deve aceitar por truthiness, então não é erro)
+# Na verdade este DEVE funcionar por causa do permissive mode
+# ((10) (100) (200) IFELSE)  # NÃO É ERRO - truthiness
+
+# ERRO 28: IFELSE com branches de tipos incompatíveis que não podem ser promovidos
+# Na verdade int e real PODEM ser promovidos, então não é erro
+# Mas se tentássemos boolean com número seria erro - mas boolean não pode ser armazenado
+
+# ERRO 29: IFELSE faltando argumentos (sintático, não semântico - será pego no RA2)
+
+# ============================================================================
+# CATEGORIA 7: ERROS EM WHILE
+# ============================================================================
+
+# ERRO 30: WHILE com condição mal formada (sintático - será pego no RA2)
+
+# ============================================================================
+# CATEGORIA 8: ERROS EM FOR
+# ============================================================================
+
+# ERRO 31: FOR com argumentos mal formados (sintático - será pego no RA2)
+
+# ============================================================================
+# CATEGORIA 9: ERROS MISTOS E COMPLEXOS
+# ============================================================================
+
+# ERRO 32: Expressão aninhada com erro de tipo interno
+(((5.5 2.0 /) 3 %) ERRO)
+
+# ERRO 33: Boolean usado em nested expression
+((((5 3 >) 2 +) 10 *) ERRO2)
+
+# ERRO 34: RES em contexto inválido
+(10 X)
+((X -5 RES +) Y)
+
+# ERRO 35: Tentar usar resultado de IFELSE que retorna boolean em aritmética
+# (Nota: IFELSE pode retornar boolean se os branches forem boolean-compatíveis)
+
+# ERRO 36: Cadeia de erros de tipo
+(((5.5 2 /) (10.5 3 %) +) ERRO3)
+
+# ERRO 37: Variável não inicializada em IFELSE
+((UNDEF 10 >) (100) (200) IFELSE)
+
+# ERRO 38: Misturar boolean com operador lógico incorretamente
+# ((5 3 >) 2 &&)  # NÃO É ERRO - truthiness permite número em &&
+
+# ERRO 39: RES em divisão inteira com resultado real
+(10.5 2.5 +)
+((1 RES) 5 /)
+
+# ERRO 40: Múltiplos erros na mesma linha
+((UNDEF1 UNDEF2 /) (5.5 2 %) +)
+
+# ============================================================================
+# FIM DOS TESTES DE ERROS
+# Total: 40+ casos de erro que devem ser detectados pelo analisador semântico
+# ============================================================================

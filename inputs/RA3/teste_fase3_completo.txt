@@ -1,0 +1,299 @@
+# TESTE COMPLETO - FASE 3: ANÁLISE SEMÂNTICA
+# Validação de todas as funcionalidades conforme rubrica da Fase 3
+
+# ============================================================================
+# CATEGORIA 1: JULGAMENTO DE TIPOS (Type Checking)
+# ============================================================================
+
+# Teste 1.1: Operação aritmética int + int → int
+(10 5 +)
+
+# Teste 1.2: Operação aritmética real + real → real
+(10.5 5.5 +)
+
+# Teste 1.3: Promoção de tipo int + real → real
+(10 5.5 +)
+
+# Teste 1.4: Promoção de tipo real + int → real
+(10.5 5 +)
+
+# Teste 1.5: Multiplicação int * int → int
+(10 5 *)
+
+# Teste 1.6: Multiplicação real * real → real
+(10.5 2.5 *)
+
+# Teste 1.7: Subtração int - int → int
+(100 50 -)
+
+# Teste 1.8: Subtração real - real → real
+(100.5 50.2 -)
+
+# Teste 1.9: Divisão REAL | (sempre retorna real, mesmo com int)
+(10 3 |)
+
+# Teste 1.10: Divisão REAL com reais
+(10.5 3.2 |)
+
+# Teste 1.11: Divisão INTEIRA / (SOMENTE int + int → int)
+(15 4 /)
+
+# Teste 1.12: Módulo % (SOMENTE int + int → int)
+(23 6 %)
+
+# Teste 1.13: Potenciação ^ (base int, expoente OBRIGATORIAMENTE int)
+(2 3 ^)
+
+# Teste 1.14: Potenciação ^ (base real, expoente OBRIGATORIAMENTE int)
+(2.5 3 ^)
+
+# ============================================================================
+# CATEGORIA 2: OPERADORES RELACIONAIS (sempre retornam boolean)
+# ============================================================================
+
+# Teste 2.1: Maior que (int > int → boolean)
+(10 5 >)
+
+# Teste 2.2: Maior que (real > real → boolean)
+(10.5 5.5 >)
+
+# Teste 2.3: Maior que com promoção (int > real → boolean)
+(10 5.5 >)
+
+# Teste 2.4: Menor que (<)
+(5 10 <)
+
+# Teste 2.5: Maior ou igual (>=)
+(10 10 >=)
+
+# Teste 2.6: Menor ou igual (<=)
+(5 10 <=)
+
+# Teste 2.7: Igual (==)
+(7 7 ==)
+
+# Teste 2.8: Diferente (!=)
+(5 3 !=)
+
+# ============================================================================
+# CATEGORIA 3: OPERADORES LÓGICOS (permissive mode - aceita int/real via truthiness)
+# ============================================================================
+
+# Teste 3.1: AND lógico com booleans
+((10 5 >) (3 2 <) &&)
+
+# Teste 3.2: OR lógico com booleans
+((5 10 >) (3 2 <) ||)
+
+# Teste 3.3: NOT lógico (unário)
+((5 3 >) !)
+
+# Teste 3.4: AND com números (truthiness: 0=false, !=0=true)
+(10 5 &&)
+
+# Teste 3.5: OR com números
+(0 5 ||)
+
+# ============================================================================
+# CATEGORIA 4: COMANDOS DE MEMÓRIA (MEM)
+# ============================================================================
+
+# Teste 4.1: Armazenamento simples (V MEM) - inicializa variável
+(42 X)
+
+# Teste 4.2: Recuperação de variável (MEM) - deve estar inicializada
+(X 10 +)
+
+# Teste 4.3: Múltiplas variáveis
+(10 A)
+(20 B)
+(30 C)
+
+# Teste 4.4: Uso de variáveis em expressões
+((A B +) D)
+
+# Teste 4.5: Reatribuição de variável (altera tipo se necessário)
+((D 2.5 *) D)
+
+# Teste 4.6: Variável com tipo real
+(3.14 PI)
+
+# Teste 4.7: Uso de variável real
+((PI 2.0 *) CIRCUNF)
+
+# IMPORTANTE: Boolean NÃO pode ser armazenado em memória
+# Teste 4.8: Uso de resultado numérico (permitido)
+((A B >) COMP_RESULT)
+
+# ============================================================================
+# CATEGORIA 5: COMANDO RES (Referência a resultados anteriores)
+# ============================================================================
+
+# Teste 5.1: RES referenciando 1 linha atrás
+(100 50 +)
+(1 RES)
+
+# Teste 5.2: RES referenciando 2 linhas atrás
+(10 5 *)
+(20 3 +)
+(2 RES)
+
+# Teste 5.3: RES em expressão aritmética
+(25 10 -)
+((1 RES) 2 *)
+
+# Teste 5.4: RES com offset maior
+(5 3 +)
+(10 2 -)
+(7 4 *)
+(3 RES)
+
+# Teste 5.5: Múltiplos RES na mesma linha
+(100 VALOR1)
+(200 VALOR2)
+((1 RES) (2 RES) +)
+
+# ============================================================================
+# CATEGORIA 6: ESTRUTURA DE CONTROLE IFELSE
+# ============================================================================
+
+# Teste 6.1: IFELSE simples (condição verdadeira)
+((10 5 >) (100) (200) IFELSE)
+
+# Teste 6.2: IFELSE simples (condição falsa)
+((3 8 >) (100) (200) IFELSE)
+
+# Teste 6.3: IFELSE com tipos compatíveis (int, int → int)
+((5 3 >) (50) (30) IFELSE)
+
+# Teste 6.4: IFELSE com promoção de tipo (int, real → real)
+((5 3 >) (50) (30.5) IFELSE)
+
+# Teste 6.5: IFELSE com expressões nos branches
+((100 50 >) ((10 5 +)) ((20 3 -)) IFELSE)
+
+# Teste 6.6: IFELSE aninhado em aritmética
+(((10 5 >) (20) (30) IFELSE) 2 *)
+
+# Teste 6.7: IFELSE com condição complexa
+(((10 5 >) (20 15 <) &&) (1) (0) IFELSE)
+
+# Teste 6.8: IFELSE armazenando resultado
+(((A B >) (A) (B) IFELSE) MAX)
+
+# ============================================================================
+# CATEGORIA 7: ESTRUTURA DE CONTROLE WHILE
+# ============================================================================
+
+# Teste 7.1: WHILE simples
+(0 COUNTER)
+((COUNTER 5 <) (((COUNTER 1 +) COUNTER)) WHILE)
+
+# Teste 7.2: WHILE com múltiplas operações no corpo
+(1 INDEX)
+((INDEX 10 <) (((INDEX 1 +) INDEX) ((INDEX 2 *) DOBRO)) WHILE)
+
+# Teste 7.3: WHILE com RES no corpo
+(10 NUM)
+((NUM 0 >) (((NUM 1 -) NUM) (1 RES)) WHILE)
+
+# ============================================================================
+# CATEGORIA 8: ESTRUTURA DE CONTROLE FOR
+# ============================================================================
+
+# Teste 8.1: FOR simples (init, condition, increment, body)
+((1) (5) (1) (((2 RES) 2 *) TEMP) FOR)
+
+# Teste 8.2: FOR com incremento diferente
+((0) (10) (2) (((2 RES) SUM) FOR))
+
+# Teste 8.3: FOR com corpo complexo
+((1) (5) (1) (((2 RES) 3 ^) CUBO) FOR)
+
+# ============================================================================
+# CATEGORIA 9: EXPRESSÕES ANINHADAS (Nested Expressions)
+# ============================================================================
+
+# Teste 9.1: Aninhamento de 2 níveis
+((5 3 +) (2 4 *) +)
+
+# Teste 9.2: Aninhamento de 3 níveis
+(((10 5 +) (2 3 *) *) (4 2 /) +)
+
+# Teste 9.3: Aninhamento com operadores mistos
+(((10.5 2.0 |) (5 3 -) +) 2.0 *)
+
+# Teste 9.4: Aninhamento com comparação
+(((10 5 +) (20 8 -) >) (1) (0) IFELSE)
+
+# Teste 9.5: Aninhamento complexo com variáveis
+(((A B +) (C D *) -) RESULTADO)
+
+# ============================================================================
+# CATEGORIA 10: VERIFICAÇÃO DE INICIALIZAÇÃO
+# ============================================================================
+
+# Teste 10.1: Variável inicializada antes de uso
+(100 VAR1)
+(VAR1 50 +)
+
+# Teste 10.2: Variável reutilizada após inicialização
+((VAR1 2 *) VAR1)
+(VAR1 10 -)
+
+# Teste 10.3: Múltiplas variáveis com inicialização correta
+(10 V1)
+(20 V2)
+(30 V3)
+((V1 V2 +) (V3 2 *) +)
+
+# ============================================================================
+# CATEGORIA 11: PROMOÇÃO DE TIPOS EM CONTEXTOS COMPLEXOS
+# ============================================================================
+
+# Teste 11.1: int + int = int, depois * real = real
+((5 3 +) 2.5 *)
+
+# Teste 11.2: Divisão inteira preserva int, depois promove
+((10 2 /) 3.5 +)
+
+# Teste 11.3: Potência com base int, depois promove
+((2 3 ^) 2.5 *)
+
+# Teste 11.4: Cadeia de operações com promoção
+(((10 5 +) 2.0 *) 3 /)
+
+# ============================================================================
+# CATEGORIA 12: CASOS COMPLEXOS DE INTEGRAÇÃO
+# ============================================================================
+
+# Teste 12.1: Programa com todas as estruturas
+(5 X)
+(10 Y)
+((X Y +) SOMA)
+((X Y *) PROD)
+((SOMA PROD >) (SOMA) (PROD) IFELSE)
+
+# Teste 12.2: Loop com RES e armazenamento
+(1 CONT)
+((CONT 3 <=) (((CONT 1 +) CONT) ((2 RES) 2 *) RESULT) WHILE)
+
+# Teste 12.3: Expressão aritmética complexa
+(((10 3 |) (5.5 2.0 *) +) 2.0 /)
+
+# Teste 12.4: Sequência de operações com tipos mistos
+(50 BASE)
+((BASE 2 ^) QUAD)
+((QUAD 2 |) METADE)
+((METADE 5.5 +) FINAL)
+
+# Teste 12.5: IFELSE com RES
+(10 5 +)
+(20 3 -)
+((1 RES) (2 RES) >)
+((1 RES) (100) (200) IFELSE)
+
+# ============================================================================
+# FIM DOS TESTES VÁLIDOS
+# Total: 100+ casos de teste válidos cobrindo toda a Fase 3
+# ============================================================================
