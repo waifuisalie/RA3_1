@@ -18,6 +18,7 @@ from datetime import datetime
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 OUT_ARVORE_ATRIBUIDA_JSON = OUTPUTS_DIR / "RA3" / "arvore_atribuida.json"
+ROOT_ARVORE_ATRIBUIDA_JSON = PROJECT_ROOT / "arvore_atribuida.json"
 OUT_RELATORIOS_DIR = OUTPUTS_DIR / "RA3" / "relatorios"
 ROOT_RELATORIOS_DIR = PROJECT_ROOT / "relatorios"
 
@@ -148,6 +149,10 @@ def salvarArvoreAtribuida(arvoreAtribuida: Dict[str, Any]) -> None:
     OUT_ARVORE_ATRIBUIDA_JSON.parent.mkdir(parents=True, exist_ok=True)
 
     with open(OUT_ARVORE_ATRIBUIDA_JSON, 'w', encoding='utf-8') as f:
+        json.dump(arvoreAtribuida, f, indent=2, ensure_ascii=False)
+
+    # Também salvar uma cópia no diretório raiz
+    with open(ROOT_ARVORE_ATRIBUIDA_JSON, 'w', encoding='utf-8') as f:
         json.dump(arvoreAtribuida, f, indent=2, ensure_ascii=False)
 
 
@@ -389,7 +394,8 @@ def executar_geracao_arvore_atribuida(resultado_semantico: Dict[str, Any]) -> Di
                 str(ROOT_RELATORIOS_DIR / "erros_sematicos.md"),
                 str(ROOT_RELATORIOS_DIR / "tabela_simbolos.md")
             ],
-            'arquivo_arvore_json': str(OUT_ARVORE_ATRIBUIDA_JSON)
+            'arquivo_arvore_json': str(OUT_ARVORE_ATRIBUIDA_JSON),
+            'arquivo_arvore_json_raiz': str(ROOT_ARVORE_ATRIBUIDA_JSON)
         }
 
     except Exception as e:

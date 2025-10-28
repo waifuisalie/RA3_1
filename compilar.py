@@ -54,7 +54,7 @@ def atualizar_documentacao_gramatica():
         arvore_output_path = BASE_DIR / "arvore_output.txt"
 
         if not grammar_doc_path.exists():
-            print(f"  Aviso: {grammar_doc_path} não encontrado, pulando atualização da documentação")
+            # print(f"  Aviso: {grammar_doc_path} não encontrado, pulando atualização da documentação")
             return
 
         if not arvore_output_path.exists():
@@ -358,7 +358,7 @@ if __name__ == "__main__":
         exportar_arvores_json(derivacoes, tokens_list, linhas_originais)
 
         # Atualiza a documentação da gramática com a última árvore gerada
-        print("\n--- ATUALIZAÇÃO DA DOCUMENTAÇÃO ---")
+        # print("\n--- ATUALIZAÇÃO DA DOCUMENTAÇÃO ---")
         atualizar_documentacao_gramatica()
         
     except Exception as e:
@@ -378,39 +378,75 @@ if __name__ == "__main__":
         with open(str(OUT_ARVORE_JSON), 'r', encoding='utf-8') as f:
             arvore_ra2 = json.load(f)
 
-        # Perform semantic analysis
-        resultado_semantico_ra2 = analisarSemanticaDaJsonRA2(arvore_ra2)
-
-        # Report results
-        if isinstance(resultado_semantico_ra2, list):
-            print("    Erro(s) semântico(s) encontrado(s):")
-            for erro in resultado_semantico_ra2:
-                print(f"    {erro}")
-            print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
-            print("  Falha na análise semântica detalhada para geração da árvore atribuída")
-            print("  Tentando gerar árvore atribuída com dados parciais...")
-            # Criar resultado_semantico fictício para geração parcial
-            resultado_semantico = {'arvore_anotada': arvore_ra2, 'tabela_simbolos': None}
-            resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
-            if resultado_arvore['sucesso']:
-                print("  ✓ Árvore atribuída gerada com dados parciais")
-        else:
-            # Sucesso - resultado_semantico_ra2 é {'arvore_anotada': ..., 'tabela_simbolos': ...}
-            print("    Análise semântica concluída com sucesso sem nenhum erro")
-
-            print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
-            # Gerar árvore atribuída e relatórios
-            resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico_ra2)
-
-            if resultado_arvore['sucesso']:
-                print("    Árvore atribuída gerada e salva")
-                print(f"     Relatórios gerados em: {BASE_DIR / 'outputs' / 'RA3' / 'relatorios'}")
-                print("    - arvore_atribuida.md")
-                print("    - julgamento_tipos.md")
-                print("    - erros_sematicos.md")
-                print("    - tabela_simbolos.md")
+        # Determine which semantic analyzer to use based on input file location
+        is_ra3_file = 'inputs/RA3/' in str(entrada)
+        
+        if is_ra3_file:
+            # Use RA3 semantic analyzer
+            # Convert RA2 JSON tree to RA3 format
+            arvore_ra3 = _converter_arvore_json_para_analisador(arvore_ra2)
+            resultado_semantico = analisarSemantica(arvore_ra3)
+            
+            # Report results for RA3 analyzer
+            if not resultado_semantico['sucesso']:
+                print("    Erro(s) semântico(s) encontrado(s):")
+                for erro in resultado_semantico['erros']:
+                    print(f"    {erro['erro']}")
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                print("  Falha na análise semântica detalhada para geração da árvore atribuída")
+                print("  Tentando gerar árvore atribuída com dados parciais...")
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+                if resultado_arvore['sucesso']:
+                    print("  ✓ Árvore atribuída gerada com dados parciais")
             else:
-                print(f"    Falha na geração da árvore atribuída: {resultado_arvore.get('erro', 'Erro desconhecido')}")
+                print("    Análise semântica concluída com sucesso sem nenhum erro")
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                # Gerar árvore atribuída e relatórios
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+
+                if resultado_arvore['sucesso']:
+                    print("    Árvore atribuída gerada e salva")
+                    print(f"     Relatórios gerados em: {BASE_DIR / 'outputs' / 'RA3' / 'relatorios'}")
+                    print("    - arvore_atribuida.md")
+                    print("    - julgamento_tipos.md")
+                    print("    - erros_sematicos.md")
+                    print("    - tabela_simbolos.md")
+                else:
+                    print(f"    Falha na geração da árvore atribuída: {resultado_arvore.get('erro', 'Erro desconhecido')}")
+        else:
+            # Use RA2 semantic analyzer for backward compatibility
+            resultado_semantico_ra2 = analisarSemanticaDaJsonRA2(arvore_ra2)
+
+            # Report results
+            if isinstance(resultado_semantico_ra2, list):
+                print("    Erro(s) semântico(s) encontrado(s):")
+                for erro in resultado_semantico_ra2:
+                    print(f"    {erro}")
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                print("  Falha na análise semântica detalhada para geração da árvore atribuída")
+                print("  Tentando gerar árvore atribuída com dados parciais...")
+                # Criar resultado_semantico fictício para geração parcial, incluindo os erros
+                resultado_semantico = {'arvore_anotada': arvore_ra2, 'tabela_simbolos': None, 'erros': resultado_semantico_ra2}
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+                if resultado_arvore['sucesso']:
+                    print("  ✓ Árvore atribuída gerada com dados parciais")
+            else:
+                # Sucesso - resultado_semantico_ra2 é {'arvore_anotada': ..., 'tabela_simbolos': ...}
+                print("    Análise semântica concluída com sucesso sem nenhum erro")
+
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                # Gerar árvore atribuída e relatórios
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico_ra2)
+
+                if resultado_arvore['sucesso']:
+                    print("    Árvore atribuída gerada e salva")
+                    print(f"     Relatórios gerados em: {BASE_DIR / 'outputs' / 'RA3' / 'relatorios'}")
+                    print("    - arvore_atribuida.md")
+                    print("    - julgamento_tipos.md")
+                    print("    - erros_sematicos.md")
+                    print("    - tabela_simbolos.md")
+                else:
+                    print(f"    Falha na geração da árvore atribuída: {resultado_arvore.get('erro', 'Erro desconhecido')}")
 
     except Exception as e:
         print(f"  Erro na análise semântica: {e}")

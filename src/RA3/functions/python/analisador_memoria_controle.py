@@ -147,8 +147,45 @@ def analisarSemanticaControle(arvore_anotada_local: Dict[str, Any], seqs_map: Di
                 erros_c.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Condição IFELSE inválida (não convertível para boolean)\nContexto: IFELSE"})
                 continue
 
-            # IFELSE sempre retorna o tipo do ramo escolhido
-            linha['tipo'] = tipos.TYPE_REAL  # Assume tipo genérico, em implementação completa seria mais preciso
+            # IFELSE retorna o tipo do ramo executado (true ou false)
+            # Para simplificar, assumimos que ambos os ramos têm o mesmo tipo
+            # Em implementação completa, deveria verificar consistência
+            if len(elementos) >= 3:
+                # Verificar tipos dos ramos true e false
+                true_branch = elementos[1]
+                false_branch = elementos[2]
+                
+                true_type = None
+                false_type = None
+                
+                # Determinar tipo do ramo true
+                if true_branch.get('subtipo') == 'numero_real':
+                    v = _parse_valor_literal(true_branch)
+                    true_type = tipos.TYPE_INT if isinstance(v, int) else tipos.TYPE_REAL
+                elif true_branch.get('subtipo') == 'variavel':
+                    true_type = tabela_local.obter_tipo(true_branch.get('valor')) if tabela_local.existe(true_branch.get('valor')) else None
+                elif true_branch.get('subtipo') == 'LINHA':
+                    true_type, _, _ = avaliar_seq_tipo(true_branch.get('ast'), num, tabela_local)
+                
+                # Determinar tipo do ramo false
+                if false_branch.get('subtipo') == 'numero_real':
+                    v = _parse_valor_literal(false_branch)
+                    false_type = tipos.TYPE_INT if isinstance(v, int) else tipos.TYPE_REAL
+                elif false_branch.get('subtipo') == 'variavel':
+                    false_type = tabela_local.obter_tipo(false_branch.get('valor')) if tabela_local.existe(false_branch.get('valor')) else None
+                elif false_branch.get('subtipo') == 'LINHA':
+                    false_type, _, _ = avaliar_seq_tipo(false_branch.get('ast'), num, tabela_local)
+                
+                # IFELSE retorna o tipo comum entre os ramos
+                if true_type == false_type:
+                    linha['tipo'] = true_type
+                elif true_type in [tipos.TYPE_INT, tipos.TYPE_REAL] and false_type in [tipos.TYPE_INT, tipos.TYPE_REAL]:
+                    # Promoção de tipos numéricos
+                    linha['tipo'] = tipos.TYPE_REAL  # int + real = real
+                else:
+                    linha['tipo'] = true_type or false_type  # fallback
+            else:
+                linha['tipo'] = tipos.TYPE_REAL  # fallback para casos malformados
 
         if operador == 'WHILE':
             if len(elementos) < 2:
@@ -174,8 +211,12 @@ def analisarSemanticaControle(arvore_anotada_local: Dict[str, Any], seqs_map: Di
                 erros_c.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Condição WHILE inválida (não convertível para boolean)\nContexto: WHILE"})
                 continue
 
-            # WHILE não retorna valor específico
-            linha['tipo'] = None
+            # WHILE retorna o tipo do corpo do loop (último valor calculado)
+            if len(elementos) >= 2 and elementos[1].get('subtipo') == 'LINHA':
+                body_type, _, _ = avaliar_seq_tipo(elementos[1].get('ast'), num, tabela_local)
+                linha['tipo'] = body_type
+            else:
+                linha['tipo'] = None  # fallback para casos malformados
 
         if operador == 'FOR':
             if len(elementos) < 4:

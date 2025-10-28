@@ -113,8 +113,8 @@ def _avaliar_operando(operando: Dict[str, Any], tabela: TabelaSimbolos, historic
     if operando.get('subtipo') == 'variavel':
         nome = operando.get('valor')
         if not tabela.existe(nome):
-            # Não lançar erro aqui - deixar para o analisador de memória
-            return {'tipo': None, 'valor': None, 'variavel': nome}
+            # Variável não existe - erro semântico
+            raise ErroSemantico(linha_atual, f"Variável '{nome}' não declarada", f"({nome})")
         if not tabela.verificar_inicializacao(nome):
             # Não lançar erro aqui - deixar para o analisador de memória
             return {'tipo': None, 'valor': None, 'variavel': nome}
@@ -297,37 +297,32 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
             elementos = seq.get('elementos', [])
             operador = seq.get('operador', None)
 
+            # Verificar se é armazenamento (valor variável) ANTES de avaliar operandos
+            if (operador is None or operador == "") and len(elementos) == 2:
+                if elementos[1].get('subtipo') == 'variavel':
+                    nome_var = elementos[1].get('valor')
+                    # Avaliar apenas o primeiro operando (o valor)
+                    try:
+                        fonte = _avaliar_operando(elementos[0], tabela, historico_tipos, num)
+                        tipo_res = fonte['tipo']
+                        if tipo_res is not None:
+                            if not tipos.tipo_compativel_armazenamento(tipo_res):
+                                raise ErroSemantico(num, f"Tipo '{tipo_res}' não pode ser armazenado em memória. Apenas tipos numéricos são permitidos", _construir_contexto_expressao(linha_ast))
+                            tabela.adicionar(nome_var, tipo_res, inicializada=True, linha=num)
+                    except ErroSemantico:
+                        # Se o valor não puder ser avaliado ou armazenado, não declarar a variável
+                        pass
+                    historico_tipos[num] = tipo_res
+                    nova_linha = dict(linha_ast)
+                    nova_linha['tipo'] = tipo_res
+                    arvore_anotada['linhas'].append(nova_linha)
+                    continue
+
+            # Para outras operações, avaliar todos os operandos
             operandos_av = []
             for op in elementos:
-                try:
-                    aval = _avaliar_operando(op, tabela, historico_tipos, num)
-                    operandos_av.append(aval)
-                except ErroSemantico:
-                    operandos_av.append({'tipo': None, 'valor': None})
-
-            if (operador is None or operador == "") and len(operandos_av) == 2:
-                fonte = operandos_av[0]
-                destino = operandos_av[1]
-                if destino.get('variavel'):
-                    # É um armazenamento: (valor VARIAVEL)
-                    tipo_res = fonte['tipo']
-                    if tipo_res is not None:
-                        if not tipos.tipo_compativel_armazenamento(tipo_res):
-                            raise ErroSemantico(num, f"Tipo '{tipo_res}' não pode ser armazenado em memória. Apenas tipos numéricos são permitidos", _construir_contexto_expressao(linha_ast))
-                        tabela.adicionar(destino['variavel'], tipo_res, inicializada=True, linha=num)
-                    historico_tipos[num] = tipo_res
-                    nova_linha = dict(linha_ast)
-                    nova_linha['tipo'] = tipo_res
-                    arvore_anotada['linhas'].append(nova_linha)
-                    continue
-                else:
-                    # Dois operandos mas não é armazenamento
-                    tipo_res = None
-                    historico_tipos[num] = tipo_res
-                    nova_linha = dict(linha_ast)
-                    nova_linha['tipo'] = tipo_res
-                    arvore_anotada['linhas'].append(nova_linha)
-                    continue
+                aval = _avaliar_operando(op, tabela, historico_tipos, num)
+                operandos_av.append(aval)
 
             if operador is not None and operador != "":
                 regra = obter_regra(operador)
@@ -388,6 +383,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
 
                 if cat == 'logico':
                     if operador in ['&&', '||']:
+                        if len(operandos_av) < 2:
+                            raise ErroSemantico(num, f'Operador lógico binário "{operador}" requer 2 operandos', _construir_contexto_expressao(linha_ast))
                         a, b = operandos_av[0], operandos_av[1]
                         if a['tipo'] is None or b['tipo'] is None:
                             tipo_res = None
@@ -401,6 +398,8 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                         arvore_anotada['linhas'].append(nova_linha)
                         continue
                     if operador == '!':
+                        if len(operandos_av) < 1:
+                            raise ErroSemantico(num, 'Operador lógico unário "!" requer 1 operando', _construir_contexto_expressao(linha_ast))
                         a = operandos_av[0]
                         if a['tipo'] is None:
                             tipo_res = None
