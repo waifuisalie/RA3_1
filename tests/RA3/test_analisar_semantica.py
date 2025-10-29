@@ -51,6 +51,8 @@ def test_power_exponent_int_requirement():
 
 def test_uninitialized_variable_error():
     gramatica, tabela = inicializar_sistema_semantico()
+    # Declarar variável X sem inicializar
+    tabela.adicionar('X', 'int', inicializada=False)
     ast = {
         'linhas': [
             {'numero_linha': 1, 'filhos': [{'elementos': [{'subtipo': 'variavel', 'valor': 'X'}], 'operador': None}]}
