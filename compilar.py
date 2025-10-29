@@ -33,8 +33,11 @@ from src.RA2.functions.python.lerTokens import lerTokens, validarTokens, reconhe
 from src.RA2.functions.python.construirGramatica import imprimir_gramatica_completa
 from src.RA2.functions.python.construirTabelaLL1 import construirTabelaLL1
 from src.RA2.functions.python.parsear import parsear_todas_linhas
+from src.RA3.functions.python.analisador_semantico import _converter_arvore_json_para_analisador
+from src.RA3.functions.python.analisador_tipos import analisarSemantica
+from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJsonRA2
+from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_arvore_atribuida
 
-# --- caminhos base do projeto ---
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 INPUTS_DIR  = BASE_DIR / "inputs" / "RA1"                       # raiz/inputs
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
@@ -51,7 +54,7 @@ def atualizar_documentacao_gramatica():
         arvore_output_path = BASE_DIR / "arvore_output.txt"
 
         if not grammar_doc_path.exists():
-            print(f"  Aviso: {grammar_doc_path} não encontrado, pulando atualização da documentação")
+            # print(f"  Aviso: {grammar_doc_path} não encontrado, pulando atualização da documentação")
             return
 
         if not arvore_output_path.exists():
@@ -216,6 +219,20 @@ if __name__ == "__main__":
             print(f"  ERRO na linha {i}: {e}")
             tokens_salvos_txt.append([])  # Adiciona lista vazia para manter índices
 
+    # ============================================================================
+    # LEGACY RA1: Execução e Assembly Generation (DESABILITADOS)
+    # ============================================================================
+    # As seguintes operações do RA1 NÃO são mais executadas:
+    # 1. exibirResultados() -> executarExpressao() - execução de RPN para validação
+    # 2. gerarAssemblyMultiple() - geração de código RISC-V para Arduino
+    # 3. save_assembly() - salvamento de programa_completo.S
+    #
+    # MOTIVO: Especificação RA3 afirma "não será necessário gerar código Assembly"
+    # O foco mudou para análise sintática (RA2) e semântica (RA3)
+    #
+    # Os arquivos assembly/*.py e rpn_calc.py foram marcados como legacy
+    # ============================================================================
+
     # Salva os tokens gerados
     salvar_tokens(tokens_salvos_txt, OUT_TOKENS)
     print(f"  ✓ {linhas_processadas} linha(s) tokenizadas")
@@ -341,7 +358,7 @@ if __name__ == "__main__":
         exportar_arvores_json(derivacoes, tokens_list, linhas_originais)
 
         # Atualiza a documentação da gramática com a última árvore gerada
-        print("\n--- ATUALIZAÇÃO DA DOCUMENTAÇÃO ---")
+        # print("\n--- ATUALIZAÇÃO DA DOCUMENTAÇÃO ---")
         atualizar_documentacao_gramatica()
         
     except Exception as e:
@@ -355,29 +372,82 @@ if __name__ == "__main__":
     # ============================================================================
 
     print("\n--- RA3: ANÁLISE SEMÂNTICA ---")
-    
+
     try:
-        # Import RA3 modules
-        from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJsonRA2
-        
         # Load AST from RA2
         with open(str(OUT_ARVORE_JSON), 'r', encoding='utf-8') as f:
             arvore_ra2 = json.load(f)
+
+        # Determine which semantic analyzer to use based on input file location
+        is_ra3_file = 'inputs/RA3/' in str(entrada)
         
-        # Perform semantic analysis
-        erros_semanticos = analisarSemanticaDaJsonRA2(arvore_ra2)
-        
-        # Report results
-        if erros_semanticos is None:
-            print("    Análise semântica concluída com sucesso sem nenhum erro")
+        if is_ra3_file:
+            # Use RA3 semantic analyzer
+            # Convert RA2 JSON tree to RA3 format
+            arvore_ra3 = _converter_arvore_json_para_analisador(arvore_ra2)
+            resultado_semantico = analisarSemantica(arvore_ra3)
+            
+            # Report results for RA3 analyzer
+            if not resultado_semantico['sucesso']:
+                print("    Erro(s) semântico(s) encontrado(s):")
+                for erro in resultado_semantico['erros']:
+                    print(f"    {erro['erro']}")
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                print("  Falha na análise semântica detalhada para geração da árvore atribuída")
+                print("  Tentando gerar árvore atribuída com dados parciais...")
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+                if resultado_arvore['sucesso']:
+                    print("  ✓ Árvore atribuída gerada com dados parciais")
+            else:
+                print("    Análise semântica concluída com sucesso sem nenhum erro")
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                # Gerar árvore atribuída e relatórios
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+
+                if resultado_arvore['sucesso']:
+                    print("    Árvore atribuída gerada e salva")
+                    print(f"     Relatórios gerados em: {BASE_DIR / 'outputs' / 'RA3' / 'relatorios'}")
+                    print("    - arvore_atribuida.md")
+                    print("    - julgamento_tipos.md")
+                    print("    - erros_sematicos.md")
+                    print("    - tabela_simbolos.md")
+                else:
+                    print(f"    Falha na geração da árvore atribuída: {resultado_arvore.get('erro', 'Erro desconhecido')}")
         else:
-            print("    Erro(s) semântico(s) encontrado(s):")
-            for erro in erros_semanticos:
-                print(f"    {erro}")
-        
-        # TODO: Aluno 4 - Implementar geração de relatórios finais
-        # gerar_relatorios_ra3(resultado_semantico, gramatica, tabela, BASE_DIR / "outputs" / "RA3")
-        
+            # Use RA2 semantic analyzer for backward compatibility
+            resultado_semantico_ra2 = analisarSemanticaDaJsonRA2(arvore_ra2)
+
+            # Report results
+            if isinstance(resultado_semantico_ra2, list):
+                print("    Erro(s) semântico(s) encontrado(s):")
+                for erro in resultado_semantico_ra2:
+                    print(f"    {erro}")
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                print("  Falha na análise semântica detalhada para geração da árvore atribuída")
+                print("  Tentando gerar árvore atribuída com dados parciais...")
+                # Criar resultado_semantico fictício para geração parcial, incluindo os erros
+                resultado_semantico = {'arvore_anotada': arvore_ra2, 'tabela_simbolos': None, 'erros': resultado_semantico_ra2}
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico)
+                if resultado_arvore['sucesso']:
+                    print("  ✓ Árvore atribuída gerada com dados parciais")
+            else:
+                # Sucesso - resultado_semantico_ra2 é {'arvore_anotada': ..., 'tabela_simbolos': ...}
+                print("    Análise semântica concluída com sucesso sem nenhum erro")
+
+                print("\n--- GERAÇÃO DA ÁRVORE ATRIBUÍDA ---")
+                # Gerar árvore atribuída e relatórios
+                resultado_arvore = executar_geracao_arvore_atribuida(resultado_semantico_ra2)
+
+                if resultado_arvore['sucesso']:
+                    print("    Árvore atribuída gerada e salva")
+                    print(f"     Relatórios gerados em: {BASE_DIR / 'outputs' / 'RA3' / 'relatorios'}")
+                    print("    - arvore_atribuida.md")
+                    print("    - julgamento_tipos.md")
+                    print("    - erros_sematicos.md")
+                    print("    - tabela_simbolos.md")
+                else:
+                    print(f"    Falha na geração da árvore atribuída: {resultado_arvore.get('erro', 'Erro desconhecido')}")
+
     except Exception as e:
         print(f"  Erro na análise semântica: {e}")
         traceback.print_exc()

@@ -147,9 +147,15 @@ def reconhecerToken(elemento: str, linha: int, coluna: int) -> Optional[Token]:
     else:
         # Verificar se é número (inteiro ou real)
         try:
-            # Primeiro tentar como float (inclui inteiros)
-            float(elemento)
-            return Token(Tipo_de_Token.NUMERO_REAL, elemento)
+            # Primeiro verificar se tem ponto decimal
+            if '.' in elemento:
+                # É um número real
+                float(elemento)  # Validar que é um float válido
+                return Token(Tipo_de_Token.NUMERO_REAL, elemento)
+            else:
+                # É um número inteiro
+                int(elemento)  # Validar que é um int válido
+                return Token(Tipo_de_Token.NUMERO_INTEIRO, elemento)
         except ValueError:
             # Se não é número, então é uma variável
             # Qualquer coisa que não seja um token específico é considerada variável

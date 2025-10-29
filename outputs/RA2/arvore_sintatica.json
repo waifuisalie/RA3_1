@@ -3,6 +3,2169 @@
   "linhas": [
     {
       "numero_linha": 1,
+      "expressao_original": "( 5 3 + )",
+      "tokens": [
+        "(",
+        "5",
+        "3",
+        "+",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "+",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 2,
+      "expressao_original": "( 10.5 2.0 * )",
+      "tokens": [
+        "(",
+        "10.5",
+        "2.0",
+        "*",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_real",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_real",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "*",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 3,
+      "expressao_original": "( 15 4 - )",
+      "tokens": [
+        "(",
+        "15",
+        "4",
+        "-",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "-",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 4,
+      "expressao_original": "( 8.0 2.0 | )",
+      "tokens": [
+        "(",
+        "8.0",
+        "2.0",
+        "|",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_real",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_real",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "|",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 5,
+      "expressao_original": "( 20 3 / )",
+      "tokens": [
+        "(",
+        "20",
+        "3",
+        "/",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "/",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 6,
+      "expressao_original": "( 17 5 % )",
+      "tokens": [
+        "(",
+        "17",
+        "5",
+        "%",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "%",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 7,
+      "expressao_original": "( 2 3 ^ )",
+      "tokens": [
+        "(",
+        "2",
+        "3",
+        "^",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "^",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 8,
+      "expressao_original": "( 100 50 + )",
+      "tokens": [
+        "(",
+        "100",
+        "50",
+        "+",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "+",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 9,
+      "expressao_original": "( 5 2 / )",
+      "tokens": [
+        "(",
+        "5",
+        "2",
+        "/",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "/",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 10,
+      "expressao_original": "( 10 3 % )",
+      "tokens": [
+        "(",
+        "10",
+        "3",
+        "%",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "%",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 11,
+      "expressao_original": "( 2 3 ^ )",
+      "tokens": [
+        "(",
+        "2",
+        "3",
+        "^",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "ARITH_OP",
+                                "filhos": [
+                                  {
+                                    "label": "^",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 12,
+      "expressao_original": "( 42 X )",
+      "tokens": [
+        "(",
+        "42",
+        "X",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 13,
+      "expressao_original": "( 3.14 PI )",
+      "tokens": [
+        "(",
+        "3.14",
+        "PI",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_real",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 14,
+      "expressao_original": "( 1 FLAG )",
+      "tokens": [
+        "(",
+        "1",
+        "FLAG",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 15,
+      "expressao_original": "( 100 COUNTER )",
+      "tokens": [
+        "(",
+        "100",
+        "COUNTER",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 16,
+      "expressao_original": "( 0 SUM )",
+      "tokens": [
+        "(",
+        "0",
+        "SUM",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 17,
+      "expressao_original": "( 200 Y )",
+      "tokens": [
+        "(",
+        "200",
+        "Y",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 18,
+      "expressao_original": "( 300 Z )",
+      "tokens": [
+        "(",
+        "300",
+        "Z",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "identifier",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 10,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 19,
+      "expressao_original": "( X )",
+      "tokens": [
+        "(",
+        "X",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "epsilon",
+                        "filhos": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 7,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 20,
+      "expressao_original": "( PI )",
+      "tokens": [
+        "(",
+        "PI",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "epsilon",
+                        "filhos": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 7,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 21,
+      "expressao_original": "( FLAG )",
+      "tokens": [
+        "(",
+        "FLAG",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "epsilon",
+                        "filhos": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 7,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 22,
+      "expressao_original": "( COUNTER )",
+      "tokens": [
+        "(",
+        "COUNTER",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "epsilon",
+                        "filhos": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 7,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 23,
+      "expressao_original": "( SUM )",
+      "tokens": [
+        "(",
+        "SUM",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "identifier",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "epsilon",
+                        "filhos": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 7,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 24,
       "expressao_original": "( Y )",
       "tokens": [
         "(",
@@ -72,353 +2235,11 @@
       "sucesso": true
     },
     {
-      "numero_linha": 2,
-      "expressao_original": "( 10.0 X )",
+      "numero_linha": 25,
+      "expressao_original": "( Z )",
       "tokens": [
         "(",
-        "10.0",
-        "X",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "number",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 10,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 3,
-      "expressao_original": "( - 1.0 RES )",
-      "tokens": [
-        "(",
-        "-",
-        "1.0",
-        "RES",
-        ")"
-      ],
-      "arvore": null,
-      "erro": "Erro sintático - parsing falhou",
-      "sucesso": false
-    },
-    {
-      "numero_linha": 4,
-      "expressao_original": "( 100.0 RES )",
-      "tokens": [
-        "(",
-        "100.0",
-        "RES",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "number",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "res",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "epsilon",
-                        "filhos": []
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 7,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 5,
-      "expressao_original": "( ( 5.0 3.0 > ) BOOL )",
-      "tokens": [
-        "(",
-        "(",
-        "5.0",
-        "3.0",
-        ">",
-        ")",
-        "BOOL",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "number",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "OPERANDO",
-                                    "filhos": [
-                                      {
-                                        "label": "number",
-                                        "filhos": []
-                                      },
-                                      {
-                                        "label": "OPERANDO_OPCIONAL",
-                                        "filhos": [
-                                          {
-                                            "label": "epsilon",
-                                            "filhos": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "label": "SEQUENCIA_PRIME",
-                                    "filhos": [
-                                      {
-                                        "label": "OPERADOR_FINAL",
-                                        "filhos": [
-                                          {
-                                            "label": "COMP_OP",
-                                            "filhos": [
-                                              {
-                                                "label": ">",
-                                                "filhos": []
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 19,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 6,
-      "expressao_original": "( BOOL )",
-      "tokens": [
-        "(",
-        "BOOL",
+        "Z",
         ")"
       ],
       "arvore": {
@@ -484,19 +2305,651 @@
       "sucesso": true
     },
     {
-      "numero_linha": 7,
-      "expressao_original": "( ( 10.0 ) ( 5.0 3.0 + ) WHILE )",
+      "numero_linha": 26,
+      "expressao_original": "( 5 3 > )",
+      "tokens": [
+        "(",
+        "5",
+        "3",
+        ">",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "COMP_OP",
+                                "filhos": [
+                                  {
+                                    "label": ">",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 27,
+      "expressao_original": "( 10.5 2.0 < )",
+      "tokens": [
+        "(",
+        "10.5",
+        "2.0",
+        "<",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_real",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_real",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "COMP_OP",
+                                "filhos": [
+                                  {
+                                    "label": "<",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 28,
+      "expressao_original": "( 15 15 == )",
+      "tokens": [
+        "(",
+        "15",
+        "15",
+        "==",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "COMP_OP",
+                                "filhos": [
+                                  {
+                                    "label": "==",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 29,
+      "expressao_original": "( 8.0 9.0 != )",
+      "tokens": [
+        "(",
+        "8.0",
+        "9.0",
+        "!=",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_real",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_real",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "COMP_OP",
+                                "filhos": [
+                                  {
+                                    "label": "!=",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 30,
+      "expressao_original": "( 20 10 >= )",
+      "tokens": [
+        "(",
+        "20",
+        "10",
+        ">=",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "COMP_OP",
+                                "filhos": [
+                                  {
+                                    "label": ">=",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 31,
+      "expressao_original": "( 5 7 <= )",
+      "tokens": [
+        "(",
+        "5",
+        "7",
+        "<=",
+        ")"
+      ],
+      "arvore": {
+        "label": "PROGRAM",
+        "filhos": [
+          {
+            "label": "LINHA",
+            "filhos": [
+              {
+                "label": "(",
+                "filhos": []
+              },
+              {
+                "label": "SEQUENCIA",
+                "filhos": [
+                  {
+                    "label": "OPERANDO",
+                    "filhos": [
+                      {
+                        "label": "numero_inteiro",
+                        "filhos": []
+                      },
+                      {
+                        "label": "OPERANDO_OPCIONAL",
+                        "filhos": [
+                          {
+                            "label": "epsilon",
+                            "filhos": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "label": "SEQUENCIA_PRIME",
+                    "filhos": [
+                      {
+                        "label": "OPERANDO",
+                        "filhos": [
+                          {
+                            "label": "numero_inteiro",
+                            "filhos": []
+                          },
+                          {
+                            "label": "OPERANDO_OPCIONAL",
+                            "filhos": [
+                              {
+                                "label": "epsilon",
+                                "filhos": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "label": "SEQUENCIA_PRIME",
+                        "filhos": [
+                          {
+                            "label": "OPERADOR_FINAL",
+                            "filhos": [
+                              {
+                                "label": "COMP_OP",
+                                "filhos": [
+                                  {
+                                    "label": "<=",
+                                    "filhos": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": ")",
+                "filhos": []
+              }
+            ]
+          },
+          {
+            "label": "PROGRAM_PRIME",
+            "filhos": [
+              {
+                "label": "epsilon",
+                "filhos": []
+              }
+            ]
+          }
+        ]
+      },
+      "derivacao_passos": 12,
+      "sucesso": true
+    },
+    {
+      "numero_linha": 32,
+      "expressao_original": "( ( 5 3 > ) ( 10 5 < ) && )",
       "tokens": [
         "(",
         "(",
-        "10.0",
+        "5",
+        "3",
+        ">",
         ")",
         "(",
-        "5.0",
-        "3.0",
-        "+",
+        "10",
+        "5",
+        "<",
         ")",
-        "WHILE",
+        "&&",
         ")"
       ],
       "arvore": {
@@ -529,7 +2982,7 @@
                                 "label": "OPERANDO",
                                 "filhos": [
                                   {
-                                    "label": "number",
+                                    "label": "numero_inteiro",
                                     "filhos": []
                                   },
                                   {
@@ -547,8 +3000,41 @@
                                 "label": "SEQUENCIA_PRIME",
                                 "filhos": [
                                   {
-                                    "label": "epsilon",
-                                    "filhos": []
+                                    "label": "OPERANDO",
+                                    "filhos": [
+                                      {
+                                        "label": "numero_inteiro",
+                                        "filhos": []
+                                      },
+                                      {
+                                        "label": "OPERANDO_OPCIONAL",
+                                        "filhos": [
+                                          {
+                                            "label": "epsilon",
+                                            "filhos": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "label": "SEQUENCIA_PRIME",
+                                    "filhos": [
+                                      {
+                                        "label": "OPERADOR_FINAL",
+                                        "filhos": [
+                                          {
+                                            "label": "COMP_OP",
+                                            "filhos": [
+                                              {
+                                                "label": ">",
+                                                "filhos": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
                                   }
                                 ]
                               }
@@ -582,7 +3068,7 @@
                                     "label": "OPERANDO",
                                     "filhos": [
                                       {
-                                        "label": "number",
+                                        "label": "numero_inteiro",
                                         "filhos": []
                                       },
                                       {
@@ -603,7 +3089,7 @@
                                         "label": "OPERANDO",
                                         "filhos": [
                                           {
-                                            "label": "number",
+                                            "label": "numero_inteiro",
                                             "filhos": []
                                           },
                                           {
@@ -624,10 +3110,10 @@
                                             "label": "OPERADOR_FINAL",
                                             "filhos": [
                                               {
-                                                "label": "ARITH_OP",
+                                                "label": "COMP_OP",
                                                 "filhos": [
                                                   {
-                                                    "label": "+",
+                                                    "label": "<",
                                                     "filhos": []
                                                   }
                                                 ]
@@ -655,10 +3141,10 @@
                             "label": "OPERADOR_FINAL",
                             "filhos": [
                               {
-                                "label": "CONTROL_OP",
+                                "label": "LOGIC_OP",
                                 "filhos": [
                                   {
-                                    "label": "while",
+                                    "label": "&&",
                                     "filhos": []
                                   }
                                 ]
@@ -688,24 +3174,25 @@
           }
         ]
       },
-      "derivacao_passos": 25,
+      "derivacao_passos": 30,
       "sucesso": true
     },
     {
-      "numero_linha": 8,
-      "expressao_original": "( ( 3.5 ) ( 10.0 ) ( 20.0 ) IFELSE )",
+      "numero_linha": 33,
+      "expressao_original": "( ( 2 4 == ) ( 8 3 > ) || )",
       "tokens": [
         "(",
         "(",
-        "3.5",
+        "2",
+        "4",
+        "==",
         ")",
         "(",
-        "10.0",
+        "8",
+        "3",
+        ">",
         ")",
-        "(",
-        "20.0",
-        ")",
-        "IFELSE",
+        "||",
         ")"
       ],
       "arvore": {
@@ -738,7 +3225,7 @@
                                 "label": "OPERANDO",
                                 "filhos": [
                                   {
-                                    "label": "number",
+                                    "label": "numero_inteiro",
                                     "filhos": []
                                   },
                                   {
@@ -756,8 +3243,41 @@
                                 "label": "SEQUENCIA_PRIME",
                                 "filhos": [
                                   {
-                                    "label": "epsilon",
-                                    "filhos": []
+                                    "label": "OPERANDO",
+                                    "filhos": [
+                                      {
+                                        "label": "numero_inteiro",
+                                        "filhos": []
+                                      },
+                                      {
+                                        "label": "OPERANDO_OPCIONAL",
+                                        "filhos": [
+                                          {
+                                            "label": "epsilon",
+                                            "filhos": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "label": "SEQUENCIA_PRIME",
+                                    "filhos": [
+                                      {
+                                        "label": "OPERADOR_FINAL",
+                                        "filhos": [
+                                          {
+                                            "label": "COMP_OP",
+                                            "filhos": [
+                                              {
+                                                "label": "==",
+                                                "filhos": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
                                   }
                                 ]
                               }
@@ -791,7 +3311,7 @@
                                     "label": "OPERANDO",
                                     "filhos": [
                                       {
-                                        "label": "number",
+                                        "label": "numero_inteiro",
                                         "filhos": []
                                       },
                                       {
@@ -809,42 +3329,10 @@
                                     "label": "SEQUENCIA_PRIME",
                                     "filhos": [
                                       {
-                                        "label": "epsilon",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": ")",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERANDO",
-                            "filhos": [
-                              {
-                                "label": "LINHA",
-                                "filhos": [
-                                  {
-                                    "label": "(",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "SEQUENCIA",
-                                    "filhos": [
-                                      {
                                         "label": "OPERANDO",
                                         "filhos": [
                                           {
-                                            "label": "number",
+                                            "label": "numero_inteiro",
                                             "filhos": []
                                           },
                                           {
@@ -862,122 +3350,27 @@
                                         "label": "SEQUENCIA_PRIME",
                                         "filhos": [
                                           {
-                                            "label": "epsilon",
-                                            "filhos": []
+                                            "label": "OPERADOR_FINAL",
+                                            "filhos": [
+                                              {
+                                                "label": "COMP_OP",
+                                                "filhos": [
+                                                  {
+                                                    "label": ">",
+                                                    "filhos": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
                                           }
                                         ]
                                       }
                                     ]
-                                  },
-                                  {
-                                    "label": ")",
-                                    "filhos": []
                                   }
                                 ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": "SEQUENCIA_PRIME",
-                            "filhos": [
+                              },
                               {
-                                "label": "OPERADOR_FINAL",
-                                "filhos": [
-                                  {
-                                    "label": "CONTROL_OP",
-                                    "filhos": [
-                                      {
-                                        "label": "ifelse",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 27,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 9,
-      "expressao_original": "( Z 2.0 + )",
-      "tokens": [
-        "(",
-        "Z",
-        "2.0",
-        "+",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "identifier",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "number",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
+                                "label": ")",
                                 "filhos": []
                               }
                             ]
@@ -991,10 +3384,10 @@
                             "label": "OPERADOR_FINAL",
                             "filhos": [
                               {
-                                "label": "ARITH_OP",
+                                "label": "LOGIC_OP",
                                 "filhos": [
                                   {
-                                    "label": "+",
+                                    "label": "||",
                                     "filhos": []
                                   }
                                 ]
@@ -1024,20 +3417,20 @@
           }
         ]
       },
-      "derivacao_passos": 12,
+      "derivacao_passos": 30,
       "sucesso": true
     },
     {
-      "numero_linha": 10,
-      "expressao_original": "( ( X Y > ) TEST )",
+      "numero_linha": 34,
+      "expressao_original": "( ( 10 0 > ) ! )",
       "tokens": [
         "(",
         "(",
-        "X",
-        "Y",
+        "10",
+        "0",
         ">",
         ")",
-        "TEST",
+        "!",
         ")"
       ],
       "arvore": {
@@ -1070,7 +3463,7 @@
                                 "label": "OPERANDO",
                                 "filhos": [
                                   {
-                                    "label": "identifier",
+                                    "label": "numero_inteiro",
                                     "filhos": []
                                   },
                                   {
@@ -1091,7 +3484,7 @@
                                     "label": "OPERANDO",
                                     "filhos": [
                                       {
-                                        "label": "identifier",
+                                        "label": "numero_inteiro",
                                         "filhos": []
                                       },
                                       {
@@ -1140,31 +3533,18 @@
                     "label": "SEQUENCIA_PRIME",
                     "filhos": [
                       {
-                        "label": "OPERANDO",
+                        "label": "OPERADOR_FINAL",
                         "filhos": [
                           {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
+                            "label": "LOGIC_OP",
                             "filhos": [
                               {
-                                "label": "epsilon",
+                                "label": "!",
                                 "filhos": []
                               }
                             ]
                           }
                         ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
                       }
                     ]
                   }
@@ -1187,196 +3567,29 @@
           }
         ]
       },
-      "derivacao_passos": 19,
+      "derivacao_passos": 18,
       "sucesso": true
     },
     {
-      "numero_linha": 11,
-      "expressao_original": "( W 5.0 * )",
-      "tokens": [
-        "(",
-        "W",
-        "5.0",
-        "*",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "identifier",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "number",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "OPERADOR_FINAL",
-                            "filhos": [
-                              {
-                                "label": "ARITH_OP",
-                                "filhos": [
-                                  {
-                                    "label": "*",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 12,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 12,
-      "expressao_original": "( 0.0 RES )",
-      "tokens": [
-        "(",
-        "0.0",
-        "RES",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "number",
-                        "filhos": []
-                      },
-                      {
-                        "label": "OPERANDO_OPCIONAL",
-                        "filhos": [
-                          {
-                            "label": "res",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "epsilon",
-                        "filhos": []
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 7,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 13,
-      "expressao_original": "( ( A B + ) C )",
+      "numero_linha": 35,
+      "expressao_original": "( ( ( ( 5 3 + ) ( 2 * ) ) 10 + ) )",
       "tokens": [
         "(",
         "(",
-        "A",
-        "B",
+        "(",
+        "(",
+        "5",
+        "3",
         "+",
         ")",
-        "C",
+        "(",
+        "2",
+        "*",
+        ")",
+        ")",
+        "10",
+        "+",
+        ")",
         ")"
       ],
       "arvore": {
@@ -1409,14 +3622,176 @@
                                 "label": "OPERANDO",
                                 "filhos": [
                                   {
-                                    "label": "identifier",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
+                                    "label": "LINHA",
                                     "filhos": [
                                       {
-                                        "label": "epsilon",
+                                        "label": "(",
+                                        "filhos": []
+                                      },
+                                      {
+                                        "label": "SEQUENCIA",
+                                        "filhos": [
+                                          {
+                                            "label": "OPERANDO",
+                                            "filhos": [
+                                              {
+                                                "label": "LINHA",
+                                                "filhos": [
+                                                  {
+                                                    "label": "(",
+                                                    "filhos": []
+                                                  },
+                                                  {
+                                                    "label": "SEQUENCIA",
+                                                    "filhos": [
+                                                      {
+                                                        "label": "OPERANDO",
+                                                        "filhos": [
+                                                          {
+                                                            "label": "numero_inteiro",
+                                                            "filhos": []
+                                                          },
+                                                          {
+                                                            "label": "OPERANDO_OPCIONAL",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "epsilon",
+                                                                "filhos": []
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "label": "SEQUENCIA_PRIME",
+                                                        "filhos": [
+                                                          {
+                                                            "label": "OPERANDO",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "numero_inteiro",
+                                                                "filhos": []
+                                                              },
+                                                              {
+                                                                "label": "OPERANDO_OPCIONAL",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "epsilon",
+                                                                    "filhos": []
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "label": "SEQUENCIA_PRIME",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "OPERADOR_FINAL",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "ARITH_OP",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "+",
+                                                                        "filhos": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "label": ")",
+                                                    "filhos": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "label": "SEQUENCIA_PRIME",
+                                            "filhos": [
+                                              {
+                                                "label": "OPERANDO",
+                                                "filhos": [
+                                                  {
+                                                    "label": "LINHA",
+                                                    "filhos": [
+                                                      {
+                                                        "label": "(",
+                                                        "filhos": []
+                                                      },
+                                                      {
+                                                        "label": "SEQUENCIA",
+                                                        "filhos": [
+                                                          {
+                                                            "label": "OPERANDO",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "numero_inteiro",
+                                                                "filhos": []
+                                                              },
+                                                              {
+                                                                "label": "OPERANDO_OPCIONAL",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "epsilon",
+                                                                    "filhos": []
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "label": "SEQUENCIA_PRIME",
+                                                            "filhos": [
+                                                              {
+                                                                "label": "OPERADOR_FINAL",
+                                                                "filhos": [
+                                                                  {
+                                                                    "label": "ARITH_OP",
+                                                                    "filhos": [
+                                                                      {
+                                                                        "label": "*",
+                                                                        "filhos": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "label": ")",
+                                                        "filhos": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "label": "SEQUENCIA_PRIME",
+                                                "filhos": [
+                                                  {
+                                                    "label": "epsilon",
+                                                    "filhos": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "label": ")",
                                         "filhos": []
                                       }
                                     ]
@@ -1430,7 +3805,7 @@
                                     "label": "OPERANDO",
                                     "filhos": [
                                       {
-                                        "label": "identifier",
+                                        "label": "numero_inteiro",
                                         "filhos": []
                                       },
                                       {
@@ -1479,31 +3854,8 @@
                     "label": "SEQUENCIA_PRIME",
                     "filhos": [
                       {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
+                        "label": "epsilon",
+                        "filhos": []
                       }
                     ]
                   }
@@ -1526,156 +3878,13 @@
           }
         ]
       },
-      "derivacao_passos": 19,
-      "sucesso": true
-    },
-    {
-      "numero_linha": 14,
-      "expressao_original": "( - 5.0 RES )",
-      "tokens": [
-        "(",
-        "-",
-        "5.0",
-        "RES",
-        ")"
-      ],
-      "arvore": null,
-      "erro": "Erro sintático - parsing falhou",
-      "sucesso": false
-    },
-    {
-      "numero_linha": 15,
-      "expressao_original": "( ( 50.0 RES ) D )",
-      "tokens": [
-        "(",
-        "(",
-        "50.0",
-        "RES",
-        ")",
-        "D",
-        ")"
-      ],
-      "arvore": {
-        "label": "PROGRAM",
-        "filhos": [
-          {
-            "label": "LINHA",
-            "filhos": [
-              {
-                "label": "(",
-                "filhos": []
-              },
-              {
-                "label": "SEQUENCIA",
-                "filhos": [
-                  {
-                    "label": "OPERANDO",
-                    "filhos": [
-                      {
-                        "label": "LINHA",
-                        "filhos": [
-                          {
-                            "label": "(",
-                            "filhos": []
-                          },
-                          {
-                            "label": "SEQUENCIA",
-                            "filhos": [
-                              {
-                                "label": "OPERANDO",
-                                "filhos": [
-                                  {
-                                    "label": "number",
-                                    "filhos": []
-                                  },
-                                  {
-                                    "label": "OPERANDO_OPCIONAL",
-                                    "filhos": [
-                                      {
-                                        "label": "res",
-                                        "filhos": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "label": "SEQUENCIA_PRIME",
-                                "filhos": [
-                                  {
-                                    "label": "epsilon",
-                                    "filhos": []
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "label": ")",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "label": "SEQUENCIA_PRIME",
-                    "filhos": [
-                      {
-                        "label": "OPERANDO",
-                        "filhos": [
-                          {
-                            "label": "identifier",
-                            "filhos": []
-                          },
-                          {
-                            "label": "OPERANDO_OPCIONAL",
-                            "filhos": [
-                              {
-                                "label": "epsilon",
-                                "filhos": []
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "label": "SEQUENCIA_PRIME",
-                        "filhos": [
-                          {
-                            "label": "epsilon",
-                            "filhos": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "label": ")",
-                "filhos": []
-              }
-            ]
-          },
-          {
-            "label": "PROGRAM_PRIME",
-            "filhos": [
-              {
-                "label": "epsilon",
-                "filhos": []
-              }
-            ]
-          }
-        ]
-      },
-      "derivacao_passos": 14,
+      "derivacao_passos": 38,
       "sucesso": true
     }
   ],
   "estatisticas": {
-    "total_linhas": 15,
-    "linhas_validas": 13,
-    "linhas_com_erro": 2
+    "total_linhas": 35,
+    "linhas_validas": 35,
+    "linhas_com_erro": 0
   }
 }

@@ -36,7 +36,7 @@ def no_para_dict(no: NoArvore) -> dict:
         "filhos": [no_para_dict(filho) for filho in no.filhos]
     }
 
-def gerarArvore(derivacao):
+def gerarArvore(derivacao, tokens=None):
     producoes = [linha.split('→') for linha in derivacao]
     producoes = [(lhs.strip(), rhs.strip().split()) for lhs, rhs in producoes]
 
@@ -44,13 +44,13 @@ def gerarArvore(derivacao):
 
     def construir_no(simbolo_esperado):
         if index[0] >= len(producoes):
-            # Converte nome do token para valor real se disponível
+            # Terminal
             valor_real = MAPEAMENTO_TOKENS.get(simbolo_esperado, simbolo_esperado)
             return NoArvore(valor_real)
 
         lhs, rhs = producoes[index[0]]
         if lhs != simbolo_esperado:
-            # Converte nome do token para valor real se disponível
+            # Terminal
             valor_real = MAPEAMENTO_TOKENS.get(simbolo_esperado, simbolo_esperado)
             return NoArvore(valor_real)
 
@@ -86,7 +86,7 @@ def exportar_arvore_ascii(arvore, nome_arquivo='arvore_output.txt'):
 
     print(f"Árvore exportada para: {nome_arquivo} e outputs/RA2/{nome_arquivo}")
 
-def gerar_e_salvar_todas_arvores(derivacoes_por_linha, nome_arquivo='arvore_output.txt'):
+def gerar_e_salvar_todas_arvores(derivacoes_por_linha, tokens_por_linha=None, nome_arquivo='arvore_output.txt'):
     
     conteudo_completo = "=== ÁRVORES SINTÁTICAS GERADAS ===\n\n"
     
@@ -99,7 +99,8 @@ def gerar_e_salvar_todas_arvores(derivacoes_por_linha, nome_arquivo='arvore_outp
         if derivacao and len(derivacao) > 0:
             try:
                 # Gera a árvore para esta derivação
-                arvore = gerarArvore(derivacao)
+                tokens_linha = tokens_por_linha[i] if tokens_por_linha and i < len(tokens_por_linha) else None
+                arvore = gerarArvore(derivacao, tokens_linha)
                 
                 # Adiciona representação ASCII da árvore
                 conteudo_completo += arvore.label + '\n'
@@ -162,7 +163,8 @@ def exportar_arvores_json(derivacoes_por_linha, tokens_por_linha, linhas_origina
 
             if derivacao and len(derivacao) > 0:
                 # Gera árvore para esta linha
-                arvore = gerarArvore(derivacao)
+                tokens_linha = tokens_por_linha[i] if i < len(tokens_por_linha) else None
+                arvore = gerarArvore(derivacao, tokens_linha)
                 arvore_dict = no_para_dict(arvore)
 
                 linha_json = {

@@ -1,0 +1,121 @@
+# TESTE4 - TESTE ABRANGENTE DO ANALISADOR SEMÂNTICO RA3
+# Arquivo criado para validação completa do sistema de tipos e análise semântica
+# Inclui casos válidos e inválidos para testar todas as funcionalidades
+
+# === SEÇÃO 1: OPERAÇÕES ARITMÉTICAS VÁLIDAS ===
+(5 3 +)
+(10.5 2.0 *)
+(15 4 -)
+(8.0 2.0 |)
+(20 3 /)
+(17 5 %)
+(2 3 ^)
+(100 50 +)
+
+# === SEÇÃO 2: OPERAÇÕES ARITMÉTICAS INVÁLIDAS ===
+(5.5 2 /)
+(10.5 3 %)
+(2 3.5 ^)
+(5 TRUE +)
+(10.0 FALSE *)
+
+# === SEÇÃO 3: OPERAÇÕES DE COMPARAÇÃO ===
+(5 3 >)
+(10.5 2.0 <)
+(15 15 ==)
+(8.0 9.0 !=)
+(20 10 >=)
+(5 7 <=)
+
+# === SEÇÃO 4: OPERAÇÕES LÓGICAS ===
+((5 3 >) (10 5 <) &&)
+((2 4 ==) (8 3 >) ||)
+((10 0 >) !)
+(TRUE FALSE &&)
+(1 0 ||)
+
+# === SEÇÃO 5: ATRIBUIÇÕES E VARIÁVEIS ===
+(42 X)
+(3.14 PI)
+(1 FLAG)
+(100 COUNTER)
+(0 SUM)
+
+# === SEÇÃO 6: USO DE VARIÁVEIS ===
+(X)
+(PI)
+(FLAG)
+(COUNTER)
+(SUM)
+
+# === SEÇÃO 7: VARIÁVEIS NÃO INICIALIZADAS (ERROS) ===
+(Y)
+(Z)
+(UNKNOWN)
+(TEST_VAR)
+
+# === SEÇÃO 8: ESTRUTURAS IFELSE ===
+((5 3 >) (100) (200) IFELSE)
+(((X 10 >) (FLAG 1 ==) &&) ((X 2 *) ((X 1 +))) IFELSE)
+((TRUE) (42) (24) IFELSE)
+((1) (10.5) (20.5) IFELSE)
+
+# === SEÇÃO 9: ESTRUTURAS WHILE ===
+((COUNTER 10 <) (((COUNTER 1 +) COUNTER)) WHILE)
+(((X 5 >) ((X 1 -) X)) WHILE)
+((FLAG) (((FLAG 0 ==) !) FLAG)) WHILE)
+
+# === SEÇÃO 10: ESTRUTURAS FOR ===
+((1) (10) (1) ((I 2 *) SUM) FOR)
+((0) (5) (2) (((J 1 +) J)) FOR)
+((10) (1) (-1) ((K 3 *) RESULT) FOR)
+
+# === SEÇÃO 11: OPERAÇÕES RES (MEMÓRIA) ===
+(1 RES)
+(42 RES)
+(3.14 RES)
+(0 INDEX)
+
+# === SEÇÃO 12: EXPRESSÕES COMPLEXAS ===
+(((5 3 +) (2 *) 10 +))
+(((X 2 *) (Y 3 +) >))
+(((A B +) C *) D)
+((10) (5 3 +) (2 1 -) IFELSE)
+
+# === SEÇÃO 13: CASOS EDGE - TIPOS MISTURADOS ===
+((5.0 3) +)
+((10 2.0) *)
+((TRUE 1) &&)
+((3.14 FALSE) ||)
+
+# === SEÇÃO 14: NESTED EXPRESSIONS ===
+((((5 3 >) (10 5 <) &&) ((20) (30)) IFELSE))
+((((X 10 >) ((Y 5 <) !) &&) (((X 2 *)) ((Y 1 +))) IFELSE))
+
+# === SEÇÃO 15: LOOPS COMPLEXOS ===
+(((COUNTER 20 <) ((((COUNTER 1 +) COUNTER) ((SUM COUNTER +) SUM))) WHILE))
+(((I 0 ==) ((((I 1 +) I) ((TOTAL I +) TOTAL))) WHILE))
+
+# === SEÇÃO 16: TESTES DE MEMÓRIA ===
+((50 RES) TEMP)
+(TEMP)
+((TEMP 10 +) RESULT)
+(RESULT)
+
+# === SEÇÃO 17: BOOLEANOS EM MEMÓRIA (DEVE FALHAR) ===
+((TRUE 3 >) BOOL_RESULT)
+(BOOL_RESULT FLAG)
+
+# === SEÇÃO 18: MAIS CASOS DE ERRO ===
+((5.5 2 /) INVALID_DIV)
+((10.5 3 %) INVALID_MOD)
+((2 3.5 ^) INVALID_POW)
+((BOOLEAN_VAR) UNDEFINED)
+
+# === SEÇÃO 19: EXPRESSÕES COM VARIÁVEIS ===
+(((A 10 >) (B 20 <) &&) RESULT_FLAG)
+(RESULT_FLAG)
+
+# === SEÇÃO 20: FINAL - MISTURA DE TUDO ===
+((FINAL_COUNT 0 ==) ((((FINAL_COUNT 1 +) FINAL_COUNT)) ((FINAL_RESULT 100 ==)) WHILE))
+(((START 1) (END 10) (STEP 1) ((CURRENT START *) ACCUM) FOR) TOTAL)
