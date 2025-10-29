@@ -36,7 +36,7 @@ def no_para_dict(no: NoArvore) -> dict:
         "filhos": [no_para_dict(filho) for filho in no.filhos]
     }
 
-def gerarArvore(derivacao, tokens=None):
+def gerarArvore(derivacao):
     producoes = [linha.split('→') for linha in derivacao]
     producoes = [(lhs.strip(), rhs.strip().split()) for lhs, rhs in producoes]
 
@@ -99,8 +99,7 @@ def gerar_e_salvar_todas_arvores(derivacoes_por_linha, tokens_por_linha=None, no
         if derivacao and len(derivacao) > 0:
             try:
                 # Gera a árvore para esta derivação
-                tokens_linha = tokens_por_linha[i] if tokens_por_linha and i < len(tokens_por_linha) else None
-                arvore = gerarArvore(derivacao, tokens_linha)
+                arvore = gerarArvore(derivacao)
                 
                 # Adiciona representação ASCII da árvore
                 conteudo_completo += arvore.label + '\n'
@@ -163,8 +162,7 @@ def exportar_arvores_json(derivacoes_por_linha, tokens_por_linha, linhas_origina
 
             if derivacao and len(derivacao) > 0:
                 # Gera árvore para esta linha
-                tokens_linha = tokens_por_linha[i] if i < len(tokens_por_linha) else None
-                arvore = gerarArvore(derivacao, tokens_linha)
+                arvore = gerarArvore(derivacao)
                 arvore_dict = no_para_dict(arvore)
 
                 linha_json = {
