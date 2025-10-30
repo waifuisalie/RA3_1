@@ -427,7 +427,7 @@ def definir_regras_comandos() -> Dict[str, RegraSemantica]:
             'valor': valor.get('valor'),
             'variavel': variavel,
             'operacao': 'armazenamento',
-            'efeito_tabela': tabela.adicionar(variavel, valor['tipo'], inicializada=True)
+            'efeito_tabela': tabela.adicionarSimbolo(variavel, valor['tipo'], inicializada=True)
         },
         'descricao': 'Armazenamento em memória - apenas int/real',
         'regra_formal': 'Γ ⊢ e : T    T ∈ {int, real}    Γ[x ↦ (T, initialized)] ⊢ ...\n'
@@ -540,7 +540,7 @@ def definir_regras_comandos() -> Dict[str, RegraSemantica]:
 # FUNÇÃO PRINCIPAL: DEFINIR GRAMÁTICA COMPLETA
 # ============================================================================
 
-def definir_gramatica_atributos() -> Dict[str, Dict[str, RegraSemantica]]:
+def definirGramaticaAtributos() -> Dict[str, Dict[str, RegraSemantica]]:
     """
     Define a gramática de atributos completa para a linguagem RPN.
 
@@ -555,7 +555,7 @@ def definir_gramatica_atributos() -> Dict[str, Dict[str, RegraSemantica]]:
         Dicionário organizado por categoria, contendo todas as regras semânticas
 
     Example:
-        >>> gramatica = definir_gramatica_atributos()
+        >>> gramatica = definirGramaticaAtributos()
         >>> 'aritmetico' in gramatica
         True
         >>> '+' in gramatica['aritmetico']
@@ -586,10 +586,10 @@ def inicializar_sistema_semantico() -> tuple[Dict, TabelaSimbolos]:
         >>> isinstance(tabela, TabelaSimbolos)
         True
     """
-    from src.RA3.functions.python.tabela_simbolos import criar_tabela_simbolos
+    from src.RA3.functions.python.tabela_simbolos import inicializarTabelaSimbolos
 
-    gramatica = definir_gramatica_atributos()
-    tabela = criar_tabela_simbolos()
+    gramatica = definirGramaticaAtributos()
+    tabela = inicializarTabelaSimbolos()
 
     return gramatica, tabela
 
@@ -609,7 +609,7 @@ def obter_regra(operador: str, categoria: Optional[str] = None) -> Optional[Regr
     Returns:
         RegraSemantica se encontrada, None caso contrário
     """
-    gramatica = definir_gramatica_atributos()
+    gramatica = definirGramaticaAtributos()
 
     if categoria and categoria in gramatica:
         return gramatica[categoria].get(operador)
@@ -626,7 +626,7 @@ if __name__ == '__main__':
     print("✅ Módulo gramatica_atributos.py carregado com sucesso!\n")
 
     # Exibir estatísticas
-    gramatica = definir_gramatica_atributos()
+    gramatica = definirGramaticaAtributos()
 
     print("=" * 70)
     print("GRAMÁTICA DE ATRIBUTOS - ESTATÍSTICAS")

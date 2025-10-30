@@ -10,8 +10,8 @@
 
 from typing import Dict, Any, List, Optional, Tuple
 from src.RA3.functions.python import tipos
-from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos, criar_tabela_simbolos
-from src.RA3.functions.python.gramatica_atributos import obter_regra, definir_gramatica_atributos
+from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos, inicializarTabelaSimbolos
+from src.RA3.functions.python.gramatica_atributos import obter_regra, definirGramaticaAtributos
 
 
 class ErroSemantico(Exception):
@@ -276,9 +276,9 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
 
 def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict] = None, tabela: Optional[TabelaSimbolos] = None) -> Dict[str, Any]:
     if gramatica is None:
-        gramatica = definir_gramatica_atributos()
+        gramatica = definirGramaticaAtributos()
     if tabela is None:
-        tabela = criar_tabela_simbolos()
+        tabela = inicializarTabelaSimbolos()
 
     erros: List[Dict[str, Any]] = []
     linhas = arvoreSintatica.get('linhas', [])
@@ -308,7 +308,7 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                         if tipo_res is not None:
                             if not tipos.tipo_compativel_armazenamento(tipo_res):
                                 raise ErroSemantico(num, f"Tipo '{tipo_res}' não pode ser armazenado em memória. Apenas tipos numéricos são permitidos", _construir_contexto_expressao(linha_ast))
-                            tabela.adicionar(nome_var, tipo_res, inicializada=True, linha=num)
+                            tabela.adicionarSimbolo(nome_var, tipo_res, inicializada=True, linha=num)
                     except ErroSemantico:
                         # Se o valor não puder ser avaliado ou armazenado, não declarar a variável
                         pass

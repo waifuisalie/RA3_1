@@ -46,7 +46,7 @@ def analisarSemanticaMemoria(arvore_anotada_local: Dict[str, Any], seqs_map: Dic
                 erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: Tipo da fonte desconhecido para armazenamento\nContexto: ({destino})"})
             else:
                 try:
-                    tabela_local.adicionar(destino, fonte_tipo, inicializada=True, linha=num)
+                    tabela_local.adicionarSimbolo(destino, fonte_tipo, inicializada=True, linha=num)
                     linha['tipo'] = fonte_tipo
                 except ValueError as e:
                     erros_m.append({'linha': num, 'erro': f"ERRO SEMÂNTICO [Linha {num}]: {str(e)}\nContexto: ({destino})"})

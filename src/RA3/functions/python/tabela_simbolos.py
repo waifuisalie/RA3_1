@@ -108,8 +108,8 @@ class TabelaSimbolos:
 
     Examples:
         >>> tabela = TabelaSimbolos()
-        >>> _ = tabela.adicionar('CONTADOR', 'int', inicializada=True, linha=5)
-        >>> info = tabela.buscar('CONTADOR')
+        >>> _ = tabela.adicionarSimbolo('CONTADOR', 'int', inicializada=True, linha=5)
+        >>> info = tabela.buscarSimbolo('CONTADOR')
         >>> print(info.tipo)
         int
         >>> tabela.verificar_inicializacao('CONTADOR')
@@ -137,7 +137,7 @@ class TabelaSimbolos:
         """Retorna cópia do dicionário de símbolos (read-only)."""
         return self._simbolos.copy()
 
-    def adicionar(
+    def adicionarSimbolo(
         self,
         nome: str,
         tipo: str,
@@ -166,11 +166,11 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> simbolo = tabela.adicionar('VAR', 'int', True, 10)
+            >>> simbolo = tabela.adicionarSimbolo('VAR', 'int', True, 10)
             >>> simbolo.inicializada
             True
-            >>> _ = tabela.adicionar('VAR', 'real', True, 15)
-            >>> simbolo_novo = tabela.buscar('VAR')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'real', True, 15)
+            >>> simbolo_novo = tabela.buscarSimbolo('VAR')
             >>> simbolo_novo.tipo
             'real'
         """
@@ -207,7 +207,7 @@ class TabelaSimbolos:
 
         return simbolo
 
-    def buscar(self, nome: str) -> Optional[SimboloInfo]:
+    def buscarSimbolo(self, nome: str) -> Optional[SimboloInfo]:
         """
         Busca um símbolo na tabela.
 
@@ -219,11 +219,11 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int')
-            >>> info = tabela.buscar('VAR')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int')
+            >>> info = tabela.buscarSimbolo('VAR')
             >>> info.nome
             'VAR'
-            >>> tabela.buscar('INEXISTENTE') is None
+            >>> tabela.buscarSimbolo('INEXISTENTE') is None
             True
         """
         nome = nome.upper()
@@ -241,7 +241,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int')
             >>> tabela.existe('VAR')
             True
             >>> tabela.existe('INEXISTENTE')
@@ -262,13 +262,13 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int', False)
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int', False)
             >>> tabela.marcar_inicializada('VAR', 10)
             True
             >>> tabela.verificar_inicializacao('VAR')
             True
         """
-        simbolo = self.buscar(nome)
+        simbolo = self.buscarSimbolo(nome)
         if simbolo is None:
             return False
 
@@ -292,14 +292,14 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int', True)
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int', True)
             >>> tabela.verificar_inicializacao('VAR')
             True
-            >>> _ = tabela.adicionar('UNINIT', 'int', False)
+            >>> _ = tabela.adicionarSimbolo('UNINIT', 'int', False)
             >>> tabela.verificar_inicializacao('UNINIT')
             False
         """
-        simbolo = self.buscar(nome)
+        simbolo = self.buscarSimbolo(nome)
         if simbolo is None:
             return False
         return simbolo.inicializada
@@ -316,13 +316,13 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'real')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'real')
             >>> tabela.obter_tipo('VAR')
             'real'
             >>> tabela.obter_tipo('INEXISTENTE') is None
             True
         """
-        simbolo = self.buscar(nome)
+        simbolo = self.buscarSimbolo(nome)
         if simbolo is None:
             return None
         return simbolo.tipo
@@ -340,11 +340,11 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int')
             >>> tabela.registrar_uso('VAR', 20)
             True
         """
-        simbolo = self.buscar(nome)
+        simbolo = self.buscarSimbolo(nome)
         if simbolo is None:
             return False
 
@@ -368,7 +368,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int')
             >>> tabela.registrar_uso('VAR')
             True
             >>> tabela.registrar_uso('VAR')
@@ -386,7 +386,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int')
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int')
             >>> len(tabela.simbolos) > 0
             True
             >>> tabela.limpar()
@@ -408,8 +408,8 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('A', 'int', True)
-            >>> _ = tabela.adicionar('B', 'int', False)
+            >>> _ = tabela.adicionarSimbolo('A', 'int', True)
+            >>> _ = tabela.adicionarSimbolo('B', 'int', False)
             >>> len(tabela.listar_simbolos())
             2
             >>> len(tabela.listar_simbolos(apenas_inicializadas=True))
@@ -434,7 +434,7 @@ class TabelaSimbolos:
 
         Examples:
             >>> tabela = TabelaSimbolos()
-            >>> _ = tabela.adicionar('VAR', 'int', True, 5)
+            >>> _ = tabela.adicionarSimbolo('VAR', 'int', True, 5)
             >>> print(tabela.gerar_relatorio())  # doctest: +ELLIPSIS
             ==================...
         """
@@ -488,7 +488,7 @@ class TabelaSimbolos:
 # FUNÇÕES AUXILIARES
 # ============================================================================
 
-def criar_tabela_simbolos() -> TabelaSimbolos:
+def inicializarTabelaSimbolos() -> TabelaSimbolos:
     """
     Cria e retorna uma nova tabela de símbolos vazia.
 
@@ -496,7 +496,7 @@ def criar_tabela_simbolos() -> TabelaSimbolos:
         Nova instância de TabelaSimbolos
 
     Examples:
-        >>> tabela = criar_tabela_simbolos()
+        >>> tabela = inicializarTabelaSimbolos()
         >>> len(tabela)
         0
     """
@@ -515,9 +515,9 @@ if __name__ == '__main__':
     tabela = TabelaSimbolos()
 
     # Adicionar alguns símbolos
-    tabela.adicionar('CONTADOR', tipos.TYPE_INT, inicializada=True, linha=5)
-    tabela.adicionar('PI', tipos.TYPE_REAL, inicializada=True, linha=10)
-    tabela.adicionar('TEMP', tipos.TYPE_INT, inicializada=False, linha=15)
+    tabela.adicionarSimbolo('CONTADOR', tipos.TYPE_INT, inicializada=True, linha=5)
+    tabela.adicionarSimbolo('PI', tipos.TYPE_REAL, inicializada=True, linha=10)
+    tabela.adicionarSimbolo('TEMP', tipos.TYPE_INT, inicializada=False, linha=15)
 
     # Registrar usos
     tabela.registrar_uso('CONTADOR', 20)
