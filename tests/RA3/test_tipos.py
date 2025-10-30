@@ -8,13 +8,8 @@
 #
 # Nome do grupo no Canvas: RA3_1
 
-import sys
-import os
 import unittest
 from src.RA3.functions.python import tipos
-
-# Adicionar src ao path para importar módulos
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src/RA3/functions/python'))
 
 class TestConstantesTipos(unittest.TestCase):
     """Testes para as constantes de tipos."""

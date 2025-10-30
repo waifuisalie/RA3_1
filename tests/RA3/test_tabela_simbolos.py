@@ -15,15 +15,9 @@ Este módulo contém testes abrangentes para todas as funcionalidades
 da tabela de símbolos do analisador semântico.
 """
 
-import sys
-import os
-
-# Adicionar src ao path para importar módulos
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src/RA3/functions/python'))
-
 import unittest
-from tabela_simbolos import TabelaSimbolos, SimboloInfo, criar_tabela_simbolos
-import tipos
+from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos, SimboloInfo, criar_tabela_simbolos
+from src.RA3.functions.python import tipos
 
 
 class TestSimboloInfo(unittest.TestCase):

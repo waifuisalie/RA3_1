@@ -8,16 +8,11 @@
 #
 # Nome do grupo no Canvas: RA3_1
 
-import sys
-import os
 import unittest
 import json
 import tempfile
 from pathlib import Path
 from unittest.mock import patch, mock_open
-
-# Adicionar src ao path para importar módulos
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src/RA3/functions/python'))
 
 from src.RA3.functions.python import gerador_arvore_atribuida
 
@@ -268,7 +263,7 @@ class TestConstruirNoAtribuido(unittest.TestCase):
 class TestSalvarArvoreAtribuida(unittest.TestCase):
     """Testes para a função salvarArvoreAtribuida."""
 
-    @patch('gerador_arvore_atribuida.OUT_ARVORE_ATRIBUIDA_JSON')
+    @patch('src.RA3.functions.python.gerador_arvore_atribuida.OUT_ARVORE_ATRIBUIDA_JSON')
     @patch('builtins.open', new_callable=mock_open)
     @patch('pathlib.Path.mkdir')
     def test_salvar_arvore_simples(self, mock_mkdir, mock_file, mock_path):

@@ -1,14 +1,5 @@
-import sys
-import os
-
-# Make sure the project `src/` is on sys.path so tests can import project modules.
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-SRC = os.path.join(ROOT, 'src')
-if SRC not in sys.path:
-    sys.path.insert(0, SRC)
-
-from RA3.functions.python.analisador_tipos import analisarSemantica
-from RA3.functions.python.gramatica_atributos import definir_gramatica_atributos, inicializar_sistema_semantico
+from src.RA3.functions.python.analisador_tipos import analisarSemantica
+from src.RA3.functions.python.gramatica_atributos import definir_gramatica_atributos, inicializar_sistema_semantico
 
 
 def test_assignment_stores_type():
