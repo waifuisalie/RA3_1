@@ -28,7 +28,7 @@ from src.RA1.functions.python.tokens import Tipo_de_Token
 # LEGACY: Imports comentados - não mais necessários para RA2/RA3
 # from src.RA1.functions.python.exibirResultados import exibirResultados  # Executa expressões (legacy)
 # from src.RA1.functions.assembly import gerarAssemblyMultiple, save_assembly, save_registers_inc  # Assembly (legacy)
-from src.RA2.functions.python.gerarArvore import gerar_e_salvar_todas_arvores, exportar_arvores_json
+from src.RA2.functions.python.gerarArvore import exportar_arvores_json
 from src.RA2.functions.python.lerTokens import lerTokens, validarTokens, reconhecerToken
 from src.RA2.functions.python.construirGramatica import imprimir_gramatica_completa
 from src.RA2.functions.python.construirTabelaLL1 import construirTabelaLL1
@@ -268,7 +268,7 @@ def executar_ra2_parsing(tabela_ll1):
 
                 for elemento in elementos:
                     # Usa o reconhecerToken do lerTokens.py
-                    token = reconhecerToken(elemento, 1, 1)  # linha e coluna fictícias
+                    token = reconhecerToken(elemento, 1)  # linha fictícia
                     if token:
                         tokens_linha.append(token)
 

@@ -46,7 +46,6 @@ from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos
 # ============================================================================
 
 RegraSemantica = Dict[str, Any]
-AcaoSemantica = Callable[[Any, TabelaSimbolos], Dict[str, Any]]
 
 
 # ============================================================================

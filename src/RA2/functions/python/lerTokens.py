@@ -9,7 +9,6 @@
 # Nome do grupo no Canvas: RA2_1
 
 import sys
-from pathlib import Path
 from typing import List, Optional
 from src.RA1.functions.python.tokens import Tipo_de_Token, Token
 
@@ -56,12 +55,12 @@ def processarLinha(linha: str, linha_num: int) -> List[Token]:
         
         # Processar parênteses individualmente
         if char == '(':
-            token = reconhecerToken('(', linha_num, i)
+            token = reconhecerToken('(', linha_num)
             if token:
                 tokens.append(token)
             i += 1
         elif char == ')':
-            token = reconhecerToken(')', linha_num, i)
+            token = reconhecerToken(')', linha_num)
             if token:
                 tokens.append(token)
             i += 1
@@ -75,13 +74,13 @@ def processarLinha(linha: str, linha_num: int) -> List[Token]:
                 i += 1
             
             if elemento:
-                token = reconhecerToken(elemento, linha_num, start_pos)
+                token = reconhecerToken(elemento, linha_num)
                 if token:
                     tokens.append(token)
     
     return tokens
 
-def reconhecerToken(elemento: str, linha: int, coluna: int) -> Optional[Token]:
+def reconhecerToken(elemento: str, linha: int) -> Optional[Token]:
 
     # Tratar elemento vazio
     if not elemento:

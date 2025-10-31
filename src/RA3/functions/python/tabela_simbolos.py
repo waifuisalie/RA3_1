@@ -23,7 +23,7 @@ Funcionalidades:
 """
 
 from typing import Optional, Dict, Any
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from src.RA3.functions.python import tipos
 
 
