@@ -36,7 +36,7 @@ Estrutura de uma Regra Semântica:
     }
 """
 
-from typing import Dict, List, Callable, Any, Optional
+from typing import Dict, List, Any, Optional
 from src.RA3.functions.python import tipos
 from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos
 

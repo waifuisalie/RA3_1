@@ -39,7 +39,7 @@ from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_a
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
 INPUTS_DIR  = BASE_DIR / "inputs" / "RA1"                       # raiz/inputs
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
-OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"          # raiz/outputs/assembly
+# OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"        # Reserved for RA4 (future assembly generation phase)
 OUT_ARVORE_JSON = BASE_DIR / "outputs" / "RA2" / "arvore_sintatica.json"
 
 OUT_TOKENS.parent.mkdir(parents=True, exist_ok=True)
