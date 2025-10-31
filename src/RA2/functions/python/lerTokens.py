@@ -67,8 +67,7 @@ def processarLinha(linha: str, linha_num: int) -> List[Token]:
         else:
             # Extrair elemento completo (número, variável, operador, palavra-chave)
             elemento = ''
-            start_pos = i
-            
+
             while i < len(linha) and not linha[i].isspace() and linha[i] not in '()':
                 elemento += linha[i]
                 i += 1
