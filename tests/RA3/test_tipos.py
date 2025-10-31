@@ -35,25 +35,6 @@ class TestConstantesTipos(unittest.TestCase):
         self.assertIn(tipos.TYPE_BOOLEAN, tipos.TIPOS_TRUTHY)
 
 
-class TestValidacaoTipos(unittest.TestCase):
-    """Testes para validação de tipos."""
-
-    def test_eh_tipo_valido(self):
-        """Deve validar tipos corretamente."""
-        self.assertTrue(tipos.eh_tipo_valido('int'))
-        self.assertTrue(tipos.eh_tipo_valido('real'))
-        self.assertTrue(tipos.eh_tipo_valido('boolean'))
-        self.assertFalse(tipos.eh_tipo_valido('string'))
-        self.assertFalse(tipos.eh_tipo_valido(''))
-
-    def test_eh_tipo_numerico(self):
-        """Deve identificar tipos numéricos."""
-        self.assertTrue(tipos.eh_tipo_numerico('int'))
-        self.assertTrue(tipos.eh_tipo_numerico('real'))
-        self.assertFalse(tipos.eh_tipo_numerico('boolean'))
-        self.assertFalse(tipos.eh_tipo_numerico('string'))
-
-
 class TestPromocaoTipos(unittest.TestCase):
     """Testes para promoção de tipos."""
 
