@@ -40,12 +40,10 @@ def imprimir_gramatica_completa():
     # Tabela LL1
     tabela_ll1_teorica = None
     conflitos = []
-    eh_ll1 = False
-    
+
     try:
         tabela_ll1_reais = construirTabelaLL1()
         tabela_ll1_teorica = mapear_tokens_reais_para_teoricos(tabela_ll1_reais)
-        eh_ll1 = True
     except ConflictError as e:
         conflitos = [str(e)]
     

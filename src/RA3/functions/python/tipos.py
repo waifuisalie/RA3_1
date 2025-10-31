@@ -144,43 +144,6 @@ def para_booleano(valor, tipo: str) -> bool:
     raise ValueError(f"Conversão não implementada para tipo '{tipo}'")
 
 
-def eh_tipo_valido(tipo: str) -> bool:
-    """
-    Verifica se um tipo é válido na linguagem.
-
-    Args:
-        tipo: Nome do tipo a verificar
-
-    Returns:
-        True se o tipo é válido, False caso contrário
-
-    Examples:
-        >>> eh_tipo_valido('int')
-        True
-        >>> eh_tipo_valido('string')
-        False
-    """
-    return tipo in TIPOS_VALIDOS
-
-
-def eh_tipo_numerico(tipo: str) -> bool:
-    """
-    Verifica se um tipo é numérico (int ou real).
-
-    Args:
-        tipo: Nome do tipo a verificar
-
-    Returns:
-        True se o tipo é numérico, False caso contrário
-
-    Examples:
-        >>> eh_tipo_numerico('int')
-        True
-        >>> eh_tipo_numerico('boolean')
-        False
-    """
-    return tipo in TIPOS_NUMERICOS
-
 
 # ============================================================================
 # FUNÇÕES DE VERIFICAÇÃO DE COMPATIBILIDADE DE TIPOS

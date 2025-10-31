@@ -8,7 +8,7 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Optional
 from src.RA1.functions.python.tokens import Token, Tipo_de_Token
 from .configuracaoGramatica import SIMBOLO_INICIAL, MAPEAMENTO_TOKENS
 
