@@ -12,7 +12,6 @@ import sys
 import os
 import traceback
 from pathlib import Path
-from datetime import datetime
 import json
 
 # ============================================================================
@@ -85,8 +84,6 @@ def segmentar_linha_em_instrucoes(linha_texto):
             i += 1
 
     return instrucoes
-
-
 
 
 def executar_ra1_tokenizacao(operacoes_lidas):
@@ -262,9 +259,6 @@ def executar_ra2_geracao_arvores(derivacoes, tokens_por_linha):
 
     exportar_arvores_json(derivacoes, tokens_list, linhas_originais)
 
-    # Atualiza a documentação da gramática com a última árvore gerada
-    atualizar_documentacao_gramatica()
-
 
 def executar_ra3_analise_semantica():
     """Executa a análise semântica (RA3) completa
@@ -403,102 +397,6 @@ def main():
     # Fase 6: Análise semântica (RA3)
     executar_ra3_analise_semantica()
 
-
-def atualizar_documentacao_gramatica():
-    """Atualiza a seção Latest Syntax Tree no grammar_documentation.md com a última árvore gerada"""
-    try:
-        grammar_doc_path = BASE_DIR / "grammar_documentation.md"
-        arvore_output_path = BASE_DIR / "arvore_output.txt"
-
-        if not grammar_doc_path.exists():
-            # print(f"  Aviso: {grammar_doc_path} não encontrado, pulando atualização da documentação")
-            return
-
-        if not arvore_output_path.exists():
-            print(f"  Aviso: {arvore_output_path} não encontrado, não é possível atualizar documentação")
-            return
-
-        # Lê o arquivo de árvores geradas
-        with open(arvore_output_path, 'r', encoding='utf-8') as f:
-            arvore_content = f.read()
-
-        # Encontra a última árvore (busca pela última ocorrência de "LINHA")
-        linhas = arvore_content.split('\n')
-        ultima_arvore_inicio = -1
-        ultima_linha_numero = ""
-
-        for i, linha in enumerate(linhas):
-            if linha.startswith('LINHA ') and linha.endswith(':'):
-                ultima_arvore_inicio = i
-                ultima_linha_numero = linha
-
-        if ultima_arvore_inicio == -1:
-            print("  Aviso: Nenhuma árvore encontrada no arquivo de saída")
-            return
-
-        # Extrai a última árvore completa
-        arvore_lines = []
-        arvore_lines.append(ultima_linha_numero)
-        i = ultima_arvore_inicio + 1
-        first_separator_passed = False
-
-        # Adiciona as linhas da árvore até encontrar o separador final ou fim do arquivo
-        while i < len(linhas):
-            linha = linhas[i]
-            arvore_lines.append(linha)
-
-            # Se é um separador (linha de '===')
-            if linha.startswith('=') and len(linha) >= 20:
-                if not first_separator_passed:
-                    # Este é o primeiro separador (que vem logo após "LINHA XX:")
-                    first_separator_passed = True
-                else:
-                    # Este é o separador final da árvore
-                    break
-            i += 1
-
-        ultima_arvore = '\n'.join(arvore_lines)
-
-        # Lê o arquivo de documentação atual
-        with open(grammar_doc_path, 'r', encoding='utf-8') as f:
-            doc_content = f.read()
-
-        # Encontra a seção "Latest Syntax Tree" e substitui
-        lines = doc_content.split('\n')
-        new_lines = []
-        in_syntax_tree_section = False
-
-        for linha in lines:
-            if linha.strip() == "## Latest Syntax Tree":
-                new_lines.append(linha)
-                in_syntax_tree_section = True
-
-                # Adiciona timestamp e nova árvore
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                new_lines.append(f"\n*Last updated: {timestamp}*\n")
-                new_lines.append("```")
-                new_lines.append(ultima_arvore)
-                new_lines.append("```")
-
-                # Pula todas as linhas da seção anterior até encontrar próxima seção ou fim
-                continue
-            elif in_syntax_tree_section and linha.startswith('## '):
-                # Nova seção encontrada, para de pular linhas
-                in_syntax_tree_section = False
-                new_lines.append(linha)
-            elif not in_syntax_tree_section:
-                new_lines.append(linha)
-
-        # Escreve o arquivo atualizado
-        updated_content = '\n'.join(new_lines)
-        with open(grammar_doc_path, 'w', encoding='utf-8') as f:
-            f.write(updated_content)
-
-        print(f"  Documentação grammar_documentation.md atualizada com árvore da {ultima_linha_numero}")
-
-    except Exception as e:
-        print(f"  Erro ao atualizar documentação: {e}")
-        # Não interrompe a execução, apenas avisa
 
 if __name__ == "__main__":
     main()
