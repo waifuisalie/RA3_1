@@ -9,9 +9,9 @@
 # Nome do grupo no Canvas: RA3_1
 
 import sys
+import os
 import traceback
 from pathlib import Path
-from datetime import datetime
 import json
 
 # ============================================================================
@@ -37,7 +37,6 @@ from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJso
 from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_arvore_atribuida
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
-INPUTS_DIR  = BASE_DIR / "inputs" / "RA1"                       # raiz/inputs
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
 # OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"        # Reserved for RA4 (future assembly generation phase)
 OUT_ARVORE_JSON = BASE_DIR / "outputs" / "RA2" / "arvore_sintatica.json"
@@ -85,52 +84,6 @@ def segmentar_linha_em_instrucoes(linha_texto):
             i += 1
 
     return instrucoes
-
-
-def resolver_caminho_arquivo(argumento):
-    """Resolve o caminho do arquivo de entrada seguindo ordem de prioridade
-
-    Args:
-        argumento: Argumento de linha de comando (string ou Path)
-
-    Returns:
-        Path: Caminho absoluto resolvido do arquivo
-
-    Raises:
-        SystemExit: Se o arquivo não for encontrado em nenhuma das localizações
-    """
-    arg = Path(argumento)
-
-    # Ordem de prioridade para localizar arquivo:
-    # 1. Caminho absoluto (se fornecido)
-    # 2. Relativo ao diretório atual
-    # 3. Relativo à raiz do projeto
-    # 4. Dentro da pasta inputs/RA1 (padrão para testes)
-    possibilidades = []
-
-    if arg.is_absolute():
-        possibilidades.append(arg)
-    else:
-        possibilidades.extend([
-            Path.cwd() / arg,    # Relativo ao diretório atual
-            BASE_DIR / arg,      # Relativo à raiz do projeto
-            INPUTS_DIR / arg,    # Dentro da pasta inputs/RA1
-        ])
-
-    entrada = None
-    for caminho in possibilidades:
-        if caminho.exists():
-            entrada = caminho.resolve()
-            break
-
-    if entrada is None:
-        print(f"ERRO -> arquivo não encontrado: {arg}")
-        print(f"Tentativas de busca:")
-        for i, caminho in enumerate(possibilidades, 1):
-            print(f"  {i}. {caminho}")
-        sys.exit(1)
-
-    return entrada
 
 
 def executar_ra1_tokenizacao(operacoes_lidas):
@@ -306,9 +259,6 @@ def executar_ra2_geracao_arvores(derivacoes, tokens_por_linha):
 
     exportar_arvores_json(derivacoes, tokens_list, linhas_originais)
 
-    # Atualiza a documentação da gramática com a última árvore gerada
-    atualizar_documentacao_gramatica()
-
 
 def executar_ra3_analise_semantica():
     """Executa a análise semântica (RA3) completa
@@ -403,21 +353,26 @@ def main():
         SystemExit: Se houver erro crítico em qualquer fase
     """
     if len(sys.argv) < 2:
-        print("ERRO -> Especificar caminho do arquivo de teste (ex.: int/teste1.txt ou float/teste2.txt)")
+        print("ERRO -> Especificar arquivo de teste como argumento")
+        print("Uso: python3 compilar.py <arquivo>")
+        print("Exemplo: python3 compilar.py teste1_valido.txt")
         sys.exit(1)
 
-    # Resolve caminho do arquivo de entrada
-    entrada = resolver_caminho_arquivo(sys.argv[1])
-    operacoes_lidas = lerArquivo(str(entrada))
+    # Validar e carregar arquivo de entrada
+    arquivo_entrada = sys.argv[1]
 
-    # Exibe caminho relativo à raiz se possível (evita ValueError do relative_to)
-    try:
-        mostrar = entrada.relative_to(BASE_DIR)
-    except ValueError:
-        print("AVISO -> Não foi possível exibir o caminho relativo ao diretório base. Exibindo caminho absoluto.")
-        mostrar = entrada
+    # Verifica se arquivo existe
+    if not os.path.exists(arquivo_entrada):
+        print(f"ERRO -> Arquivo não encontrado: {arquivo_entrada}")
+        sys.exit(1)
 
-    print(f"\nArquivo de teste: {mostrar}\n")
+    # Verifica se é um arquivo (não diretório)
+    if not os.path.isfile(arquivo_entrada):
+        print(f"ERRO -> Caminho especificado é um diretório: {arquivo_entrada}")
+        sys.exit(1)
+
+    operacoes_lidas = lerArquivo(arquivo_entrada)
+    print(f"\nArquivo de teste: {arquivo_entrada}\n")
 
     # Fase 1: Tokenização (RA1)
     tokens_salvos_txt, linhas_processadas = executar_ra1_tokenizacao(operacoes_lidas)
@@ -442,102 +397,6 @@ def main():
     # Fase 6: Análise semântica (RA3)
     executar_ra3_analise_semantica()
 
-
-def atualizar_documentacao_gramatica():
-    """Atualiza a seção Latest Syntax Tree no grammar_documentation.md com a última árvore gerada"""
-    try:
-        grammar_doc_path = BASE_DIR / "grammar_documentation.md"
-        arvore_output_path = BASE_DIR / "arvore_output.txt"
-
-        if not grammar_doc_path.exists():
-            # print(f"  Aviso: {grammar_doc_path} não encontrado, pulando atualização da documentação")
-            return
-
-        if not arvore_output_path.exists():
-            print(f"  Aviso: {arvore_output_path} não encontrado, não é possível atualizar documentação")
-            return
-
-        # Lê o arquivo de árvores geradas
-        with open(arvore_output_path, 'r', encoding='utf-8') as f:
-            arvore_content = f.read()
-
-        # Encontra a última árvore (busca pela última ocorrência de "LINHA")
-        linhas = arvore_content.split('\n')
-        ultima_arvore_inicio = -1
-        ultima_linha_numero = ""
-
-        for i, linha in enumerate(linhas):
-            if linha.startswith('LINHA ') and linha.endswith(':'):
-                ultima_arvore_inicio = i
-                ultima_linha_numero = linha
-
-        if ultima_arvore_inicio == -1:
-            print("  Aviso: Nenhuma árvore encontrada no arquivo de saída")
-            return
-
-        # Extrai a última árvore completa
-        arvore_lines = []
-        arvore_lines.append(ultima_linha_numero)
-        i = ultima_arvore_inicio + 1
-        first_separator_passed = False
-
-        # Adiciona as linhas da árvore até encontrar o separador final ou fim do arquivo
-        while i < len(linhas):
-            linha = linhas[i]
-            arvore_lines.append(linha)
-
-            # Se é um separador (linha de '===')
-            if linha.startswith('=') and len(linha) >= 20:
-                if not first_separator_passed:
-                    # Este é o primeiro separador (que vem logo após "LINHA XX:")
-                    first_separator_passed = True
-                else:
-                    # Este é o separador final da árvore
-                    break
-            i += 1
-
-        ultima_arvore = '\n'.join(arvore_lines)
-
-        # Lê o arquivo de documentação atual
-        with open(grammar_doc_path, 'r', encoding='utf-8') as f:
-            doc_content = f.read()
-
-        # Encontra a seção "Latest Syntax Tree" e substitui
-        lines = doc_content.split('\n')
-        new_lines = []
-        in_syntax_tree_section = False
-
-        for linha in lines:
-            if linha.strip() == "## Latest Syntax Tree":
-                new_lines.append(linha)
-                in_syntax_tree_section = True
-
-                # Adiciona timestamp e nova árvore
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                new_lines.append(f"\n*Last updated: {timestamp}*\n")
-                new_lines.append("```")
-                new_lines.append(ultima_arvore)
-                new_lines.append("```")
-
-                # Pula todas as linhas da seção anterior até encontrar próxima seção ou fim
-                continue
-            elif in_syntax_tree_section and linha.startswith('## '):
-                # Nova seção encontrada, para de pular linhas
-                in_syntax_tree_section = False
-                new_lines.append(linha)
-            elif not in_syntax_tree_section:
-                new_lines.append(linha)
-
-        # Escreve o arquivo atualizado
-        updated_content = '\n'.join(new_lines)
-        with open(grammar_doc_path, 'w', encoding='utf-8') as f:
-            f.write(updated_content)
-
-        print(f"  Documentação grammar_documentation.md atualizada com árvore da {ultima_linha_numero}")
-
-    except Exception as e:
-        print(f"  Erro ao atualizar documentação: {e}")
-        # Não interrompe a execução, apenas avisa
 
 if __name__ == "__main__":
     main()
