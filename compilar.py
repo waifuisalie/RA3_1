@@ -9,6 +9,7 @@
 # Nome do grupo no Canvas: RA3_1
 
 import sys
+import os
 import traceback
 from pathlib import Path
 from datetime import datetime
@@ -37,7 +38,6 @@ from src.RA3.functions.python.analisador_semantico import analisarSemanticaDaJso
 from src.RA3.functions.python.gerador_arvore_atribuida import executar_geracao_arvore_atribuida
 
 BASE_DIR    = Path(__file__).resolve().parent        # raiz do repo
-INPUTS_DIR  = BASE_DIR / "inputs" / "RA1"                       # raiz/inputs
 OUT_TOKENS  = BASE_DIR / "outputs" / "RA1" / "tokens" / "tokens_gerados.txt"
 # OUT_ASM_DIR = BASE_DIR / "outputs" / "RA1" / "assembly"        # Reserved for RA4 (future assembly generation phase)
 OUT_ARVORE_JSON = BASE_DIR / "outputs" / "RA2" / "arvore_sintatica.json"
@@ -87,50 +87,6 @@ def segmentar_linha_em_instrucoes(linha_texto):
     return instrucoes
 
 
-def resolver_caminho_arquivo(argumento):
-    """Resolve o caminho do arquivo de entrada seguindo ordem de prioridade
-
-    Args:
-        argumento: Argumento de linha de comando (string ou Path)
-
-    Returns:
-        Path: Caminho absoluto resolvido do arquivo
-
-    Raises:
-        SystemExit: Se o arquivo não for encontrado em nenhuma das localizações
-    """
-    arg = Path(argumento)
-
-    # Ordem de prioridade para localizar arquivo:
-    # 1. Caminho absoluto (se fornecido)
-    # 2. Relativo ao diretório atual
-    # 3. Relativo à raiz do projeto
-    # 4. Dentro da pasta inputs/RA1 (padrão para testes)
-    possibilidades = []
-
-    if arg.is_absolute():
-        possibilidades.append(arg)
-    else:
-        possibilidades.extend([
-            Path.cwd() / arg,    # Relativo ao diretório atual
-            BASE_DIR / arg,      # Relativo à raiz do projeto
-            INPUTS_DIR / arg,    # Dentro da pasta inputs/RA1
-        ])
-
-    entrada = None
-    for caminho in possibilidades:
-        if caminho.exists():
-            entrada = caminho.resolve()
-            break
-
-    if entrada is None:
-        print(f"ERRO -> arquivo não encontrado: {arg}")
-        print(f"Tentativas de busca:")
-        for i, caminho in enumerate(possibilidades, 1):
-            print(f"  {i}. {caminho}")
-        sys.exit(1)
-
-    return entrada
 
 
 def executar_ra1_tokenizacao(operacoes_lidas):
@@ -403,21 +359,26 @@ def main():
         SystemExit: Se houver erro crítico em qualquer fase
     """
     if len(sys.argv) < 2:
-        print("ERRO -> Especificar caminho do arquivo de teste (ex.: int/teste1.txt ou float/teste2.txt)")
+        print("ERRO -> Especificar arquivo de teste como argumento")
+        print("Uso: python3 compilar.py <arquivo>")
+        print("Exemplo: python3 compilar.py teste1_valido.txt")
         sys.exit(1)
 
-    # Resolve caminho do arquivo de entrada
-    entrada = resolver_caminho_arquivo(sys.argv[1])
-    operacoes_lidas = lerArquivo(str(entrada))
+    # Validar e carregar arquivo de entrada
+    arquivo_entrada = sys.argv[1]
 
-    # Exibe caminho relativo à raiz se possível (evita ValueError do relative_to)
-    try:
-        mostrar = entrada.relative_to(BASE_DIR)
-    except ValueError:
-        print("AVISO -> Não foi possível exibir o caminho relativo ao diretório base. Exibindo caminho absoluto.")
-        mostrar = entrada
+    # Verifica se arquivo existe
+    if not os.path.exists(arquivo_entrada):
+        print(f"ERRO -> Arquivo não encontrado: {arquivo_entrada}")
+        sys.exit(1)
 
-    print(f"\nArquivo de teste: {mostrar}\n")
+    # Verifica se é um arquivo (não diretório)
+    if not os.path.isfile(arquivo_entrada):
+        print(f"ERRO -> Caminho especificado é um diretório: {arquivo_entrada}")
+        sys.exit(1)
+
+    operacoes_lidas = lerArquivo(arquivo_entrada)
+    print(f"\nArquivo de teste: {arquivo_entrada}\n")
 
     # Fase 1: Tokenização (RA1)
     tokens_salvos_txt, linhas_processadas = executar_ra1_tokenizacao(operacoes_lidas)
