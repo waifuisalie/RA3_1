@@ -20,7 +20,7 @@
 
 ## Descrição do Projeto
 
-Este projeto implementa um **compilador completo** para uma linguagem simplificada baseada em **Notação Polonesa Reversa (RPN)**. O compilador integra três fases de análise:
+Este projeto implementa um compilador para uma linguagem simplificada baseada em **Notação Polonesa Reversa (RPN)**. O compilador integra três fases de análise:
 
 1. **RA1 - Análise Léxica**: Tokenização de expressões RPN
 2. **RA2 - Análise Sintática**: Parser LL(1) com geração de árvore sintática
@@ -58,7 +58,7 @@ python3 compilar.py <arquivo_de_teste>
 
 ```bash
 # Usando caminho relativo ao diretório raiz
-python3 compilar.py inputs/RA3/teste1_valido.txt
+python3 compilar.py inputs/RA3/teste1.txt
 
 # Usando caminho relativo ao diretório inputs/RA1
 python3 compilar.py float/teste1.txt
@@ -66,20 +66,66 @@ python3 compilar.py float/teste1.txt
 # Usando caminho relativo ao diretório inputs/RA2
 python3 compilar.py RA2/teste1.txt
 
-# Usando arquivo na raiz (arquivos de teste legados)
-python3 compilar.py teste1_valido.txt
-
 # Usando caminho absoluto
 python3 compilar.py /caminho/completo/para/arquivo.txt
 ```
 
 ### Arquivos de Saída
 
-O compilador gera os seguintes arquivos de saída:
+O compilador gera os seguintes arquivos de saída organizados por fase:
 
-- **`outputs/RA1/tokens/tokens_gerados.txt`**: Tokens gerados pelo analisador léxico
+#### RA1 - Análise Léxica
+
+- **`outputs/RA1/tokens/tokens_gerados.txt`**: Lista de tokens gerados pelo analisador léxico
+
+#### RA2 - Análise Sintática
+
 - **`outputs/RA2/arvore_sintatica.json`**: Árvore sintática em formato JSON (entrada para RA3)
-- **Saída no console**: Relatório completo de execução com erros (se houver)
+
+#### RA3 - Análise Semântica
+
+##### Diretório `relatorios/`
+
+- **`relatorios/arvore_atribuida.md`**: Árvore sintática abstrata com atributos de tipo inferidos para cada nó
+  - Mostra o tipo resultante de cada expressão
+  - Apresenta a estrutura hierárquica da árvore com tipos anotados
+  - Inclui resumo com total de linhas analisadas e contagem de tipos
+
+- **`relatorios/erros_sematicos.md`**: Relatório detalhado de todos os erros semânticos encontrados
+  - Lista cada erro com linha, descrição e contexto
+  - Inclui resumo com total de erros e status da análise
+  - Apresenta categorias de erros (tipos, memória, controle)
+
+- **`relatorios/julgamento_tipos.md`**: Análise detalhada de inferência de tipos por expressão
+  - Mostra o processo de julgamento de tipos linha por linha
+  - Documenta regras de promoção de tipos aplicadas
+  - Identifica expressões com tipos incompatíveis
+
+- **`relatorios/tabela_simbolos.md`**: Tabela de símbolos com variáveis declaradas
+  - Lista todas as variáveis com nome, tipo e escopo
+  - Indica quais variáveis foram inicializadas
+  - Mostra histórico de atribuições
+
+- **`relatorios/gramatica_atributos.md`**: Gramática de atributos completa utilizada na análise
+  - Define regras semânticas para cada produção
+  - Especifica atributos sintetizados e herdados
+  - Documenta as equações semânticas aplicadas
+
+##### Diretório `outputs/RA3/`
+
+- **`outputs/RA3/arvore_atribuida.json`**: Árvore sintática em formato JSON com atributos semânticos
+  - Estrutura JSON com tipos inferidos para cada nó
+  - Facilita processamento automatizado por outras ferramentas
+  - Inclui metadados de linha e hierarquia de expressões
+
+- **`outputs/RA3/gramatica_atributos.md`**: Cópia da gramática de atributos para referência
+
+##### Console
+
+- **Saída no console**: Relatório resumido de execução
+  - Status de cada fase (RA1, RA2, RA3)
+  - Resumo de erros encontrados (se houver)
+  - Mensagens de sucesso ou falha da compilação
 
 ### Depuração
 
@@ -87,8 +133,154 @@ Para depurar o compilador, você pode:
 
 1. **Verificar tokens gerados**: Examine `outputs/RA1/tokens/tokens_gerados.txt`
 2. **Verificar árvore sintática**: Examine `outputs/RA2/arvore_sintatica.json`
-3. **Adicionar prints de debug**: Adicione prints nos módulos Python relevantes
-4. **Executar testes unitários**: `python3 -m pytest tests/`
+3. **Verificar análise semântica**: Consulte os relatórios em `relatorios/`
+4. **Adicionar prints de debug**: Adicione prints nos módulos Python relevantes
+5. **Executar testes unitários**: `python3 -m pytest tests/`
+
+### Entendendo os Arquivos de Saída
+
+#### 1. Árvore Atribuída (`arvore_atribuida.md` e `arvore_atribuida.json`)
+
+Estes arquivos contêm a **árvore sintática abstrata com atributos semânticos**. Cada nó da árvore inclui:
+
+- **`tipo_vertice`**: Nome do símbolo não-terminal da gramática
+- **`tipo_inferido`**: Tipo semântico inferido (`int`, `real`, `boolean`, ou `None`)
+- **`numero_linha`**: Número da linha no código-fonte
+- **`filhos`**: Lista de sub-expressões aninhadas
+
+**Formato Markdown** (`arvore_atribuida.md`):
+```markdown
+### Linha 5
+
+**Tipo Resultado:** `int`
+
+**Estrutura da Árvore:**
+
+LINHA
+└── SEQUENCIA
+    ├── OPERANDO: 5 (int)
+    ├── OPERANDO: 3 (int)
+    └── OPERADOR_FINAL: + (int)
+```
+
+**Formato JSON** (`arvore_atribuida.json`):
+```json
+{
+  "tipo_vertice": "LINHA",
+  "tipo_inferido": "int",
+  "numero_linha": 5,
+  "filhos": [...]
+}
+```
+
+**Uso**: Depurar inferência de tipos e visualizar a estrutura hierárquica das expressões.
+
+---
+
+#### 2. Erros Semânticos (`erros_sematicos.md`)
+
+Lista **todos os erros semânticos** detectados durante a análise:
+
+```markdown
+### Erro 1
+ERRO SEMÂNTICO [Linha 10]: Operador '/' requer operandos inteiros. Recebido: real, int
+Contexto: (5.5 / 2)
+```
+
+**Categorias de erros**:
+- **Erros de tipos**: Incompatibilidade de tipos em operações
+- **Erros de memória**: Variáveis não inicializadas ou não declaradas
+- **Erros de controle**: Condições inválidas, ramos inconsistentes
+
+**Uso**: Identificar e corrigir problemas semânticos no código-fonte.
+
+---
+
+#### 3. Julgamento de Tipos (`julgamento_tipos.md`)
+
+Documenta o **processo de inferência de tipos** para cada expressão:
+
+```markdown
+## Linha 5: (5 3 +)
+
+### Análise de Tipos:
+- Operando esquerdo: 5 (int)
+- Operando direito: 3 (int)
+- Operador: + (requer numéricos)
+- Regra aplicada: int + int = int
+
+### Tipo Resultante: `int`
+```
+
+**Informações incluídas**:
+- Tipos dos operandos
+- Regras de promoção de tipos aplicadas (ex: `int` + `real` = `real`)
+- Restrições de operadores (ex: `/` requer ambos `int`)
+- Expressões de identidade (epsilon) para linhas vazias
+
+**Uso**: Entender como o compilador inferiu cada tipo e diagnosticar erros sutis de tipos.
+
+---
+
+#### 4. Tabela de Símbolos (`tabela_simbolos.md`)
+
+Lista **todas as variáveis declaradas** no programa:
+
+```markdown
+| Nome | Tipo | Inicializada | Escopo | Linha Declaração |
+|------|------|--------------|--------|------------------|
+| X    | int  | Sim          | global | 2                |
+| Y    | real | Sim          | global | 5                |
+| COUNTER | int | Sim       | global | 8                |
+```
+
+**Informações por variável**:
+- **Nome**: Identificador da variável
+- **Tipo**: `int` ou `real` (boolean não pode ser armazenado)
+- **Inicializada**: Se a variável recebeu valor antes de ser usada
+- **Escopo**: Contexto da variável (global para este compilador)
+- **Linha Declaração**: Linha onde a variável foi inicializada pela primeira vez
+
+**Uso**: Verificar quais variáveis existem e se foram inicializadas corretamente.
+
+---
+
+#### 5. Gramática de Atributos (`gramatica_atributos.md`)
+
+Documenta a **gramática de atributos completa** usada na análise semântica:
+
+```markdown
+### Produção: SEQUENCIA → OPERANDO OPERANDO OPERADOR_FINAL
+
+#### Atributos Sintetizados:
+- SEQUENCIA.tipo = tipo_resultado_operacao(OPERANDO₁.tipo, OPERANDO₂.tipo, OPERADOR_FINAL.simbolo)
+
+#### Regras Semânticas:
+1. Verificar compatibilidade de tipos dos operandos
+2. Aplicar promoção de tipos se necessário (int → real)
+3. Validar restrições do operador (ex: '/' requer int)
+4. Calcular tipo resultante
+```
+
+**Conteúdo**:
+- Produções da gramática com atributos
+- Atributos sintetizados (propagados de baixo para cima)
+- Atributos herdados (propagados de cima para baixo)
+- Equações semânticas para cada produção
+- Regras de verificação de tipos
+
+**Uso**: Referência técnica para entender as regras semânticas implementadas.
+
+---
+
+### Localização dos Arquivos
+
+Os relatórios são gerados em **duas localizações**:
+
+1. **`relatorios/`** (raiz do projeto): Cópias para acesso rápido após cada execução
+2. **`outputs/RA3/relatorios/`**: Estrutura organizada para arquivamento
+
+Ambos os locais contêm os mesmos arquivos, permitindo que você escolha a localização mais conveniente para consulta.
 
 ---
 
@@ -97,11 +289,9 @@ Para depurar o compilador, você pode:
 ```
 RA3_1/
 ├── compilar.py                         # Programa principal - integra RA1 + RA2 + RA3
-├── teste1_valido.txt                   # Arquivo de teste válido (raiz)
-├── teste2_erros_tipos.txt              # Arquivo de teste com erros de tipos (raiz)
-├── teste3_erros_memoria.txt            # Arquivo de teste com erros de memória (raiz)
 ├── LICENSE                             # Licença do projeto
 ├── README.md                           # Este arquivo
+├── CLAUDE.md                           # Instruções para Claude Code (IA)
 │
 ├── src/                                # Código-fonte
 │   ├── RA1/                           # Fase 1 - Analisador Léxico
@@ -167,10 +357,13 @@ RA3_1/
 │   │   ├── teste3.txt                      # Casos complexos
 │   │   └── teste4_incorreto.txt            # Casos com erros
 │   └── RA3/                           # Entradas da Fase 3
-│       ├── teste1_valido.txt               # Teste válido completo
-│       ├── teste2_erros_tipos.txt          # Erros de verificação de tipos
-│       ├── teste3_erros_memoria.txt        # Erros de memória não inicializada
-│       └── teste_*.txt                     # Outros arquivos de teste
+│       ├── teste1.txt                       # Teste válido completo (casos básicos)
+│       ├── teste2.txt                       # Teste válido abrangente
+│       ├── teste3.txt                       # Teste válido complementar
+│       ├── teste4_erros_tipos.txt           # Erros de verificação de tipos
+│       ├── teste5_erros_memoria.txt         # Erros de memória não inicializada
+│       ├── teste6_erros_compilador.txt      # Erros abrangentes (RA1+RA2+RA3)
+│       └── extra/                           # Casos de teste adicionais
 │
 ├── outputs/                            # Arquivos de saída gerados
 │   ├── RA1/                           # Saídas do analisador léxico
@@ -182,7 +375,21 @@ RA3_1/
 │   ├── RA2/                           # Saídas do analisador sintático
 │   │   └── arvore_sintatica.json           # Árvore sintática gerada
 │   └── RA3/                           # Saídas do analisador semântico
-│       └── gramatica_atributos.md          # Gramática de atributos
+│       ├── arvore_atribuida.json           # Árvore com atributos semânticos (JSON)
+│       ├── gramatica_atributos.md          # Gramática de atributos
+│       └── relatorios/                     # Relatórios detalhados
+│           ├── arvore_atribuida.md         # Árvore atribuída (markdown)
+│           ├── erros_sematicos.md          # Relatório de erros semânticos
+│           ├── julgamento_tipos.md         # Análise de inferência de tipos
+│           ├── tabela_simbolos.md          # Tabela de símbolos
+│           └── gramatica_atributos.md      # Gramática de atributos (cópia)
+│
+├── relatorios/                         # Relatórios da última execução (raiz)
+│   ├── arvore_atribuida.md                 # Cópia para acesso rápido
+│   ├── erros_sematicos.md                  # Cópia para acesso rápido
+│   ├── julgamento_tipos.md                 # Cópia para acesso rápido
+│   ├── tabela_simbolos.md                  # Cópia para acesso rápido
+│   └── gramatica_atributos.md              # Cópia para acesso rápido
 │
 ├── docs/                               # Documentação completa
 │   ├── RA1/                           # Documentação da Fase 1
@@ -520,11 +727,11 @@ Contexto: (CONTADOR)
 
 ## Arquivos de Teste
 
-O projeto inclui 6 arquivos de teste organizados para validação completa do compilador:
+O projeto inclui 6 arquivos de teste organizados em `inputs/RA3/` para validação completa do compilador:
 
 ### Testes Válidos (Casos Corretos)
 
-#### `teste1_valido.txt`
+#### `teste1.txt`
 **Casos básicos válidos** - 10 seções organizadas:
 - Operações aritméticas básicas (`+`, `-`, `*`, `/`, `%`, `^`)
 - Operações de comparação (`>`, `<`, `==`, `>=`, `<=`, `!=`)
@@ -536,11 +743,11 @@ O projeto inclui 6 arquivos de teste organizados para validação completa do co
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py teste1_valido.txt
+python3 compilar.py inputs/RA3/teste1.txt
 # Deve executar sem erros
 ```
 
-#### `teste2_valido.txt`
+#### `teste2.txt`
 **Casos abrangentes válidos** - Teste completo do analisador:
 - Operações aritméticas válidas
 - Declaração e uso de variáveis
@@ -552,11 +759,11 @@ python3 compilar.py teste1_valido.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py teste2_valido.txt
+python3 compilar.py inputs/RA3/teste2.txt
 # Deve executar sem erros semânticos
 ```
 
-#### `teste3_valido.txt`
+#### `teste3.txt`
 **Casos complementares válidos** - 7 seções simplificadas:
 - Declaração e operações básicas
 - Promoção automática e comparações
@@ -568,7 +775,7 @@ python3 compilar.py teste2_valido.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py teste3_valido.txt
+python3 compilar.py inputs/RA3/teste3.txt
 # Deve executar sem erros
 ```
 
@@ -585,7 +792,7 @@ python3 compilar.py teste3_valido.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py teste4_erros_tipos.txt
+python3 compilar.py inputs/RA3/teste4_erros_tipos.txt
 # Deve reportar erros semânticos de tipos
 ```
 
@@ -598,7 +805,7 @@ python3 compilar.py teste4_erros_tipos.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py teste5_erros_memoria.txt
+python3 compilar.py inputs/RA3/teste5_erros_memoria.txt
 # Deve reportar erros de variável não inicializada
 ```
 
@@ -622,7 +829,7 @@ python3 compilar.py teste5_erros_memoria.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py teste6_erros_compilador.txt
+python3 compilar.py inputs/RA3/teste6_erros_compilador.txt
 # Deve reportar erros em todas as fases (RA1, RA2, RA3)
 ```
 
