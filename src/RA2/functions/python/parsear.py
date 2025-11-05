@@ -8,14 +8,15 @@
 #
 # Nome do grupo no Canvas: RA2_1
 
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Optional
 from src.RA1.functions.python.tokens import Token, Tipo_de_Token
 from .configuracaoGramatica import SIMBOLO_INICIAL, MAPEAMENTO_TOKENS
 
 # Mapeamento direto de Tipo_de_Token para símbolos esperados pela tabela LL(1)
 # Este mapeamento resolve o problema de conversão Token → Símbolo da Gramática
 TIPO_PARA_SIMBOLO = {
-    Tipo_de_Token.NUMERO_REAL: 'number',
+    Tipo_de_Token.NUMERO_INTEIRO: 'numero_inteiro',
+    Tipo_de_Token.NUMERO_REAL: 'numero_real',
     Tipo_de_Token.VARIAVEL: 'identifier',
     Tipo_de_Token.ABRE_PARENTESES: '(',
     Tipo_de_Token.FECHA_PARENTESES: ')',

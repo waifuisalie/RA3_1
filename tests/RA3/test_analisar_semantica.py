@@ -1,14 +1,5 @@
-import sys
-import os
-
-# Make sure the project `src/` is on sys.path so tests can import project modules.
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-SRC = os.path.join(ROOT, 'src')
-if SRC not in sys.path:
-    sys.path.insert(0, SRC)
-
-from RA3.functions.python.analisador_tipos import analisarSemantica
-from RA3.functions.python.gramatica_atributos import definir_gramatica_atributos, inicializar_sistema_semantico
+from src.RA3.functions.python.analisador_tipos import analisarSemantica
+from src.RA3.functions.python.gramatica_atributos import definirGramaticaAtributos, inicializar_sistema_semantico
 
 
 def test_assignment_stores_type():
@@ -51,6 +42,8 @@ def test_power_exponent_int_requirement():
 
 def test_uninitialized_variable_error():
     gramatica, tabela = inicializar_sistema_semantico()
+    # Pre-declare variable X as uninitialized so we test the "sem inicialização" error
+    tabela.adicionarSimbolo('X', 'int', inicializada=False, linha=0)
     ast = {
         'linhas': [
             {'numero_linha': 1, 'filhos': [{'elementos': [{'subtipo': 'variavel', 'valor': 'X'}], 'operador': None}]}

@@ -22,6 +22,7 @@ GRAMATICA_RPN = {
         ['epsilon']
     ],
     'OPERANDO': [
+        ['numero_inteiro', 'OPERANDO_OPCIONAL'],
         ['numero_real', 'OPERANDO_OPCIONAL'],
         ['variavel', 'OPERANDO_OPCIONAL'],
         ['LINHA']
@@ -41,7 +42,8 @@ GRAMATICA_RPN = {
 
 # Mapeamento dos tokens teóricos para tokens reais do projeto (em minúsculas)
 MAPEAMENTO_TOKENS = {
-    'numero_real': 'number',
+    'numero_inteiro': 'numero_inteiro',
+    'numero_real': 'numero_real',
     'variavel': 'identifier', 
     'abre_parenteses': '(',
     'fecha_parenteses': ')',

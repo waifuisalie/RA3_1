@@ -136,7 +136,10 @@ class Analisador_Lexico:
             while self.caractere is not None and self.caractere.isdigit():
                 resultado += self.caractere
                 self.avanca_ponteiro()
-        return Token(Tipo_de_Token.NUMERO_REAL, float(resultado))
+            return Token(Tipo_de_Token.NUMERO_REAL, float(resultado))
+        else:
+            # Número sem ponto decimal - é inteiro
+            return Token(Tipo_de_Token.NUMERO_INTEIRO, int(resultado))
 
     def estado_comando(self):
         resultado = ""

@@ -9,7 +9,6 @@
 # Nome do grupo no Canvas: RA2_1
 
 import sys
-from pathlib import Path
 from typing import List, Optional
 from src.RA1.functions.python.tokens import Tipo_de_Token, Token
 
@@ -56,32 +55,31 @@ def processarLinha(linha: str, linha_num: int) -> List[Token]:
         
         # Processar parênteses individualmente
         if char == '(':
-            token = reconhecerToken('(', linha_num, i)
+            token = reconhecerToken('(', linha_num)
             if token:
                 tokens.append(token)
             i += 1
         elif char == ')':
-            token = reconhecerToken(')', linha_num, i)
+            token = reconhecerToken(')', linha_num)
             if token:
                 tokens.append(token)
             i += 1
         else:
             # Extrair elemento completo (número, variável, operador, palavra-chave)
             elemento = ''
-            start_pos = i
-            
+
             while i < len(linha) and not linha[i].isspace() and linha[i] not in '()':
                 elemento += linha[i]
                 i += 1
             
             if elemento:
-                token = reconhecerToken(elemento, linha_num, start_pos)
+                token = reconhecerToken(elemento, linha_num)
                 if token:
                     tokens.append(token)
     
     return tokens
 
-def reconhecerToken(elemento: str, linha: int, coluna: int) -> Optional[Token]:
+def reconhecerToken(elemento: str, linha: int) -> Optional[Token]:
 
     # Tratar elemento vazio
     if not elemento:
@@ -147,9 +145,15 @@ def reconhecerToken(elemento: str, linha: int, coluna: int) -> Optional[Token]:
     else:
         # Verificar se é número (inteiro ou real)
         try:
-            # Primeiro tentar como float (inclui inteiros)
-            float(elemento)
-            return Token(Tipo_de_Token.NUMERO_REAL, elemento)
+            # Primeiro verificar se tem ponto decimal
+            if '.' in elemento:
+                # É um número real
+                float(elemento)  # Validar que é um float válido
+                return Token(Tipo_de_Token.NUMERO_REAL, elemento)
+            else:
+                # É um número inteiro
+                int(elemento)  # Validar que é um int válido
+                return Token(Tipo_de_Token.NUMERO_INTEIRO, elemento)
         except ValueError:
             # Se não é número, então é uma variável
             # Qualquer coisa que não seja um token específico é considerada variável

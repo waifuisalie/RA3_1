@@ -10,6 +10,7 @@
 
 class Tipo_de_Token:
     # Números
+    NUMERO_INTEIRO = "NUMERO_INTEIRO"
     NUMERO_REAL = "NUMERO_REAL"
 
     # Operadores Aritméticos

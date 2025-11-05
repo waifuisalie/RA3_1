@@ -10,8 +10,8 @@
 
 from typing import Dict, Any, List, Optional, Tuple
 from src.RA3.functions.python import tipos
-from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos, criar_tabela_simbolos
-from src.RA3.functions.python.gramatica_atributos import obter_regra, definir_gramatica_atributos
+from src.RA3.functions.python.tabela_simbolos import TabelaSimbolos, inicializarTabelaSimbolos
+from src.RA3.functions.python.gramatica_atributos import obter_regra, definirGramaticaAtributos
 
 
 class ErroSemantico(Exception):
@@ -48,11 +48,12 @@ def _construir_contexto_expressao(linha_ou_seq: Dict[str, Any]) -> str:
         partes = []
         for elem in elementos:
             if isinstance(elem, dict):
-                if elem.get('subtipo') == 'numero_real':
+                subtipo = elem.get('subtipo', '')
+                if subtipo in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
                     partes.append(str(elem.get('valor', '')))
-                elif elem.get('subtipo') == 'variavel':
+                elif subtipo == 'variavel':
                     partes.append(str(elem.get('valor', '')))
-                elif elem.get('subtipo') == 'LINHA':
+                elif subtipo == 'LINHA':
                     partes.append('(subexpressão)')
                 else:
                     partes.append(str(elem.get('valor', '?')))
@@ -82,12 +83,16 @@ def _construir_contexto_expressao(linha_ou_seq: Dict[str, Any]) -> str:
 
 
 def _parse_valor_literal(token: Dict[str, Any]) -> Any:
-    if token.get('subtipo') != 'numero_real':
+    if token.get('subtipo') not in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
         return None
     raw = token.get('valor')
     if raw is None:
         return None
     try:
+        # Para numero_inteiro e numero_inteiro_res, sempre retorna int
+        if token.get('subtipo') in ['numero_inteiro', 'numero_inteiro_res']:
+            return int(raw)
+        # Para numero_real e numero_real_res, verifica se é inteiro ou real
         f = float(raw)
         if float(f).is_integer():
             return int(f)
@@ -100,7 +105,7 @@ def _parse_valor_literal(token: Dict[str, Any]) -> Any:
 
 
 def _avaliar_operando(operando: Dict[str, Any], tabela: TabelaSimbolos, historico_tipos: Dict[int, str], linha_atual: int) -> Dict[str, Any]:
-    if operando.get('subtipo') == 'numero_real':
+    if operando.get('subtipo') in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
         valor = _parse_valor_literal(operando)
         tipo = tipos.TYPE_INT if isinstance(valor, int) else tipos.TYPE_REAL
         return {'tipo': tipo, 'valor': valor}
@@ -108,15 +113,91 @@ def _avaliar_operando(operando: Dict[str, Any], tabela: TabelaSimbolos, historic
     if operando.get('subtipo') == 'variavel':
         nome = operando.get('valor')
         if not tabela.existe(nome):
-            # Não lançar erro aqui - deixar para o analisador de memória
-            return {'tipo': None, 'valor': None, 'variavel': nome}
+            # Variável não existe - erro semântico
+            raise ErroSemantico(linha_atual, f"Variável '{nome}' não declarada", f"({nome})")
         if not tabela.verificar_inicializacao(nome):
             # Não lançar erro aqui - deixar para o analisador de memória
             return {'tipo': None, 'valor': None, 'variavel': nome}
         tipo = tabela.obter_tipo(nome)
         return {'tipo': tipo, 'valor': None, 'variavel': nome}
 
-    if operando.get('subtipo') == 'LINHA' or operando.get('tipo'):
+    if operando.get('subtipo') == 'LINHA':
+        # Avaliar subexpressão LINHA recursivamente
+        elementos_sub = operando.get('elementos', [])
+        operador_sub = operando.get('operador')
+        
+        # Avaliar operandos da subexpressão
+        operandos_sub_av = []
+        for op_sub in elementos_sub:
+            try:
+                aval_sub = _avaliar_operando(op_sub, tabela, historico_tipos, linha_atual)
+                operandos_sub_av.append(aval_sub)
+            except ErroSemantico:
+                operandos_sub_av.append({'tipo': None, 'valor': None})
+        
+        # Determinar tipo da subexpressão baseado no operador
+        if operador_sub:
+            if operador_sub in ['+', '-', '*', '/', '%', '^', '|']:
+                # Operador aritmético
+                if len(operandos_sub_av) >= 2:
+                    left, right = operandos_sub_av[0], operandos_sub_av[1]
+                    if left['tipo'] is not None and right['tipo'] is not None:
+                        try:
+                            tipo_sub = tipos.tipo_resultado_aritmetica(left['tipo'], right['tipo'], operador_sub)
+                        except ValueError as ve:
+                            raise ErroSemantico(linha_atual, str(ve), f"({left['tipo']} {operador_sub} {right['tipo']})")
+                    else:
+                        tipo_sub = None
+                else:
+                    tipo_sub = operandos_sub_av[0]['tipo'] if operandos_sub_av else None
+            elif operador_sub in ['>', '<', '>=', '<=', '==', '!=']:
+                # Operador de comparação
+                if len(operandos_sub_av) >= 2:
+                    left, right = operandos_sub_av[0], operandos_sub_av[1]
+                    if left['tipo'] is not None and right['tipo'] is not None:
+                        try:
+                            tipo_sub = tipos.tipo_resultado_comparacao(left['tipo'], right['tipo'])
+                        except ValueError as ve:
+                            raise ErroSemantico(linha_atual, str(ve), f"({left['tipo']} {operador_sub} {right['tipo']})")
+                    else:
+                        tipo_sub = None
+                else:
+                    tipo_sub = None
+            elif operador_sub in ['&&', '||']:
+                # Operador lógico binário
+                if len(operandos_sub_av) >= 2:
+                    left, right = operandos_sub_av[0], operandos_sub_av[1]
+                    if left['tipo'] is not None and right['tipo'] is not None:
+                        try:
+                            tipo_sub = tipos.tipo_resultado_logico(left['tipo'], right['tipo'])
+                        except ValueError as ve:
+                            raise ErroSemantico(linha_atual, str(ve), f"({left['tipo']} {operador_sub} {right['tipo']})")
+                    else:
+                        tipo_sub = None
+                else:
+                    tipo_sub = None
+            elif operador_sub == '!':
+                # Operador lógico unário
+                if len(operandos_sub_av) >= 1:
+                    operando = operandos_sub_av[0]
+                    if operando['tipo'] is not None:
+                        try:
+                            tipo_sub = tipos.tipo_resultado_logico_unario(operando['tipo'])
+                        except ValueError as ve:
+                            raise ErroSemantico(linha_atual, str(ve), f"(!{operando['tipo']})")
+                    else:
+                        tipo_sub = None
+                else:
+                    tipo_sub = None
+            else:
+                tipo_sub = None
+        else:
+            # Sem operador - apenas um operando
+            tipo_sub = operandos_sub_av[0]['tipo'] if operandos_sub_av else None
+        
+        return {'tipo': tipo_sub, 'valor': None}
+
+    if operando.get('tipo'):
         return {'tipo': operando.get('tipo'), 'valor': operando.get('valor')}
 
     raise ErroSemantico(linha_atual, f"Operando desconhecido ou inválido: {operando}")
@@ -126,8 +207,12 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
     operador = seq.get('operador')
     elementos = seq.get('elementos', [])
 
+    # Normalizar operador vazio para None
+    if operador == "":
+        operador = None
+
     def eval_oper(op):
-        if op.get('subtipo') == 'numero_real':
+        if op.get('subtipo') in ['numero_real', 'numero_inteiro', 'numero_real_res', 'numero_inteiro_res']:
             v = _parse_valor_literal(op)
             return (tipos.TYPE_INT if isinstance(v, int) else tipos.TYPE_REAL, v)
         if op.get('subtipo') == 'variavel':
@@ -156,7 +241,7 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
     if operador is None and len(tipos_ops) == 2 and elementos[1].get('subtipo') == 'variavel':
         return (tipos_ops[0], tipos_ops, vals)
 
-    if operador is not None:
+    if operador is not None and operador != "":
         regra = obter_regra(operador)
         if regra is None:
             raise ErroSemantico(linha_atual, f"Operador desconhecido: {operador}", _construir_contexto_expressao(seq))
@@ -170,44 +255,41 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
             left, right = tipos_ops[0], tipos_ops[1]
             if left is None or right is None:
                 return (None, tipos_ops, vals)
-            if operador in ['/', '%']:
-                if not tipos.tipos_compativeis_divisao_inteira(left, right):
-                    raise ErroSemantico(linha_atual, f"Operador '{operador}' requer operandos inteiros", _construir_contexto_expressao(seq))
-                return (tipos.TYPE_INT, tipos_ops, vals)
-            if operador == '^':
-                if right != tipos.TYPE_INT:
-                    raise ErroSemantico(linha_atual, 'Expoente de potência deve ser inteiro', _construir_contexto_expressao(seq))
-                return (left, tipos_ops, vals)
-            if operador == '|':
-                return (tipos.TYPE_REAL, tipos_ops, vals)
             try:
-                return (tipos.promover_tipo(left, right), tipos_ops, vals)
-            except Exception as ve:
-                raise ErroSemantico(linha_atual, f"Operação aritmética com operandos incompatíveis: {ve}", _construir_contexto_expressao(seq))
+                tipo_resultado = tipos.tipo_resultado_aritmetica(left, right, operador)
+                return (tipo_resultado, tipos_ops, vals)
+            except ValueError as ve:
+                raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
 
         if cat == 'comparacao':
             left, right = tipos_ops[0], tipos_ops[1]
             if left is None or right is None:
                 return (None, tipos_ops, vals)
-            if not tipos.tipos_compativeis_comparacao(left, right):
-                raise ErroSemantico(linha_atual, 'Operandos de comparação devem ser numéricos', _construir_contexto_expressao(seq))
-            return (tipos.TYPE_BOOLEAN, tipos_ops, vals)
+            try:
+                tipo_resultado = tipos.tipo_resultado_comparacao(left, right)
+                return (tipo_resultado, tipos_ops, vals)
+            except ValueError as ve:
+                raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
 
         if cat == 'logico':
             if operador in ['&&', '||']:
                 a, b = tipos_ops[0], tipos_ops[1]
                 if a is None or b is None:
                     return (None, tipos_ops, vals)
-                if not tipos.tipos_compativeis_logico(a, b):
-                    raise ErroSemantico(linha_atual, 'Operandos lógicos inválidos', _construir_contexto_expressao(seq))
-                return (tipos.TYPE_BOOLEAN, tipos_ops, vals)
+                try:
+                    tipo_resultado = tipos.tipo_resultado_logico(a, b)
+                    return (tipo_resultado, tipos_ops, vals)
+                except ValueError as ve:
+                    raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
             if operador == '!':
                 a = tipos_ops[0]
                 if a is None:
                     return (None, tipos_ops, vals)
-                if not tipos.tipo_compativel_logico_unario(a):
-                    raise ErroSemantico(linha_atual, 'Operando ! inválido', _construir_contexto_expressao(seq))
-                return (tipos.TYPE_BOOLEAN, tipos_ops, vals)
+                try:
+                    tipo_resultado = tipos.tipo_resultado_logico_unario(a)
+                    return (tipo_resultado, tipos_ops, vals)
+                except ValueError as ve:
+                    raise ErroSemantico(linha_atual, str(ve), _construir_contexto_expressao(seq))
 
     if operador is None and len(tipos_ops) == 1:
         return (tipos_ops[0], tipos_ops, vals)
@@ -217,9 +299,9 @@ def avaliar_seq_tipo(seq: Dict[str, Any], linha_atual: int, tabela: TabelaSimbol
 
 def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict] = None, tabela: Optional[TabelaSimbolos] = None) -> Dict[str, Any]:
     if gramatica is None:
-        gramatica = definir_gramatica_atributos()
+        gramatica = definirGramaticaAtributos()
     if tabela is None:
-        tabela = criar_tabela_simbolos()
+        tabela = inicializarTabelaSimbolos()
 
     erros: List[Dict[str, Any]] = []
     linhas = arvoreSintatica.get('linhas', [])
@@ -238,35 +320,32 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
             elementos = seq.get('elementos', [])
             operador = seq.get('operador', None)
 
+            # Verificar se é armazenamento (valor variável) ANTES de avaliar operandos
+            if (operador is None or operador == "") and len(elementos) == 2:
+                if elementos[1].get('subtipo') == 'variavel':
+                    nome_var = elementos[1].get('valor')
+                    # Avaliar apenas o primeiro operando (o valor)
+                    try:
+                        fonte = _avaliar_operando(elementos[0], tabela, historico_tipos, num)
+                        tipo_res = fonte['tipo']
+                        if tipo_res is not None:
+                            if not tipos.tipo_compativel_armazenamento(tipo_res):
+                                raise ErroSemantico(num, f"Tipo '{tipo_res}' não pode ser armazenado em memória. Apenas tipos numéricos são permitidos", _construir_contexto_expressao(linha_ast))
+                            tabela.adicionarSimbolo(nome_var, tipo_res, inicializada=True, linha=num)
+                    except ErroSemantico:
+                        # Se o valor não puder ser avaliado ou armazenado, não declarar a variável
+                        pass
+                    historico_tipos[num] = tipo_res
+                    nova_linha = dict(linha_ast)
+                    nova_linha['tipo'] = tipo_res
+                    arvore_anotada['linhas'].append(nova_linha)
+                    continue
+
+            # Para outras operações, avaliar todos os operandos
             operandos_av = []
             for op in elementos:
-                try:
-                    aval = _avaliar_operando(op, tabela, historico_tipos, num)
-                    operandos_av.append(aval)
-                except ErroSemantico:
-                    operandos_av.append({'tipo': None, 'valor': None})
-
-            if (operador is None or operador == "") and len(operandos_av) == 2:
-                fonte = operandos_av[0]
-                destino = operandos_av[1]
-                if destino.get('variavel'):
-                    # É um armazenamento: (valor VARIAVEL)
-                    tipo_res = fonte['tipo']
-                    if tipo_res is not None:
-                        tabela.adicionar(destino['variavel'], tipo_res, inicializada=True, linha=num)
-                    historico_tipos[num] = tipo_res
-                    nova_linha = dict(linha_ast)
-                    nova_linha['tipo'] = tipo_res
-                    arvore_anotada['linhas'].append(nova_linha)
-                    continue
-                else:
-                    # Dois operandos mas não é armazenamento
-                    tipo_res = None
-                    historico_tipos[num] = tipo_res
-                    nova_linha = dict(linha_ast)
-                    nova_linha['tipo'] = tipo_res
-                    arvore_anotada['linhas'].append(nova_linha)
-                    continue
+                aval = _avaliar_operando(op, tabela, historico_tipos, num)
+                operandos_av.append(aval)
 
             if operador is not None and operador != "":
                 regra = obter_regra(operador)
@@ -289,18 +368,10 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                     if left['tipo'] is None or right['tipo'] is None:
                         tipo_res = None
                     else:
-                        if operador in ['/', '%']:
-                            if not tipos.tipos_compativeis_divisao_inteira(left['tipo'], right['tipo']):
-                                raise ErroSemantico(num, f"Operador '{operador}' requer operandos inteiros", _construir_contexto_expressao(linha_ast))
-                            tipo_res = tipos.TYPE_INT
-                        elif operador == '^':
-                            if right['tipo'] != tipos.TYPE_INT:
-                                raise ErroSemantico(num, 'Expoente de potência deve ser inteiro', _construir_contexto_expressao(linha_ast))
-                            tipo_res = left['tipo']
-                        elif operador == '|':
-                            tipo_res = tipos.TYPE_REAL
-                        else:
-                            tipo_res = tipos.promover_tipo(left['tipo'], right['tipo'])
+                        try:
+                            tipo_res = tipos.tipo_resultado_aritmetica(left['tipo'], right['tipo'], operador)
+                        except ValueError as ve:
+                            raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
 
                     historico_tipos[num] = tipo_res
                     nova_linha = dict(linha_ast)
@@ -313,9 +384,10 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                     if left['tipo'] is None or right['tipo'] is None:
                         tipo_res = None
                     else:
-                        if not tipos.tipos_compativeis_comparacao(left['tipo'], right['tipo']):
-                            raise ErroSemantico(num, 'Operandos de comparação devem ser numéricos', _construir_contexto_expressao(linha_ast))
-                        tipo_res = tipos.TYPE_BOOLEAN
+                        try:
+                            tipo_res = tipos.tipo_resultado_comparacao(left['tipo'], right['tipo'])
+                        except ValueError as ve:
+                            raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
                     historico_tipos[num] = tipo_res
                     nova_linha = dict(linha_ast)
                     nova_linha['tipo'] = tipo_res
@@ -324,26 +396,32 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
 
                 if cat == 'logico':
                     if operador in ['&&', '||']:
+                        if len(operandos_av) < 2:
+                            raise ErroSemantico(num, f'Operador lógico binário "{operador}" requer 2 operandos', _construir_contexto_expressao(linha_ast))
                         a, b = operandos_av[0], operandos_av[1]
                         if a['tipo'] is None or b['tipo'] is None:
                             tipo_res = None
                         else:
-                            if not tipos.tipos_compativeis_logico(a['tipo'], b['tipo']):
-                                raise ErroSemantico(num, 'Operandos lógicos inválidos', _construir_contexto_expressao(linha_ast))
-                            tipo_res = tipos.TYPE_BOOLEAN
+                            try:
+                                tipo_res = tipos.tipo_resultado_logico(a['tipo'], b['tipo'])
+                            except ValueError as ve:
+                                raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
                         historico_tipos[num] = tipo_res
                         nova_linha = dict(linha_ast)
                         nova_linha['tipo'] = tipo_res
                         arvore_anotada['linhas'].append(nova_linha)
                         continue
                     if operador == '!':
+                        if len(operandos_av) < 1:
+                            raise ErroSemantico(num, 'Operador lógico unário "!" requer 1 operando', _construir_contexto_expressao(linha_ast))
                         a = operandos_av[0]
                         if a['tipo'] is None:
                             tipo_res = None
                         else:
-                            if not tipos.tipo_compativel_logico_unario(a['tipo']):
-                                raise ErroSemantico(num, 'Operando ! inválido', _construir_contexto_expressao(linha_ast))
-                            tipo_res = tipos.TYPE_BOOLEAN
+                            try:
+                                tipo_res = tipos.tipo_resultado_logico_unario(a['tipo'])
+                            except ValueError as ve:
+                                raise ErroSemantico(num, str(ve), _construir_contexto_expressao(linha_ast))
                         historico_tipos[num] = tipo_res
                         nova_linha = dict(linha_ast)
                         nova_linha['tipo'] = tipo_res
@@ -364,13 +442,17 @@ def analisarSemantica(arvoreSintatica: Dict[str, Any], gramatica: Optional[Dict]
                 arvore_anotada['linhas'].append(nova_linha)
                 continue
 
-            if operador is None and len(elementos) == 1:
+            if (operador is None or operador == "") and len(elementos) == 1:
                 op = elementos[0]
                 try:
                     aval = _avaliar_operando(op, tabela, historico_tipos, num)
                     tipo_v = aval.get('tipo')
+                    # Verificar se é RES (resultado)
+                    if op.get('subtipo', '').endswith('_res'):
+                        # Operação RES - não produz tipo, apenas indica armazenamento de resultado
+                        tipo_v = None
                     # Verificar se é variável não inicializada
-                    if aval.get('variavel') and tipo_v is None:
+                    elif aval.get('variavel') and tipo_v is None:
                         raise ErroSemantico(num, f"Variável '{aval['variavel']}' utilizada sem inicialização", f"({aval['variavel']})")
                 except ErroSemantico:
                     tipo_v = None
