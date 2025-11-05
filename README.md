@@ -44,30 +44,46 @@ Este projeto implementa um compilador para uma linguagem simplificada baseada em
 ### Requisitos
 
 - Python 3.7 ou superior
-- Nenhuma dependência externa (usa apenas biblioteca padrão)
+- **pytest** (apenas para executar testes unitários)
+
+#### Instalação das Dependências
+
+**Opção 1: Usando requirements.txt (recomendado)**
+
+```bash
+pip install -r requirements.txt
+```
+
+**Opção 2: Instalação manual**
+
+```bash
+pip install pytest pytest-cov
+```
+
+**Nota**: O `pytest-cov` é opcional e só é necessário para gerar relatórios de cobertura de código.
 
 ### Execução
 
 Para executar o compilador, use o seguinte comando:
 
 ```bash
-python3 compilar.py <arquivo_de_teste>
+python compilar.py <arquivo_de_teste>
 ```
 
 **Exemplos:**
 
 ```bash
 # Usando caminho relativo ao diretório raiz
-python3 compilar.py inputs/RA3/teste1.txt
+python compilar.py inputs/RA3/teste1.txt
 
 # Usando caminho relativo ao diretório inputs/RA1
-python3 compilar.py float/teste1.txt
+python compilar.py float/teste1.txt
 
 # Usando caminho relativo ao diretório inputs/RA2
-python3 compilar.py RA2/teste1.txt
+python compilar.py RA2/teste1.txt
 
 # Usando caminho absoluto
-python3 compilar.py /caminho/completo/para/arquivo.txt
+python compilar.py /caminho/completo/para/arquivo.txt
 ```
 
 ### Arquivos de Saída
@@ -135,7 +151,127 @@ Para depurar o compilador, você pode:
 2. **Verificar árvore sintática**: Examine `outputs/RA2/arvore_sintatica.json`
 3. **Verificar análise semântica**: Consulte os relatórios em `relatorios/`
 4. **Adicionar prints de debug**: Adicione prints nos módulos Python relevantes
-5. **Executar testes unitários**: `python3 -m pytest tests/`
+5. **Executar testes unitários**: Veja seção "Testes Unitários" abaixo
+
+---
+
+## Testes Unitários
+
+O projeto inclui testes unitários para validar o funcionamento do analisador semântico (RA3).
+
+### Estrutura dos Testes
+
+Os testes estão organizados em `tests/RA3/`:
+
+- **`test_tipos.py`**: Testes do sistema de tipos
+  - Validação de constantes de tipos (`int`, `real`, `boolean`)
+  - Testes de promoção de tipos
+  - Verificação de compatibilidade de tipos
+
+- **`test_tabela_simbolos.py`**: Testes da tabela de símbolos
+  - Criação e manipulação da tabela
+  - Adição e busca de símbolos
+  - Verificação de inicialização de variáveis
+
+- **`test_analisar_semantica.py`**: Testes do analisador semântico
+  - Análise de expressões válidas
+  - Detecção de erros semânticos
+  - Validação de estruturas de controle
+
+- **`test_gerador_arvore_atribuida.py`**: Testes do gerador de árvore atribuída
+  - Geração de árvore com atributos
+  - Inferência de tipos em nós
+  - Exportação para JSON
+
+### Executando os Testes
+
+#### Executar todos os testes
+
+```bash
+# Executar todos os testes do projeto
+python -m pytest tests/
+
+# Com output mais detalhado (verbose)
+python -m pytest tests/ -v
+
+# Com informações sobre cobertura de código
+python -m pytest tests/ --cov=src
+```
+
+#### Executar testes específicos do RA3
+
+```bash
+# Apenas testes do RA3
+python -m pytest tests/RA3/
+
+# Executar arquivo de teste específico
+python -m pytest tests/RA3/test_tipos.py
+
+# Executar teste específico dentro de um arquivo
+python -m pytest tests/RA3/test_tipos.py::TestConstantesTipos::test_tipos_basicos_definidos
+```
+
+#### Executar testes com diferentes níveis de detalhe
+
+```bash
+# Modo silencioso (apenas mostra falhas)
+python -m pytest tests/ -q
+
+# Modo muito detalhado (mostra cada assert)
+python -m pytest tests/ -vv
+
+# Mostrar print statements durante os testes
+python -m pytest tests/ -s
+
+# Parar na primeira falha
+python -m pytest tests/ -x
+
+# Executar os últimos testes que falharam
+python -m pytest tests/ --lf
+```
+
+#### Relatórios de Teste
+
+```bash
+# Gerar relatório HTML de cobertura
+python -m pytest tests/ --cov=src --cov-report=html
+
+# O relatório será gerado em htmlcov/index.html
+```
+
+### Exemplo de Saída
+
+Ao executar `python -m pytest tests/ -v`, você verá algo como:
+
+```
+============================= test session starts ==============================
+platform win32 -- Python 3.11.0, pytest-7.4.0
+collected 24 items
+
+tests/RA3/test_tipos.py::TestConstantesTipos::test_tipos_basicos_definidos PASSED     [ 4%]
+tests/RA3/test_tipos.py::TestConstantesTipos::test_conjuntos_tipos PASSED              [ 8%]
+tests/RA3/test_tipos.py::TestPromocaoTipos::test_promover_int_real PASSED             [12%]
+tests/RA3/test_tabela_simbolos.py::TestTabelaSimbolos::test_criar_tabela PASSED      [16%]
+tests/RA3/test_tabela_simbolos.py::TestTabelaSimbolos::test_adicionar_simbolo PASSED [20%]
+...
+
+============================== 24 passed in 0.45s ===============================
+```
+
+### Adicionando Novos Testes
+
+Para adicionar novos testes, crie um arquivo `test_*.py` na pasta apropriada e use a estrutura:
+
+```python
+import unittest
+from src.RA3.functions.python import modulo_a_testar
+
+class TestMinhaFuncionalidade(unittest.TestCase):
+    def test_caso_basico(self):
+        """Descrição do que este teste valida."""
+        resultado = modulo_a_testar.funcao(parametros)
+        self.assertEqual(resultado, valor_esperado)
+```
 
 ### Entendendo os Arquivos de Saída
 
@@ -289,6 +425,7 @@ Ambos os locais contêm os mesmos arquivos, permitindo que você escolha a local
 ```
 RA3_1/
 ├── compilar.py                         # Programa principal - integra RA1 + RA2 + RA3
+├── requirements.txt                    # Dependências Python (pytest)
 ├── LICENSE                             # Licença do projeto
 ├── README.md                           # Este arquivo
 ├── CLAUDE.md                           # Instruções para Claude Code (IA)
@@ -441,11 +578,13 @@ RA3_1/
 │       ├── RA2_Architecture_Overview.md    # Visão geral da arquitetura
 │       └── RA2_Function_Interfaces.md      # Interfaces entre funções
 │
-└── tests/                              # Testes unitários
-    └── RA3/
-        ├── test_analisar_semantica.py
-        ├── test_tabela_simbolos.py
-        └── test_tipos.py
+└── tests/                              # Testes unitários (pytest)
+    ├── conftest.py                         # Configuração do pytest
+    └── RA3/                                # Testes do analisador semântico
+        ├── test_tipos.py                   # Testes do sistema de tipos
+        ├── test_tabela_simbolos.py         # Testes da tabela de símbolos
+        ├── test_analisar_semantica.py      # Testes de análise semântica
+        └── test_gerador_arvore_atribuida.py # Testes de geração de árvore
 ```
 
 ---
@@ -743,7 +882,7 @@ O projeto inclui 6 arquivos de teste organizados em `inputs/RA3/` para validaç�
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste1.txt
+python compilar.py inputs/RA3/teste1.txt
 # Deve executar sem erros
 ```
 
@@ -759,7 +898,7 @@ python3 compilar.py inputs/RA3/teste1.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste2.txt
+python compilar.py inputs/RA3/teste2.txt
 # Deve executar sem erros semânticos
 ```
 
@@ -775,7 +914,7 @@ python3 compilar.py inputs/RA3/teste2.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste3.txt
+python compilar.py inputs/RA3/teste3.txt
 # Deve executar sem erros
 ```
 
@@ -792,7 +931,7 @@ python3 compilar.py inputs/RA3/teste3.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste4_erros_tipos.txt
+python compilar.py inputs/RA3/teste4_erros_tipos.txt
 # Deve reportar erros semânticos de tipos
 ```
 
@@ -805,7 +944,7 @@ python3 compilar.py inputs/RA3/teste4_erros_tipos.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste5_erros_memoria.txt
+python compilar.py inputs/RA3/teste5_erros_memoria.txt
 # Deve reportar erros de variável não inicializada
 ```
 
@@ -829,7 +968,7 @@ python3 compilar.py inputs/RA3/teste5_erros_memoria.txt
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste6_erros_compilador.txt
+python compilar.py inputs/RA3/teste6_erros_compilador.txt
 # Deve reportar erros em todas as fases (RA1, RA2, RA3)
 ```
 
