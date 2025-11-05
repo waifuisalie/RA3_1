@@ -869,24 +869,82 @@ Para documentação detalhada de todos os casos de erro, consulte:
 O compilador detecta e reporta três tipos de erros:
 
 ### Erros Léxicos (RA1)
-- Tokens inválidos
-- Caracteres não reconhecidos
 
-### Erros Sintáticos (RA2)
-- Estrutura RPN malformada
-- Parênteses desbalanceados
-- Tokens inesperados
+Detectados durante a tokenização do código-fonte:
 
-### Erros Semânticos (RA3)
-- **Erros de tipos**: Operações com tipos incompatíveis
-- **Erros de memória**: Variáveis não inicializadas
-- **Erros de controle**: Condições inválidas, ramos com tipos diferentes
+- **Tokens inválidos**: Caracteres ou sequências não reconhecidos pela linguagem
+- **Caracteres especiais inválidos**: Uso de símbolos não permitidos
+- **Números malformados**: Formato incorreto de literais numéricos
 
 **Exemplo de mensagem de erro**:
+```
+ERRO LÉXICO [Linha 3]: Caractere inválido '@' encontrado
+Contexto: (5 @ 3)
+```
+
+**Exemplo adicional**:
+```
+ERRO LÉXICO [Linha 7]: Número malformado '3.14.15'
+Contexto: (3.14.15 X)
+```
+
+---
+
+### Erros Sintáticos (RA2)
+
+Detectados durante o parsing com a gramática LL(1):
+
+- **Estrutura RPN malformada**: Notação polonesa reversa incorreta
+- **Parênteses desbalanceados**: Falta de abertura ou fechamento de parênteses
+- **Tokens inesperados**: Sequências que não seguem as regras da gramática
+- **Operadores sem operandos**: Operadores sem a quantidade correta de argumentos
+
+**Exemplo de mensagem de erro**:
+```
+ERRO SINTÁTICO [Linha 4]: Parênteses desbalanceados - esperado ')'
+Contexto: ((5 3 +)
+```
+
+**Exemplo adicional**:
+```
+ERRO SINTÁTICO [Linha 8]: Token inesperado '+' - esperado operando
+Contexto: (5 + 3)  # Notação infixa não permitida
+```
+
+**Exemplo de estrutura vazia**:
+```
+ERRO SINTÁTICO [Linha 2]: Expressão vazia entre parênteses
+Contexto: ()
+```
+
+---
+
+### Erros Semânticos (RA3)
+
+Detectados durante a análise semântica com verificação de tipos e memória:
+
+- **Erros de tipos**: Operações com tipos incompatíveis
+- **Erros de memória**: Variáveis não inicializadas ou não declaradas
+- **Erros de controle**: Condições inválidas, ramos com tipos diferentes
+
+**Exemplo de erro de tipo**:
 ```
 ERRO SEMÂNTICO [Linha 5]: Operador '/' requer ambos operandos do tipo 'int', mas recebeu 'real' e 'int'
 Contexto: (5.5 2 /)
 ```
+
+**Exemplo de erro de memória**:
+```
+ERRO SEMÂNTICO [Linha 10]: Variável 'CONTADOR' utilizada sem inicialização
+Contexto: (CONTADOR)
+```
+
+**Exemplo de erro de controle**:
+```
+ERRO SEMÂNTICO [Linha 15]: Estrutura IFELSE requer ramos com tipos compatíveis, mas recebeu 'int' e 'boolean'
+Contexto: ((X 5 >) (100) ((Y 3 <)) IFELSE)
+```
+
 ---
 
 ## Licença
