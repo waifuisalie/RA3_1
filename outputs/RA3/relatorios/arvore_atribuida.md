@@ -1,6 +1,6 @@
 # Árvore Sintática Abstrata Atribuída
 
-**Gerado em:** 2025-11-03 20:50:30
+**Gerado em:** 2025-11-04 21:19:03
 
 ## Resumo
 
