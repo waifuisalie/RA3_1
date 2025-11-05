@@ -611,11 +611,11 @@ O compilador detecta e reporta três tipos de erros:
 ERRO SEMÂNTICO [Linha 5]: Operador '/' requer ambos operandos do tipo 'int', mas recebeu 'real' e 'int'
 Contexto: (5.5 2 /)
 ```
-
 ---
 
 ## Licença
 
+<<<<<<< Updated upstream
 Este projeto está licenciado sob a licença especificada no arquivo `LICENSE`.
 
 ---
@@ -627,3 +627,6 @@ Este projeto está licenciado sob a licença especificada no arquivo `LICENSE`.
 - Documentação do projeto disponível em `docs/`
 
 ---
+=======
+Este projeto é desenvolvido para fins acadêmicos na disciplina de Linguagens Formais e Compiladores da PUCPR.
+>>>>>>> Stashed changes
