@@ -520,47 +520,116 @@ Contexto: (CONTADOR)
 
 ## Arquivos de Teste
 
-O projeto inclui arquivos de teste organizados por fase:
+O projeto inclui 6 arquivos de teste organizados para validação completa do compilador:
 
-### RA3 - Testes de Análise Semântica
+### Testes Válidos (Casos Corretos)
 
-#### `inputs/RA3/teste1_valido.txt`
-Arquivo de teste válido completo com:
-- Todas as operações aritméticas
-- Operadores relacionais e lógicos
-- Estruturas de controle (IFELSE, WHILE, FOR)
-- Comandos especiais (RES, MEM)
-- Inicialização e uso correto de variáveis
+#### `teste1_valido.txt`
+**Casos básicos válidos** - 10 seções organizadas:
+- Operações aritméticas básicas (`+`, `-`, `*`, `/`, `%`, `^`)
+- Operações de comparação (`>`, `<`, `==`, `>=`, `<=`, `!=`)
+- Operações lógicas (`&&`, `||`, `!`)
+- Atribuições e uso de variáveis
+- Operações com RES
+- Estruturas WHILE, FOR e IFELSE
+- Expressões complexas aninhadas
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste1_valido.txt
+python3 compilar.py teste1_valido.txt
+# Deve executar sem erros
+```
+
+#### `teste2_valido.txt`
+**Casos abrangentes válidos** - Teste completo do analisador:
+- Operações aritméticas válidas
+- Declaração e uso de variáveis
+- Promoção automática de tipos (`int` → `real`)
+- Operações de comparação e lógica
+- Estruturas de controle complexas
+- Expressões aninhadas
+- Loops com múltiplas operações
+
+**Exemplo de execução**:
+```bash
+python3 compilar.py teste2_valido.txt
 # Deve executar sem erros semânticos
 ```
 
-#### `inputs/RA3/teste2_erros_tipos.txt`
-Arquivo com erros de verificação de tipos:
-- Divisão inteira com operando real: `(5.5 2 /)`
-- Módulo com operando real: `(10.5 3 %)`
-- Potência com expoente real: `(2 3.5 ^)`
-- Operações inválidas com boolean
+#### `teste3_valido.txt`
+**Casos complementares válidos** - 7 seções simplificadas:
+- Declaração e operações básicas
+- Promoção automática e comparações
+- Operações lógicas e booleanas
+- Atribuições e variáveis
+- Estruturas IFELSE
+- Estruturas WHILE
+- Estruturas FOR
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste2_erros_tipos.txt
+python3 compilar.py teste3_valido.txt
+# Deve executar sem erros
+```
+
+### Testes de Erro (Casos Inválidos)
+
+#### `teste4_erros_tipos.txt`
+**Erros de tipos (RA3)** - 6 seções de erros semânticos:
+- Divisão inteira com tipos incompatíveis: `(5.5 2 /)`
+- Resto com tipos incompatíveis: `(10.5 3 %)`
+- Potenciação com expoente real: `(2 3.5 ^)`
+- Operações aritméticas com booleanos: `((5 3 >) 2 +)`
+- Operações lógicas com tipos numéricos: `(5 3 &&)`
+- Estruturas de controle malformadas
+
+**Exemplo de execução**:
+```bash
+python3 compilar.py teste4_erros_tipos.txt
 # Deve reportar erros semânticos de tipos
 ```
 
-#### `inputs/RA3/teste3_erros_memoria.txt`
-Arquivo com erros de memória não inicializada:
-- Uso de variável antes de inicialização
-- Referências RES inválidas
+#### `teste5_erros_memoria.txt`
+**Erros de memória e inicialização (RA3)** - 5 seções:
+- Variáveis não inicializadas: `(Y)`, `(Z 2 +)`
+- Uso incorreto de RES: `(-1 RES)`
+- Armazenamento de booleanos: `((5 3 >) BOOL)`
+- Estruturas de controle com erros: `((10) (5 3 +) WHILE)`
 
 **Exemplo de execução**:
 ```bash
-python3 compilar.py inputs/RA3/teste3_erros_memoria.txt
+python3 compilar.py teste5_erros_memoria.txt
 # Deve reportar erros de variável não inicializada
 ```
+
+#### `teste6_erros_compilador.txt`
+**Erros abrangentes (RA1, RA2 e RA3)** - 30 casos balanceados:
+
+**Parte 1 - Erros Léxicos (RA1) - 10 casos:**
+- Caracteres inválidos: `(5 @ 3)`, `(10 # 5)`
+- Números malformados: `(3.14.15 X)`, `(..5 Y)`
+
+**Parte 2 - Erros Sintáticos (RA2) - 10 casos:**
+- Parênteses desbalanceados: `((5 3 +)`
+- Notação infixa incorreta: `(5 + 3)`
+- Estruturas malformadas: `(+)`, `()`
+
+**Parte 3 - Erros Semânticos (RA3) - 10 casos:**
+- Tipos incompatíveis: `(5.5 2 /)`, `(10.5 3 %)`
+- Variáveis não inicializadas: `(UNDEFINED_VAR)`
+- Operações lógicas inválidas: `(5 3 &&)`
+- Estruturas de controle com erros: `((5) (((X 1 +) X)) WHILE)`
+
+**Exemplo de execução**:
+```bash
+python3 compilar.py teste6_erros_compilador.txt
+# Deve reportar erros em todas as fases (RA1, RA2, RA3)
+```
+
+### Documentação dos Testes
+
+Para documentação detalhada de todos os casos de erro, consulte:
+- **`docs/RA3/documents/testes_erros_documentacao.md`** - Documentação completa dos 3 arquivos de teste com erros, incluindo regras semânticas e exemplos
 
 ---
 
@@ -615,7 +684,6 @@ Contexto: (5.5 2 /)
 
 ## Licença
 
-<<<<<<< Updated upstream
 Este projeto está licenciado sob a licença especificada no arquivo `LICENSE`.
 
 ---
@@ -625,8 +693,3 @@ Este projeto está licenciado sob a licença especificada no arquivo `LICENSE`.
 - Aho, A. V., Lam, M. S., Sethi, R., & Ullman, J. D. (2006). *Compilers: Principles, Techniques, and Tools* (2nd ed.). Addison-Wesley.
 - Material de aula da disciplina Linguagens Formais e Compiladores - PUCPR
 - Documentação do projeto disponível em `docs/`
-
----
-=======
-Este projeto é desenvolvido para fins acadêmicos na disciplina de Linguagens Formais e Compiladores da PUCPR.
->>>>>>> Stashed changes
