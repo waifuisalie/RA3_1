@@ -1,0 +1,31 @@
+# TESTE4 - ERROS DE TIPOS (RA3)
+# Arquivo com casos de erros semânticos relacionados a tipos incompatíveis
+# Testa detecção de erros de compatibilidade de tipos
+
+# === SEÇÃO 1: ERROS DE DIVISÃO INTEIRA COM TIPOS INCOMPATÍVEIS ===
+(5.5 2 /)
+(3.5 2 /)
+(10.5 3 /)
+
+# === SEÇÃO 2: ERROS DE RESTO COM TIPOS INCOMPATÍVEIS ===
+(10.5 3 %)
+(100 50.5 %)
+(15.8 4.2 %)
+
+# === SEÇÃO 3: ERROS DE POTENCIAÇÃO COM EXPOENTE INCOMPATÍVEL ===
+(2 3.5 ^)
+(2 -3 ^)
+(3 -2.5 ^)
+
+# === SEÇÃO 4: ERROS DE OPERAÇÕES ARITMÉTICAS COM BOOLEANOS ===
+((5 3 >) 2 +)
+((2 3 <) 5 -)
+((5 3 >) ! 10 +)
+
+# === SEÇÃO 5: ERROS DE OPERAÇÕES LÓGICAS COM TIPOS NUMÉRICOS ===
+(5 3 &&)
+((5.5 2.0 >) (10 5 *) ||)
+
+# === SEÇÃO 6: ERROS EM ESTRUTURAS DE CONTROLE ===
+((10) (5 3 +) (2 1 -) IFELSE)
+((10 X) ((5 3 >) 2 *) Y)

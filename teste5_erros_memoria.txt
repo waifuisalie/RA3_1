@@ -1,0 +1,28 @@
+# TESTE5 - ERROS DE MEMÓRIA E INICIALIZAÇÃO (RA3)
+# Arquivo com casos de erros relacionados a variáveis e uso de memória
+# Testa detecção de variáveis não inicializadas e uso incorreto de RES
+
+# === SEÇÃO 1: VARIÁVEIS NÃO INICIALIZADAS ===
+(Y)
+(Z 2 +)
+(W 5 *)
+((A B +) C)
+
+# === SEÇÃO 2: USO DE VARIÁVEIS APÓS DECLARAÇÃO ===
+(10 X)
+((X Y >) TEST)
+(BOOL)
+
+# === SEÇÃO 3: USO INCORRETO DE RES ===
+(-1 RES)
+(100 RES)
+(0 RES)
+(-5 RES)
+((50 RES) D)
+
+# === SEÇÃO 4: ARMAZENAMENTO DE BOOLEANOS ===
+((5 3 >) BOOL)
+
+# === SEÇÃO 5: ESTRUTURAS DE CONTROLE COM ERROS ===
+((10) (5 3 +) WHILE)
+((3.5) (10) (20) IFELSE)

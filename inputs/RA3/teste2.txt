@@ -1,4 +1,4 @@
-# TESTE5 - TESTE ABRANGENTE DO ANALISADOR SEMÂNTICO RA3 (CORRIGIDO)
+# TESTE2 - TESTE ABRANGENTE DO ANALISADOR SEMÂNTICO RA3 
 # Versão corrigida do teste4 com todas as linhas válidas semanticamente
 # Todas as operações seguem as regras de tipos e análise semântica
 
